@@ -1,0 +1,698 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Home | AGRICHAIN{% endblock %}
+
+{% block extra_css %}
+<style>
+    /* Hero Section */
+    .hero-section {
+        background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('{% static "img/farm_landscape.jpg" %}');
+        background-size: cover;
+        background-position: center;
+        color: white;
+        padding: 120px 0;
+        margin-bottom: 0;
+    }
+
+    .hero-content {
+        max-width: 750px;
+        margin: 0 auto;
+    }
+
+    .hero-title {
+        font-size: 3.5rem;
+        font-weight: 700;
+        margin-bottom: 1.5rem;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+    }
+
+    .hero-subtitle {
+        font-size: 1.5rem;
+        margin-bottom: 2rem;
+        text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
+    }
+
+    .btn-hero {
+        padding: 12px 30px;
+        font-size: 1.1rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        transition: all 0.3s;
+        margin-right: 15px;
+        margin-bottom: 15px;
+        border-radius: 50px;
+    }
+
+    .btn-primary {
+        background: linear-gradient(135deg, #2E7D32 0%, #1B5E20 100%);
+        border: none;
+    }
+
+    .btn-outline-light {
+        border-width: 2px;
+    }
+    
+    .btn-hero:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+    }
+
+    /* Features Section */
+    .features-section {
+        padding: 80px 0;
+        background-color: #f8f9fa;
+    }
+
+    .section-title {
+        text-align: center;
+        margin-bottom: 60px;
+        position: relative;
+    }
+
+    .section-title::after {
+        content: '';
+        display: block;
+        width: 80px;
+        height: 4px;
+        background: linear-gradient(135deg, #2E7D32 0%, #1B5E20 100%);
+        margin: 15px auto 0;
+        border-radius: 2px;
+    }
+
+    .feature-box {
+        text-align: center;
+        padding: 30px 25px;
+        border-radius: 10px;
+        background-color: white;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        transition: all 0.3s;
+        margin-bottom: 30px;
+        height: 100%;
+    }
+
+    .feature-box:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+    }
+
+    .feature-icon {
+        font-size: 3rem;
+        margin-bottom: 20px;
+        color: #2E7D32;
+    }
+
+    .feature-title {
+        font-size: 1.3rem;
+        font-weight: 600;
+        margin-bottom: 15px;
+    }
+
+    /* Programs Section */
+    .programs-section {
+        padding: 80px 0;
+    }
+
+    .program-card {
+        border: none;
+        border-radius: 10px;
+        overflow: hidden;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+        margin-bottom: 30px;
+        transition: all 0.3s;
+        height: 100%;
+    }
+
+    .program-card:hover {
+        transform: translateY(-7px);
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+    }
+
+    .program-card-img-top {
+        height: 200px;
+        object-fit: cover;
+    }
+
+    .user-type-badge {
+        position: absolute;
+        top: 15px;
+        right: 15px;
+        padding: 5px 10px;
+        border-radius: 20px;
+        font-size: 0.75rem;
+        font-weight: 600;
+        text-transform: uppercase;
+    }
+
+    .badge-government {
+        background-color: #D32F2F;
+        color: white;
+    }
+
+    .badge-nonprofit {
+        background-color: #1976D2;
+        color: white;
+    }
+
+    .badge-farmer {
+        background-color: #388E3C;
+        color: white;
+    }
+
+    /* Testimonials Section */
+    .testimonials-section {
+        padding: 80px 0;
+        background-color: #f8f9fa;
+    }
+
+    .testimonial-card {
+        background-color: white;
+        border-radius: 10px;
+        padding: 30px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        margin-bottom: 30px;
+        height: 100%;
+    }
+
+    .testimonial-text {
+        font-style: italic;
+        margin-bottom: 20px;
+        position: relative;
+        padding: 0 20px;
+    }
+
+    .testimonial-text::before, .testimonial-text::after {
+        content: '"';
+        font-size: 2rem;
+        font-family: Georgia, serif;
+        position: absolute;
+        color: #2E7D32;
+    }
+
+    .testimonial-text::before {
+        top: -10px;
+        left: 0;
+    }
+
+    .testimonial-text::after {
+        bottom: -30px;
+        right: 0;
+    }
+
+    .testimonial-author {
+        display: flex;
+        align-items: center;
+    }
+
+    .testimonial-avatar {
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        object-fit: cover;
+        margin-right: 15px;
+    }
+
+    .testimonial-name {
+        font-weight: 600;
+        margin-bottom: 0;
+    }
+
+    .testimonial-role {
+        font-size: 0.875rem;
+        color: #666;
+    }
+
+    /* Call to Action */
+    .cta-section {
+        background: linear-gradient(135deg, #2E7D32 0%, #1B5E20 100%);
+        color: white;
+        padding: 80px 0;
+        text-align: center;
+    }
+
+    .cta-title {
+        font-size: 2.5rem;
+        font-weight: 700;
+        margin-bottom: 20px;
+    }
+
+    .cta-description {
+        font-size: 1.2rem;
+        margin-bottom: 30px;
+        max-width: 700px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .btn-light {
+        padding: 12px 30px;
+        font-size: 1.1rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        border-radius: 50px;
+        transition: all 0.3s;
+    }
+
+    .btn-light:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+        background-color: white;
+    }
+
+    /* Footer */
+    .footer {
+        background-color: #333;
+        color: white;
+        padding: 60px 0 20px;
+    }
+
+    .footer-logo {
+        margin-bottom: 20px;
+        font-size: 1.8rem;
+        font-weight: 700;
+    }
+
+    .footer-about {
+        margin-bottom: 30px;
+    }
+
+    .footer-heading {
+        font-size: 1.2rem;
+        margin-bottom: 20px;
+        position: relative;
+        padding-bottom: 10px;
+    }
+
+    .footer-heading::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 40px;
+        height: 3px;
+        background-color: #2E7D32;
+    }
+
+    .footer-links {
+        list-style: none;
+        padding-left: 0;
+    }
+
+    .footer-links li {
+        margin-bottom: 10px;
+    }
+
+    .footer-links a {
+        color: #aaa;
+        text-decoration: none;
+        transition: all 0.3s;
+    }
+
+    .footer-links a:hover {
+        color: white;
+        padding-left: 5px;
+    }
+
+    .footer-social {
+        list-style: none;
+        padding-left: 0;
+        display: flex;
+        margin-top: 20px;
+    }
+
+    .footer-social li {
+        margin-right: 15px;
+    }
+
+    .footer-social a {
+        display: block;
+        width: 40px;
+        height: 40px;
+        line-height: 40px;
+        text-align: center;
+        background-color: rgba(255, 255, 255, 0.1);
+        border-radius: 50%;
+        color: white;
+        transition: all 0.3s;
+    }
+
+    .footer-social a:hover {
+        background-color: #2E7D32;
+        transform: translateY(-3px);
+    }
+
+    .footer-bottom {
+        padding-top: 20px;
+        margin-top: 40px;
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
+        text-align: center;
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 992px) {
+        .hero-title {
+            font-size: 2.8rem;
+        }
+        
+        .hero-subtitle {
+            font-size: 1.2rem;
+        }
+        
+        .cta-title {
+            font-size: 2rem;
+        }
+    }
+
+    @media (max-width: 768px) {
+        .hero-section {
+            padding: 80px 0;
+        }
+        
+        .hero-title {
+            font-size: 2.2rem;
+        }
+        
+        .hero-subtitle {
+            font-size: 1.1rem;
+        }
+        
+        .section-title {
+            margin-bottom: 40px;
+        }
+        
+        .features-section, .programs-section, .testimonials-section, .cta-section {
+            padding: 60px 0;
+        }
+    }
+
+    @media (max-width: 576px) {
+        .hero-section {
+            padding: 60px 0;
+        }
+        
+        .hero-title {
+            font-size: 1.8rem;
+        }
+        
+        .hero-subtitle {
+            font-size: 1rem;
+        }
+        
+        .btn-hero {
+            padding: 10px 20px;
+            font-size: 0.9rem;
+            margin-right: 10px;
+        }
+        
+        .cta-title {
+            font-size: 1.5rem;
+        }
+        
+        .cta-description {
+            font-size: 1rem;
+        }
+        
+        .feature-icon {
+            font-size: 2.5rem;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="hero-section">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="hero-content text-center">
+                    <h1 class="hero-title">Empowering Farmers with AGRICHAIN</h1>
+                    <p class="hero-subtitle">Revolutionizing agriculture through real-time data, predictive analytics, and direct farmer-to-customer connectivity.</p>
+                    <div>
+                        <a href="{% url 'register' %}" class="btn btn-primary btn-hero">Join Now</a>
+                        <a href="#features" class="btn btn-outline-light btn-hero">Learn More</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Features Section -->
+<section id="features" class="features-section">
+    <div class="container">
+        <h2 class="section-title">Key Features of AGRICHAIN</h2>
+        
+        <div class="row">
+            <div class="col-lg-4 col-md-6">
+                <div class="feature-box">
+                    <div class="feature-icon">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <h3 class="feature-title">Real-Time Crop Data</h3>
+                    <p>Access real-time data on crops cultivated in your region to avoid cultivation collisions and optimize resource utilization.</p>
+                </div>
+            </div>
+            
+            <div class="col-lg-4 col-md-6">
+                <div class="feature-box">
+                    <div class="feature-icon">
+                        <i class="fas fa-seedling"></i>
+                    </div>
+                    <h3 class="feature-title">Crop Diversification</h3>
+                    <p>Promote crop diversification to reduce surplus, improve soil health, and increase profitability.</p>
+                </div>
+            </div>
+            
+            <div class="col-lg-4 col-md-6">
+                <div class="feature-box">
+                    <div class="feature-icon">
+                        <i class="fas fa-handshake"></i>
+                    </div>
+                    <h3 class="feature-title">Direct Farmer-to-Customer</h3>
+                    <p>Eliminate middlemen by connecting directly with consumers, ensuring fair pricing and higher profits for farmers.</p>
+                </div>
+            </div>
+            
+            <div class="col-lg-4 col-md-6">
+                <div class="feature-box">
+                    <div class="feature-icon">
+                        <i class="fas fa-cloud-sun"></i>
+                    </div>
+                    <h3 class="feature-title">Climatic & Soil Forecasting</h3>
+                    <p>Get actionable insights on climatic and soil conditions tailored to your locality for improved yield and resilience.</p>
+                </div>
+            </div>
+            
+            <div class="col-lg-4 col-md-6">
+                <div class="feature-box">
+                    <div class="feature-icon">
+                        <i class="fas fa-balance-scale"></i>
+                    </div>
+                    <h3 class="feature-title">Supply-Demand Analytics</h3>
+                    <p>Leverage predictive analytics to forecast supply-demand dynamics and redistribute surplus produce to regions in need.</p>
+                </div>
+            </div>
+            
+            <div class="col-lg-4 col-md-6">
+                <div class="feature-box">
+                    <div class="feature-icon">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <h3 class="feature-title">Community Collaboration</h3>
+                    <p>Join a network of farmers, government agencies, and NGOs to share knowledge and build sustainable agricultural practices.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Programs Section -->
+<section class="programs-section">
+    <div class="container">
+        <h2 class="section-title">Our Programs</h2>
+        
+        <div class="row">
+            <div class="col-lg-4 col-md-6">
+                <div class="card program-card">
+                    <span class="user-type-badge badge-government">Government</span>
+                    <img src="{% static 'img/program_subsidy.jpg' %}" class="card-img-top program-card-img-top" alt="Subsidy Program">
+                    <div class="card-body">
+                        <h5 class="card-title">Crop Diversification Grants</h5>
+                        <p class="card-text">Financial support for farmers to adopt crop diversification and sustainable farming practices.</p>
+                        <a href="#" class="btn btn-outline-success">Learn More</a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-lg-4 col-md-6">
+                <div class="card program-card">
+                    <span class="user-type-badge badge-nonprofit">Non-Profit</span>
+                    <img src="{% static 'img/program_training.jpg' %}" class="card-img-top program-card-img-top" alt="Training Program">
+                    <div class="card-body">
+                        <h5 class="card-title">Sustainable Farming Training</h5>
+                        <p class="card-text">Workshops on organic farming, water conservation, and soil health management.</p>
+                        <a href="#" class="btn btn-outline-success">Learn More</a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-lg-4 col-md-6">
+                <div class="card program-card">
+                    <span class="user-type-badge badge-farmer">Farmer</span>
+                    <img src="{% static 'img/program_marketplace.jpg' %}" class="card-img-top program-card-img-top" alt="Marketplace Program">
+                    <div class="card-body">
+                        <h5 class="card-title">Direct Marketplace Access</h5>
+                        <p class="card-text">Sell your produce directly to consumers through our digital marketplace at fair prices.</p>
+                        <a href="#" class="btn btn-outline-success">Learn More</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Testimonials Section -->
+<section class="testimonials-section">
+    <div class="container">
+        <h2 class="section-title">What Farmers Say</h2>
+        
+        <div class="row">
+            <div class="col-lg-4 col-md-6">
+                <div class="testimonial-card">
+                    <p class="testimonial-text">AGRICHAIN has transformed the way I farm. The real-time data and predictive analytics have helped me make better decisions and increase my yield.</p>
+                    <div class="testimonial-author">
+                        <img src="{% static 'img/farmer1.jpg' %}" alt="Farmer" class="testimonial-avatar">
+                        <div>
+                            <p class="testimonial-name">Rajesh Kumar</p>
+                            <p class="testimonial-role">Farmer, Punjab</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-lg-4 col-md-6">
+                <div class="testimonial-card">
+                    <p class="testimonial-text">The direct marketplace has been a game-changer for me. I no longer rely on middlemen, and my profits have increased significantly.</p>
+                    <div class="testimonial-author">
+                        <img src="{% static 'img/farmer2.jpg' %}" alt="Farmer" class="testimonial-avatar">
+                        <div>
+                            <p class="testimonial-name">Priya Sharma</p>
+                            <p class="testimonial-role">Farmer, Maharashtra</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-lg-4 col-md-6">
+                <div class="testimonial-card">
+                    <p class="testimonial-text">The climatic and soil forecasting tools have helped me adapt to changing conditions and improve my crop resilience.</p>
+                    <div class="testimonial-author">
+                        <img src="{% static 'img/farmer3.jpg' %}" alt="Farmer" class="testimonial-avatar">
+                        <div>
+                            <p class="testimonial-name">Anil Patel</p>
+                            <p class="testimonial-role">Farmer, Gujarat</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Call to Action -->
+<section class="cta-section">
+    <div class="container">
+        <h2 class="cta-title">Join AGRICHAIN Today</h2>
+        <p class="cta-description">Empower your farming journey with real-time data, predictive analytics, and direct market access. Register now to get started!</p>
+        <a href="{% url 'register' %}" class="btn btn-light">Register Now</a>
+    </div>
+</section>
+
+<!-- Footer -->
+<footer class="footer">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-4 col-md-6">
+                <div class="footer-logo">AGRICHAIN</div>
+                <p class="footer-about">Empowering farmers with real-time data, predictive analytics, and direct market connectivity for a sustainable agricultural future.</p>
+                <ul class="footer-social">
+                    <li><a href="#"><i class="fab fa-facebook-f"></i></a></li>
+                    <li><a href="#"><i class="fab fa-twitter"></i></a></li>
+                    <li><a href="#"><i class="fab fa-instagram"></i></a></li>
+                    <li><a href="#"><i class="fab fa-linkedin-in"></i></a></li>
+                </ul>
+            </div>
+            
+            <div class="col-lg-2 col-md-6">
+                <h3 class="footer-heading">Explore</h3>
+                <ul class="footer-links">
+                    <li><a href="#">Home</a></li>
+                    <li><a href="#">About Us</a></li>
+                    <li><a href="#">Programs</a></li>
+                    <li><a href="#">Resources</a></li>
+                    <li><a href="#">Success Stories</a></li>
+                </ul>
+            </div>
+            
+            <div class="col-lg-3 col-md-6">
+                <h3 class="footer-heading">Programs</h3>
+                <ul class="footer-links">
+                    <li><a href="#">Crop Diversification</a></li>
+                    <li><a href="#">Sustainable Farming</a></li>
+                    <li><a href="#">Direct Marketplace</a></li>
+                    <li><a href="#">Training Programs</a></li>
+                    <li><a href="#">Community Initiatives</a></li>
+                </ul>
+            </div>
+            
+            <div class="col-lg-3 col-md-6">
+                <h3 class="footer-heading">Contact Us</h3>
+                <ul class="footer-links">
+                    <li><i class="fas fa-map-marker-alt mr-2"></i> 123 Farm Road, Agritown</li>
+                    <li><i class="fas fa-phone mr-2"></i> (123) 456-7890</li>
+                    <li><i class="fas fa-envelope mr-2"></i> info@agrichain.org</li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="footer-bottom">
+            <p>© {% now "Y" %} AGRICHAIN. All rights reserved.</p>
+        </div>
+    </div>
+</footer>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    // Smooth scrolling for anchor links
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function (e) {
+            e.preventDefault();
+            
+            document.querySelector(this.getAttribute('href')).scrollIntoView({
+                behavior: 'smooth'
+            });
+        });
+    });
+    
+    // Add active class to features on scroll
+    window.addEventListener('scroll', function() {
+        const featuresSection = document.querySelector('.features-section');
+        if(featuresSection) {
+            const featureBoxes = document.querySelectorAll('.feature-box');
+            const sectionTop = featuresSection.offsetTop;
+            const sectionBottom = sectionTop + featuresSection.offsetHeight;
+            const scrollPosition = window.scrollY + window.innerHeight * 0.75;
+            
+            if(scrollPosition > sectionTop && scrollPosition < sectionBottom) {
+                featureBoxes.forEach((box, index) => {
+                    setTimeout(() => {
+                        box.classList.add('animated', 'fadeInUp');
+                    }, index * 100);
+                });
+            }
+        }
+    });
+</script>
+{% endblock %}

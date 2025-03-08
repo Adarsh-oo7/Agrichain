@@ -1,13 +1,20 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import login
 from django.contrib import messages
+from django.contrib.auth import authenticate, login, logout
+
 from .forms import (
     CustomUserCreationForm, 
     FarmerRegistrationForm,
     GovernmentRegistrationForm,
-    NonProfitRegistrationForm
+    NonProfitRegistrationForm,
+    CustomAuthenticationForm
 )
 from .models import UserType
+
+
+def home(request):
+    return render(request,'home.html')
 
 def register_view(request):
     # Initialize forms
@@ -76,3 +83,55 @@ def register_view(request):
         'government_form': government_form,
         'nonprofit_form': nonprofit_form,
     })
+
+
+
+def login_view(request):
+    """Handle user login with appropriate redirects and messages based on user type."""
+    if request.user.is_authenticated:
+        # Redirect already logged-in users
+        return redirect('home')
+        
+    if request.method == 'POST':
+        form = CustomAuthenticationForm(request, data=request.POST)
+        if form.is_valid():
+            username = form.cleaned_data.get('username')
+            password = form.cleaned_data.get('password')
+            user = authenticate(username=username, password=password)
+            
+            if user is not None:
+                login(request, user)
+                
+                # Customize welcome message based on user type
+                if user.user_type == UserType.GOVERNMENT:
+                    messages.success(request, f"Welcome back to your Government Account, {user.username}! (High Priority)")
+                elif user.user_type == UserType.NON_PROFIT:
+                    messages.success(request, f"Welcome back to your Non-Profit Account, {user.username}! (Medium Priority)")
+                else:
+                    messages.success(request, f"Welcome back to your Farmer Account, {user.username}!")
+                
+                # Get the next parameter or default to home
+                next_page = request.GET.get('next', 'home')
+                return redirect(next_page)
+            else:
+                messages.error(request, "Invalid username or password.")
+        else:
+            messages.error(request, "Invalid username or password.")
+    else:
+        form = CustomAuthenticationForm()
+    
+    return render(request, 'users/login.html', {'form': form})
+
+def logout_view(request):
+    """Handle user logout with appropriate redirect and message."""
+    user_type = request.user.user_type if request.user.is_authenticated else None
+    logout(request)
+    
+    if user_type == UserType.GOVERNMENT:
+        messages.info(request, "You have successfully logged out of your Government Account.")
+    elif user_type == UserType.NON_PROFIT:
+        messages.info(request, "You have successfully logged out of your Non-Profit Account.")
+    else:
+        messages.info(request, "You have successfully logged out.")
+        
+    return redirect('login')

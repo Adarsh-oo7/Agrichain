@@ -1,0 +1,236 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block title %}Login | Agricultural Support Platform{% endblock %}
+
+{% block extra_css %}
+<style>
+    .login-container {
+        background-color: rgba(255, 255, 255, 0.9);
+        border-radius: 10px;
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+        margin: 0 15px;
+    }
+    
+    .login-header {
+        background: linear-gradient(135deg, #2E7D32 0%, #1B5E20 100%);
+        border-radius: 10px 10px 0 0;
+        padding: 20px;
+    }
+    
+    .btn-login {
+        background: linear-gradient(135deg, #2E7D32 0%, #1B5E20 100%);
+        border: none;
+        transition: all 0.3s;
+    }
+    
+    .btn-login:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
+    
+    .divider {
+        display: flex;
+        align-items: center;
+        text-align: center;
+        margin: 20px 0;
+    }
+    
+    .divider::before, .divider::after {
+        content: '';
+        flex: 1;
+        border-bottom: 1px solid #ddd;
+    }
+    
+    .divider span {
+        padding: 0 10px;
+        color: #777;
+    }
+    
+    .user-type-container {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 8px;
+        margin-bottom: 15px;
+    }
+    
+    .user-type-indicator {
+        display: inline-block;
+        padding: 4px 8px;
+        border-radius: 4px;
+        font-size: 0.8rem;
+        font-weight: bold;
+    }
+    
+    .user-type-government {
+        background-color: #D32F2F;
+        color: white;
+    }
+    
+    .user-type-nonprofit {
+        background-color: #1976D2;
+        color: white;
+    }
+    
+    .user-type-farmer {
+        background-color: #388E3C;
+        color: white;
+    }
+
+    .login-background {
+        background-image: url('{% static "img/farm_background.jpg" %}');
+        background-size: cover;
+        background-position: center;
+        min-height: 100vh;
+        padding: 40px 0;
+        display: flex;
+        align-items: center;
+    }
+    
+    .footer-text {
+        color: white;
+        text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.7);
+        padding: 15px;
+    }
+    
+    /* Responsive adjustments */
+    @media (max-width: 767px) {
+        .login-background {
+            background-image: linear-gradient(135deg, #4CAF50 0%, #2E7D32 100%);
+            padding: 20px 0;
+        }
+        
+        .login-container {
+            margin: 0 10px;
+        }
+        
+        .card-body {
+            padding: 15px !important;
+        }
+        
+        .footer-text {
+            margin-top: 15px;
+        }
+    }
+    
+    @media (max-width: 575px) {
+        .login-header h3 {
+            font-size: 1.5rem;
+        }
+        
+        .login-header p {
+            font-size: 0.9rem;
+        }
+        
+        .user-type-indicator {
+            font-size: 0.7rem;
+            padding: 3px 6px;
+        }
+    }
+    
+    @media (max-height: 700px) {
+        .login-background {
+            min-height: auto;
+            padding: 30px 0;
+        }
+    }
+    
+    @media (max-width: 320px) {
+        .login-container {
+            margin: 0 5px;
+        }
+        
+        .card-body {
+            padding: 10px !important;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="login-background">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-10 col-md-10 col-sm-10">
+                <div class="login-container">
+                    <div class="login-header text-white text-center">
+                        <h3 class="mb-0">Welcome Back</h3>
+                        <p class="mb-0">Login to your account</p>
+                    </div>
+                    
+                    <div class="card-body p-4">
+                        {% if messages %}
+                            {% for message in messages %}
+                                <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                                    {{ message }}
+                                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                </div>
+                            {% endfor %}
+                        {% endif %}
+                        
+                        <form method="POST" action="{% url 'login' %}">
+                            {% csrf_token %}
+                            
+                            <div class="mb-3">
+                                <label for="{{ form.username.id_for_label }}" class="form-label">Username</label>
+                                {{ form.username }}
+                                {% if form.username.errors %}
+                                    <div class="text-danger">
+                                        {% for error in form.username.errors %}
+                                            {{ error }}
+                                        {% endfor %}
+                                    </div>
+                                {% endif %}
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label for="{{ form.password.id_for_label }}" class="form-label">Password</label>
+                                {{ form.password }}
+                                {% if form.password.errors %}
+                                    <div class="text-danger">
+                                        {% for error in form.password.errors %}
+                                            {{ error }}
+                                        {% endfor %}
+                                    </div>
+                                {% endif %}
+                            </div>
+                            
+                            <div class="mb-3 d-flex justify-content-between align-items-center flex-wrap">
+                                <div class="form-check mb-2 mb-sm-0">
+                                    <input type="checkbox" class="form-check-input" id="rememberMe">
+                                    <label class="form-check-label" for="rememberMe">Remember me</label>
+                                </div>
+                                {% comment %} <a href="{% url 'password_reset' %}" class="text-decoration-none">Forgot password?</a> {% endcomment %}
+                            </div>
+                            
+                            <div class="d-grid gap-2">
+                                <button type="submit" class="btn btn-primary btn-login">Login</button>
+                            </div>
+                            
+                            <div class="divider">
+                                <span>OR</span>
+                            </div>
+                            
+                            <div class="text-center">
+                                <p>Select your account type below:</p>
+                                <div class="user-type-container">
+                                    <span class="user-type-indicator user-type-government">Government</span>
+                                    <span class="user-type-indicator user-type-nonprofit">Non-Profit</span>
+                                    <span class="user-type-indicator user-type-farmer">Farmer</span>
+                                </div>
+                                <p>Don't have an account? <a href="{% url 'register' %}" class="fw-bold text-decoration-none">Register now</a></p>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                
+                <div class="text-center footer-text">
+                    <p class="mb-0">© {% now "Y" %} Agricultural Support Platform. All rights reserved.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

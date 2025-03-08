@@ -1,6 +1,6 @@
 # users/forms.py
 from django import forms
-from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.forms import UserCreationForm,AuthenticationForm
 from .models import CustomUser, UserType, UserPriority
 
 class CustomUserCreationForm(UserCreationForm):
@@ -127,3 +127,18 @@ class NonProfitRegistrationForm(forms.Form):
         )
         profile.save()
         return profile
+
+
+class CustomAuthenticationForm(AuthenticationForm):
+    """Enhanced authentication form with custom styling and error messages."""
+    username = forms.CharField(
+        widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Username'}),
+    )
+    password = forms.CharField(
+        widget=forms.PasswordInput(attrs={'class': 'form-control', 'placeholder': 'Password'}),
+    )
+    
+    error_messages = {
+        'invalid_login': "Please enter a correct username and password.",
+        'inactive': "This account is inactive.",
+    }

@@ -72,6 +72,7 @@
         .nav-links {
             display: flex;
             list-style: none;
+            align-items: center;
         }
         
         .nav-links li {
@@ -86,6 +87,20 @@
         
         .nav-links a:hover {
             color: var(--light-color);
+        }
+        
+        .login-btn {
+            background-color: var(--secondary-color);
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: background-color 0.3s;
+        }
+        
+        .login-btn:hover {
+            background-color: #1a252f;
         }
         
         .hamburger {
@@ -267,6 +282,11 @@
                 <li><a href="/services">Services</a></li>
                 <li><a href="/blog">Blog</a></li>
                 <li><a href="/contact">Contact</a></li>
+                {% if user.is_authenticated %}
+                    <li><a href="{% url 'logout' %}" class="login-btn"><i class="fas fa-user"></i> Logout</a></li>
+                {% else %}
+                    <li><a href="{% url 'login' %}" class="login-btn"><i class="fas fa-user"></i> Login</a></li>
+                {% endif %}
             </ul>
         </nav>
     </header>
@@ -274,7 +294,7 @@
     <main>
         {% block content %}
         <section class="content-section">
-            <h1>Welcome to MyProject</h1>
+            <h1>Welcome to AgiChain</h1>
             <p>This is the base template. Override the content block to add your own content.</p>
             <a href="#" class="btn">Get Started</a>
         </section>
@@ -316,7 +336,7 @@
         </div>
         
         <div class="footer-bottom">
-            <p>&copy; 2025 MyProject. All rights reserved.</p>
+            <p>&copy; 2025 AgiChain. All rights reserved.</p>
         </div>
     </footer>
     
