@@ -1,0 +1,395 @@
+{% extends "base.html" %}
+{% load form_tags %}
+
+{% block content %}
+<div class="container">
+  <h2>User Registration</h2>
+  
+  {% if messages %}
+  <div class="messages">
+    {% for message in messages %}
+    <div class="alert {% if message.tags %}alert-{{ message.tags }}{% endif %}">
+      {{ message }}
+    </div>
+    {% endfor %}
+  </div>
+  {% endif %}
+  
+  <form method="post" action="" id="registration-form">
+    {% csrf_token %}
+    
+    <div class="card mb-4">
+      <div class="card-header">
+        <h3>Account Information</h3>
+      </div>
+      <div class="card-body">
+        {{ user_form.non_field_errors }}
+        
+        <div class="form-group">
+          <label for="{{ user_form.username.id_for_label }}">Username:</label>
+          {{ user_form.username }}
+          {% if user_form.username.errors %}
+          <div class="error">{{ user_form.username.errors }}</div>
+          {% endif %}
+        </div>
+        
+        <div class="form-group">
+          <label for="{{ user_form.email.id_for_label }}">Email:</label>
+          {{ user_form.email }}
+          {% if user_form.email.errors %}
+          <div class="error">{{ user_form.email.errors }}</div>
+          {% endif %}
+        </div>
+        
+        <div class="form-group">
+          <label for="{{ user_form.password1.id_for_label }}">Password:</label>
+          {{ user_form.password1 }}
+          {% if user_form.password1.errors %}
+          <div class="error">{{ user_form.password1.errors }}</div>
+          {% endif %}
+          <small class="form-text text-muted">{{ user_form.password1.help_text }}</small>
+        </div>
+        
+        <div class="form-group">
+          <label for="{{ user_form.password2.id_for_label }}">Confirm Password:</label>
+          {{ user_form.password2 }}
+          {% if user_form.password2.errors %}
+          <div class="error">{{ user_form.password2.errors }}</div>
+          {% endif %}
+        </div>
+        
+        <div class="form-group">
+          <label for="{{ user_form.phone_number.id_for_label }}">Phone Number:</label>
+          {{ user_form.phone_number }}
+          {% if user_form.phone_number.errors %}
+          <div class="error">{{ user_form.phone_number.errors }}</div>
+          {% endif %}
+        </div>
+        
+        <div class="form-group">
+          <label>User Type (Priority Order):</label>
+          <div class="user-type-options">
+            {% for radio in user_form.user_type %}
+            <div class="form-check user-type-option {% if radio.choice_value == 'GOVERNMENT' %}high-priority{% elif radio.choice_value == 'NON_PROFIT' %}medium-priority{% else %}low-priority{% endif %}">
+              {{ radio.tag }}
+              <label class="form-check-label" for="{{ radio.id_for_label }}">
+                {{ radio.choice_label }}
+                {% if radio.choice_value == 'GOVERNMENT' %}
+                <span class="priority-badge high">High Priority</span>
+                {% elif radio.choice_value == 'NON_PROFIT' %}
+                <span class="priority-badge medium">Medium Priority</span>
+                {% else %}
+                <span class="priority-badge low">Low Priority</span>
+                {% endif %}
+              </label>
+            </div>
+            {% endfor %}
+          </div>
+          {% if user_form.user_type.errors %}
+          <div class="error">{{ user_form.user_type.errors }}</div>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+    
+    <!-- Government Form with unique IDs -->
+    <div id="government-form" class="profile-form card mb-4">
+      <div class="card-header high-priority-header">
+        <h3>Government Office Details (High Priority)</h3>
+      </div>
+      <div class="card-body">
+        {% for field in government_form %}
+        <div class="form-group">
+          <label for="gov_{{ field.id_for_label }}">{{ field.label }}:</label>
+          {{ field|add_id_prefix:"gov_"|add_attr:"data-required:true" }}
+          {% if field.help_text %}
+          <small class="form-text text-muted">{{ field.help_text }}</small>
+          {% endif %}
+          {% if field.errors %}
+          <div class="error">{{ field.errors }}</div>
+          {% endif %}
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+    
+    <!-- Non-Profit Form with unique IDs -->
+    <div id="nonprofit-form" class="profile-form card mb-4">
+      <div class="card-header medium-priority-header">
+        <h3>Non-Profit Organization Details (Medium Priority)</h3>
+      </div>
+      <div class="card-body">
+        {% for field in nonprofit_form %}
+        <div class="form-group">
+          <label for="np_{{ field.id_for_label }}">{{ field.label }}:</label>
+          {{ field|add_id_prefix:"np_"|add_attr:"data-required:true" }}
+          {% if field.help_text %}
+          <small class="form-text text-muted">{{ field.help_text }}</small>
+          {% endif %}
+          {% if field.errors %}
+          <div class="error">{{ field.errors }}</div>
+          {% endif %}
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+    
+    <!-- Farmer Form with unique IDs -->
+    <div id="farmer-form" class="profile-form card mb-4">
+      <div class="card-header low-priority-header">
+        <h3>Farmer Details (Low Priority)</h3>
+      </div>
+      <div class="card-body">
+        {% for field in farmer_form %}
+        <div class="form-group">
+          <label for="farmer_{{ field.id_for_label }}">{{ field.label }}:</label>
+          {{ field|add_id_prefix:"farmer_"|add_attr:"data-required:true" }}
+          {% if field.help_text %}
+          <small class="form-text text-muted">{{ field.help_text }}</small>
+          {% endif %}
+          {% if field.errors %}
+          <div class="error">{{ field.errors }}</div>
+          {% endif %}
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+    
+    <button type="submit" class="btn btn-primary" id="register-button">Register</button>
+  </form>
+</div>
+
+<script>
+  // Debug console logs to help identify form issues
+  console.log("Registration form script loaded");
+  
+  // Show/hide appropriate profile form based on user type selection
+  document.addEventListener('DOMContentLoaded', function() {
+    console.log("DOM fully loaded");
+    
+    const userTypeInputs = document.querySelectorAll('input[name="user_type"]');
+    const governmentForm = document.getElementById('government-form');
+    const nonprofitForm = document.getElementById('nonprofit-form');
+    const farmerForm = document.getElementById('farmer-form');
+    const registerButton = document.getElementById('register-button');
+    const form = document.getElementById('registration-form');
+    
+    console.log("User type inputs found:", userTypeInputs.length);
+    
+    // Function to show/hide forms and handle required attributes
+    function updateFormVisibility() {
+      // First, ensure all fields have their original required state
+      document.querySelectorAll('[data-required="true"]').forEach(field => {
+        field.setAttribute('required', '');
+      });
+      
+      // Hide all forms first
+      governmentForm.style.display = 'none';
+      nonprofitForm.style.display = 'none';
+      farmerForm.style.display = 'none';
+      
+      // Find the selected user type
+      let selectedType = '';
+      userTypeInputs.forEach(input => {
+        if (input.checked) {
+          selectedType = input.value;
+          console.log("Selected user type:", selectedType);
+        }
+      });
+      
+      // Show the relevant form based on selection and handle required fields
+      if (selectedType === 'GOVERNMENT') {
+        governmentForm.style.display = 'block';
+        // Remove required attribute from hidden form fields
+        document.querySelectorAll('#nonprofit-form [required], #farmer-form [required]')
+          .forEach(field => field.removeAttribute('required'));
+      } else if (selectedType === 'NON_PROFIT') {
+        nonprofitForm.style.display = 'block';
+        // Remove required attribute from hidden form fields
+        document.querySelectorAll('#government-form [required], #farmer-form [required]')
+          .forEach(field => field.removeAttribute('required'));
+      } else if (selectedType === 'FARMER') {
+        farmerForm.style.display = 'block';
+        // Remove required attribute from hidden form fields
+        document.querySelectorAll('#government-form [required], #nonprofit-form [required]')
+          .forEach(field => field.removeAttribute('required'));
+      }
+    }
+    
+    // Set initial state
+    let defaultSet = false;
+    userTypeInputs.forEach(input => {
+      if (input.value === 'GOVERNMENT') {
+        input.checked = true;
+        defaultSet = true;
+        console.log("Default set to GOVERNMENT");
+      }
+    });
+    
+    // If for some reason the GOVERNMENT option doesn't exist, select the first option
+    if (!defaultSet && userTypeInputs.length > 0) {
+      userTypeInputs[0].checked = true;
+      console.log("Default set to first option:", userTypeInputs[0].value);
+    }
+    
+    // Run the visibility function to set initial state
+    updateFormVisibility();
+    
+    // Update when selection changes
+    userTypeInputs.forEach(input => {
+      input.addEventListener('change', function() {
+        console.log("User type changed to:", this.value);
+        updateFormVisibility();
+      });
+    });
+    
+    // Final check before form submission
+    form.addEventListener('submit', function(event) {
+      console.log('Form submitted');
+      // Run the visibility function again to ensure required attributes are set correctly
+      updateFormVisibility();
+    });
+  });
+</script>
+
+<style>
+  /* Your existing styles remain unchanged */
+  .form-group {
+    margin-bottom: 1rem;
+  }
+  
+  .error {
+    color: red;
+    font-size: 0.875rem;
+    margin-top: 0.25rem;
+  }
+  
+  .card {
+    margin-bottom: 1.5rem;
+    border: 1px solid rgba(0,0,0,.125);
+    border-radius: 0.25rem;
+  }
+  
+  .card-header {
+    padding: 0.75rem 1.25rem;
+    background-color: rgba(0,0,0,.03);
+    border-bottom: 1px solid rgba(0,0,0,.125);
+  }
+  
+  .high-priority-header {
+    background-color: #d4edda;
+    color: #155724;
+    border-color: #c3e6cb;
+  }
+  
+  .medium-priority-header {
+    background-color: #fff3cd;
+    color: #856404;
+    border-color: #ffeeba;
+  }
+  
+  .low-priority-header {
+    background-color: #f8f9fa;
+    color: #495057;
+    border-color: #ddd;
+  }
+  
+  .card-body {
+    padding: 1.25rem;
+  }
+  
+  .user-type-options {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  
+  .priority-badge {
+    font-size: 0.75rem;
+    padding: 0.25rem 0.5rem;
+    border-radius: 0.25rem;
+    margin-left: 0.5rem;
+    font-weight: normal;
+  }
+  
+  .priority-badge.high {
+    background-color: #28a745;
+    color: white;
+  }
+  
+  .priority-badge.medium {
+    background-color: #ffc107;
+    color: #212529;
+  }
+  
+  .priority-badge.low {
+    background-color: #6c757d;
+    color: white;
+  }
+  
+  .user-type-option {
+    padding: 0.5rem;
+    border-radius: 0.25rem;
+    border: 1px solid transparent;
+  }
+  
+  .user-type-option.high-priority {
+    border-color: #28a745;
+    background-color: rgba(40, 167, 69, 0.1);
+  }
+  
+  .user-type-option.medium-priority {
+    border-color: #ffc107;
+    background-color: rgba(255, 193, 7, 0.1);
+  }
+  
+  .user-type-option.low-priority {
+    border-color: #6c757d;
+    background-color: rgba(108, 117, 125, 0.1);
+  }
+  
+  /* Make form controls look nice */
+  input[type="text"],
+  input[type="email"],
+  input[type="password"],
+  input[type="number"],
+  textarea,
+  select {
+    width: 100%;
+    padding: 0.375rem 0.75rem;
+    font-size: 1rem;
+    line-height: 1.5;
+    color: #495057;
+    background-color: #fff;
+    background-clip: padding-box;
+    border: 1px solid #ced4da;
+    border-radius: 0.25rem;
+    transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+  }
+  
+  .btn-primary {
+    color: #fff;
+    background-color: #007bff;
+    border-color: #007bff;
+    padding: 0.5rem 1rem;
+    font-size: 1rem;
+    line-height: 1.5;
+    border-radius: 0.25rem;
+    cursor: pointer;
+    display: block;
+    width: 100%;
+    max-width: 200px;
+    margin-top: 1rem;
+  }
+  
+  .btn-primary:hover {
+    background-color: #0069d9;
+    border-color: #0062cc;
+  }
+  
+  /* Hide profile forms by default - they will be shown by JavaScript */
+  .profile-form {
+    display: none;
+  }
+</style>
+{% endblock %}
