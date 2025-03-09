@@ -2,6 +2,11 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import login
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
+from django.utils import translation
+from django.utils.translation import gettext_lazy as _
+from django.http import HttpResponseRedirect
+from django.conf import settings
+
 
 from .forms import (
     CustomUserCreationForm, 
@@ -11,6 +16,32 @@ from .forms import (
     CustomAuthenticationForm
 )
 from .models import UserType
+
+
+def switch_language(request, language):
+    # Validate that the language is in the list of available languages
+    if language in [lang[0] for lang in settings.LANGUAGES]:
+        # Activate the selected language
+        translation.activate(language)
+        
+        # Set the language in the session
+        request.session[translation.LANGUAGE_SESSION_KEY] = language
+        
+        # Redirect to the previous page or home
+        next_url = request.META.get('HTTP_REFERER', '/')
+        response = HttpResponseRedirect(next_url)
+        
+        # Set the language cookie with a reasonable expiry time
+        response.set_cookie(
+            settings.LANGUAGE_COOKIE_NAME, 
+            language,
+            max_age=365*24*60*60  # 1 year expiry
+        )
+        
+        return response
+    
+    # If language not valid, just redirect back
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
 
 
 def home(request):

@@ -1,23 +1,101 @@
 {% extends 'base.html' %}
 {% load static %}
+{% load i18n %}
 
-{% block title %}Home | AGRICHAIN{% endblock %}
+{% block title %}{% trans "Home | AGRICHAIN" %}{% endblock %}
 
 {% block extra_css %}
 <style>
+    /* Language selector styles */
+    .language-selector {
+        position: absolute;
+        top: 20px;
+        right: 20px;
+        z-index: 1000;
+    }
+    
+    .language-selector select {
+        padding: 5px 10px;
+        border-radius: 20px;
+        background-color: rgba(255, 255, 255, 0.2);
+        color: white;
+        border: 1px solid rgba(255, 255, 255, 0.4);
+        cursor: pointer;
+    }
+    
+    .language-selector select option {
+        background-color: #333;
+        color: white;
+    }
+    
+    @media (max-width: 576px) {
+        .language-selector {
+            top: 10px;
+            right: 10px;
+        }
+    }
+
+    /* Enhanced section transitions */
+    .section-title {
+        position: relative;
+        margin-bottom: 3rem;
+        text-align: center;
+        font-size: 2.5rem;
+        font-weight: 700;
+        color: #2E7D32;
+    }
+    
+    .section-title:after {
+        content: '';
+        display: block;
+        width: 80px;
+        height: 3px;
+        background: linear-gradient(to right, #4CAF50, #8BC34A);
+        margin: 15px auto 0;
+        border-radius: 3px;
+    }
+    
+    /* Card hover effects */
+    .feature-box, .program-card, .testimonial-card {
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        border-radius: 10px;
+        overflow: hidden;
+    }
+    
+    .feature-box:hover, .program-card:hover, .testimonial-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+    }
+    
+    /* Animation classes */
+    .animated {
+        animation-duration: 0.8s;
+        animation-fill-mode: both;
+    }
+    
+    .fadeInUp {
+        animation-name: fadeInUp;
+    }
+    
+    @keyframes fadeInUp {
+        from {
+            opacity: 0;
+            transform: translate3d(0, 30px, 0);
+        }
+        to {
+            opacity: 1;
+            transform: translate3d(0, 0, 0);
+        }
+    }
+
     /* Hero Section */
     .hero-section {
         background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('{% static "img/farm_landscape.jpg" %}');
         background-size: cover;
         background-position: center;
         color: white;
-        padding: 120px 0;
+        padding: 150px 0;
         margin-bottom: 0;
-    }
-
-    .hero-content {
-        max-width: 750px;
-        margin: 0 auto;
     }
 
     .hero-title {
@@ -64,22 +142,6 @@
         background-color: #f8f9fa;
     }
 
-    .section-title {
-        text-align: center;
-        margin-bottom: 60px;
-        position: relative;
-    }
-
-    .section-title::after {
-        content: '';
-        display: block;
-        width: 80px;
-        height: 4px;
-        background: linear-gradient(135deg, #2E7D32 0%, #1B5E20 100%);
-        margin: 15px auto 0;
-        border-radius: 2px;
-    }
-
     .feature-box {
         text-align: center;
         padding: 30px 25px;
@@ -89,11 +151,6 @@
         transition: all 0.3s;
         margin-bottom: 30px;
         height: 100%;
-    }
-
-    .feature-box:hover {
-        transform: translateY(-10px);
-        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
     }
 
     .feature-icon {
@@ -121,11 +178,6 @@
         margin-bottom: 30px;
         transition: all 0.3s;
         height: 100%;
-    }
-
-    .program-card:hover {
-        transform: translateY(-7px);
-        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
     }
 
     .program-card-img-top {
@@ -347,90 +399,23 @@
         border-top: 1px solid rgba(255, 255, 255, 0.1);
         text-align: center;
     }
-
-    /* Responsive adjustments */
-    @media (max-width: 992px) {
-        .hero-title {
-            font-size: 2.8rem;
-        }
-        
-        .hero-subtitle {
-            font-size: 1.2rem;
-        }
-        
-        .cta-title {
-            font-size: 2rem;
-        }
-    }
-
-    @media (max-width: 768px) {
-        .hero-section {
-            padding: 80px 0;
-        }
-        
-        .hero-title {
-            font-size: 2.2rem;
-        }
-        
-        .hero-subtitle {
-            font-size: 1.1rem;
-        }
-        
-        .section-title {
-            margin-bottom: 40px;
-        }
-        
-        .features-section, .programs-section, .testimonials-section, .cta-section {
-            padding: 60px 0;
-        }
-    }
-
-    @media (max-width: 576px) {
-        .hero-section {
-            padding: 60px 0;
-        }
-        
-        .hero-title {
-            font-size: 1.8rem;
-        }
-        
-        .hero-subtitle {
-            font-size: 1rem;
-        }
-        
-        .btn-hero {
-            padding: 10px 20px;
-            font-size: 0.9rem;
-            margin-right: 10px;
-        }
-        
-        .cta-title {
-            font-size: 1.5rem;
-        }
-        
-        .cta-description {
-            font-size: 1rem;
-        }
-        
-        .feature-icon {
-            font-size: 2.5rem;
-        }
-    }
 </style>
 {% endblock %}
 
 {% block content %}
+<!-- Language Selector -->
+
 <!-- Hero Section -->
 <section class="hero-section">
     <div class="container">
         <div class="row">
             <div class="col-lg-12">
                 <div class="hero-content text-center">
-                    <h1 class="hero-title">Empowering Farmers with AGRICHAIN</h1>
-                    <p class="hero-subtitle">Revolutionizing agriculture through real-time data, predictive analytics, and direct farmer-to-customer connectivity.</p>
+                    <h1 class="hero-title">{% trans "Empowering Farmers with AGRICHAIN" %}</h1>
+                    <p class="hero-subtitle">{% trans "Revolutionizing agriculture through real-time data, predictive analytics, and direct farmer-to-customer connectivity." %}</p>
                     <div>
-                        <a href="{% url 'register' %}" class="btn btn-primary btn-hero">Join Now</a>
-                        <a href="#features" class="btn btn-outline-light btn-hero">Learn More</a>
+                        <a href="{% url 'register' %}" class="btn btn-primary btn-hero">{% trans "Join Now" %}</a>
+                        <a href="#features" class="btn btn-outline-light btn-hero">{% trans "Learn More" %}</a>
                     </div>
                 </div>
             </div>
@@ -441,7 +426,7 @@
 <!-- Features Section -->
 <section id="features" class="features-section">
     <div class="container">
-        <h2 class="section-title">Key Features of AGRICHAIN</h2>
+        <h2 class="section-title">{% trans "Key Features of AGRICHAIN" %}</h2>
         
         <div class="row">
             <div class="col-lg-4 col-md-6">
@@ -449,8 +434,8 @@
                     <div class="feature-icon">
                         <i class="fas fa-chart-line"></i>
                     </div>
-                    <h3 class="feature-title">Real-Time Crop Data</h3>
-                    <p>Access real-time data on crops cultivated in your region to avoid cultivation collisions and optimize resource utilization.</p>
+                    <h3 class="feature-title">{% trans "Real-Time Crop Data" %}</h3>
+                    <p>{% trans "Access real-time data on crops cultivated in your region to avoid cultivation collisions and optimize resource utilization." %}</p>
                 </div>
             </div>
             
@@ -459,8 +444,8 @@
                     <div class="feature-icon">
                         <i class="fas fa-seedling"></i>
                     </div>
-                    <h3 class="feature-title">Crop Diversification</h3>
-                    <p>Promote crop diversification to reduce surplus, improve soil health, and increase profitability.</p>
+                    <h3 class="feature-title">{% trans "Crop Diversification" %}</h3>
+                    <p>{% trans "Promote crop diversification to reduce surplus, improve soil health, and increase profitability." %}</p>
                 </div>
             </div>
             
@@ -469,8 +454,8 @@
                     <div class="feature-icon">
                         <i class="fas fa-handshake"></i>
                     </div>
-                    <h3 class="feature-title">Direct Farmer-to-Customer</h3>
-                    <p>Eliminate middlemen by connecting directly with consumers, ensuring fair pricing and higher profits for farmers.</p>
+                    <h3 class="feature-title">{% trans "Direct Farmer-to-Customer" %}</h3>
+                    <p>{% trans "Eliminate middlemen by connecting directly with consumers, ensuring fair pricing and higher profits for farmers." %}</p>
                 </div>
             </div>
             
@@ -479,8 +464,8 @@
                     <div class="feature-icon">
                         <i class="fas fa-cloud-sun"></i>
                     </div>
-                    <h3 class="feature-title">Climatic & Soil Forecasting</h3>
-                    <p>Get actionable insights on climatic and soil conditions tailored to your locality for improved yield and resilience.</p>
+                    <h3 class="feature-title">{% trans "Climatic & Soil Forecasting" %}</h3>
+                    <p>{% trans "Get actionable insights on climatic and soil conditions tailored to your locality for improved yield and resilience." %}</p>
                 </div>
             </div>
             
@@ -489,8 +474,8 @@
                     <div class="feature-icon">
                         <i class="fas fa-balance-scale"></i>
                     </div>
-                    <h3 class="feature-title">Supply-Demand Analytics</h3>
-                    <p>Leverage predictive analytics to forecast supply-demand dynamics and redistribute surplus produce to regions in need.</p>
+                    <h3 class="feature-title">{% trans "Supply-Demand Analytics" %}</h3>
+                    <p>{% trans "Leverage predictive analytics to forecast supply-demand dynamics and redistribute surplus produce to regions in need." %}</p>
                 </div>
             </div>
             
@@ -499,8 +484,8 @@
                     <div class="feature-icon">
                         <i class="fas fa-users"></i>
                     </div>
-                    <h3 class="feature-title">Community Collaboration</h3>
-                    <p>Join a network of farmers, government agencies, and NGOs to share knowledge and build sustainable agricultural practices.</p>
+                    <h3 class="feature-title">{% trans "Community Collaboration" %}</h3>
+                    <p>{% trans "Join a network of farmers, government agencies, and NGOs to share knowledge and build sustainable agricultural practices." %}</p>
                 </div>
             </div>
         </div>
@@ -510,41 +495,41 @@
 <!-- Programs Section -->
 <section class="programs-section">
     <div class="container">
-        <h2 class="section-title">Our Programs</h2>
+        <h2 class="section-title">{% trans "Our Programs" %}</h2>
         
         <div class="row">
             <div class="col-lg-4 col-md-6">
                 <div class="card program-card">
-                    <span class="user-type-badge badge-government">Government</span>
-                    <img src="{% static 'img/program_subsidy.jpg' %}" class="card-img-top program-card-img-top" alt="Subsidy Program">
+                    <span class="user-type-badge badge-government">{% trans "Government" %}</span>
+                    <img src="{% static 'img/program_subsidy.jpg' %}" class="card-img-top program-card-img-top" alt="{% trans 'Subsidy Program' %}">
                     <div class="card-body">
-                        <h5 class="card-title">Crop Diversification Grants</h5>
-                        <p class="card-text">Financial support for farmers to adopt crop diversification and sustainable farming practices.</p>
-                        <a href="#" class="btn btn-outline-success">Learn More</a>
+                        <h5 class="card-title">{% trans "Crop Diversification Grants" %}</h5>
+                        <p class="card-text">{% trans "Financial support for farmers to adopt crop diversification and sustainable farming practices." %}</p>
+                        <a href="#" class="btn btn-outline-success">{% trans "Learn More" %}</a>
                     </div>
                 </div>
             </div>
             
             <div class="col-lg-4 col-md-6">
                 <div class="card program-card">
-                    <span class="user-type-badge badge-nonprofit">Non-Profit</span>
-                    <img src="{% static 'img/program_training.jpg' %}" class="card-img-top program-card-img-top" alt="Training Program">
+                    <span class="user-type-badge badge-nonprofit">{% trans "Non-Profit" %}</span>
+                    <img src="{% static 'img/program_training.jpg' %}" class="card-img-top program-card-img-top" alt="{% trans 'Training Program' %}">
                     <div class="card-body">
-                        <h5 class="card-title">Sustainable Farming Training</h5>
-                        <p class="card-text">Workshops on organic farming, water conservation, and soil health management.</p>
-                        <a href="#" class="btn btn-outline-success">Learn More</a>
+                        <h5 class="card-title">{% trans "Sustainable Farming Training" %}</h5>
+                        <p class="card-text">{% trans "Workshops on organic farming, water conservation, and soil health management." %}</p>
+                        <a href="#" class="btn btn-outline-success">{% trans "Learn More" %}</a>
                     </div>
                 </div>
             </div>
             
             <div class="col-lg-4 col-md-6">
                 <div class="card program-card">
-                    <span class="user-type-badge badge-farmer">Farmer</span>
-                    <img src="{% static 'img/program_marketplace.jpg' %}" class="card-img-top program-card-img-top" alt="Marketplace Program">
+                    <span class="user-type-badge badge-farmer">{% trans "Farmer" %}</span>
+                    <img src="{% static 'img/program_marketplace.jpg' %}" class="card-img-top program-card-img-top" alt="{% trans 'Marketplace Program' %}">
                     <div class="card-body">
-                        <h5 class="card-title">Direct Marketplace Access</h5>
-                        <p class="card-text">Sell your produce directly to consumers through our digital marketplace at fair prices.</p>
-                        <a href="#" class="btn btn-outline-success">Learn More</a>
+                        <h5 class="card-title">{% trans "Direct Marketplace Access" %}</h5>
+                        <p class="card-text">{% trans "Sell your produce directly to consumers through our digital marketplace at fair prices." %}</p>
+                        <a href="#" class="btn btn-outline-success">{% trans "Learn More" %}</a>
                     </div>
                 </div>
             </div>
@@ -555,17 +540,17 @@
 <!-- Testimonials Section -->
 <section class="testimonials-section">
     <div class="container">
-        <h2 class="section-title">What Farmers Say</h2>
+        <h2 class="section-title">{% trans "What Farmers Say" %}</h2>
         
         <div class="row">
             <div class="col-lg-4 col-md-6">
                 <div class="testimonial-card">
-                    <p class="testimonial-text">AGRICHAIN has transformed the way I farm. The real-time data and predictive analytics have helped me make better decisions and increase my yield.</p>
+                    <p class="testimonial-text">{% trans "AGRICHAIN has transformed the way I farm. The real-time data and predictive analytics have helped me make better decisions and increase my yield." %}</p>
                     <div class="testimonial-author">
                         <img src="{% static 'img/farmer1.jpg' %}" alt="Farmer" class="testimonial-avatar">
                         <div>
-                            <p class="testimonial-name">Rajesh Kumar</p>
-                            <p class="testimonial-role">Farmer, Punjab</p>
+                            <p class="testimonial-name">{% trans "Rajesh Kumar" %}</p>
+                            <p class="testimonial-role">{% trans "Farmer, Punjab" %}</p>
                         </div>
                     </div>
                 </div>
@@ -573,12 +558,12 @@
             
             <div class="col-lg-4 col-md-6">
                 <div class="testimonial-card">
-                    <p class="testimonial-text">The direct marketplace has been a game-changer for me. I no longer rely on middlemen, and my profits have increased significantly.</p>
+                    <p class="testimonial-text">{% trans "The direct marketplace has been a game-changer for me. I no longer rely on middlemen, and my profits have increased significantly." %}</p>
                     <div class="testimonial-author">
                         <img src="{% static 'img/farmer2.jpg' %}" alt="Farmer" class="testimonial-avatar">
                         <div>
-                            <p class="testimonial-name">Priya Sharma</p>
-                            <p class="testimonial-role">Farmer, Maharashtra</p>
+                            <p class="testimonial-name">{% trans "Priya Sharma" %}</p>
+                            <p class="testimonial-role">{% trans "Farmer, Maharashtra" %}</p>
                         </div>
                     </div>
                 </div>
@@ -586,12 +571,12 @@
             
             <div class="col-lg-4 col-md-6">
                 <div class="testimonial-card">
-                    <p class="testimonial-text">The climatic and soil forecasting tools have helped me adapt to changing conditions and improve my crop resilience.</p>
+                    <p class="testimonial-text">{% trans "The climatic and soil forecasting tools have helped me adapt to changing conditions and improve my crop resilience." %}</p>
                     <div class="testimonial-author">
                         <img src="{% static 'img/farmer3.jpg' %}" alt="Farmer" class="testimonial-avatar">
                         <div>
-                            <p class="testimonial-name">Anil Patel</p>
-                            <p class="testimonial-role">Farmer, Gujarat</p>
+                            <p class="testimonial-name">{% trans "Anil Patel" %}</p>
+                            <p class="testimonial-role">{% trans "Farmer, Gujarat" %}</p>
                         </div>
                     </div>
                 </div>
@@ -603,64 +588,11 @@
 <!-- Call to Action -->
 <section class="cta-section">
     <div class="container">
-        <h2 class="cta-title">Join AGRICHAIN Today</h2>
-        <p class="cta-description">Empower your farming journey with real-time data, predictive analytics, and direct market access. Register now to get started!</p>
-        <a href="{% url 'register' %}" class="btn btn-light">Register Now</a>
+        <h2 class="cta-title">{% trans "Join AGRICHAIN Today" %}</h2>
+        <p class="cta-description">{% trans "Empower your farming journey with real-time data, predictive analytics, and direct market access. Register now to get started!" %}</p>
+        <a href="{% url 'register' %}" class="btn btn-light">{% trans "Register Now" %}</a>
     </div>
 </section>
-
-<!-- Footer -->
-<footer class="footer">
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-4 col-md-6">
-                <div class="footer-logo">AGRICHAIN</div>
-                <p class="footer-about">Empowering farmers with real-time data, predictive analytics, and direct market connectivity for a sustainable agricultural future.</p>
-                <ul class="footer-social">
-                    <li><a href="#"><i class="fab fa-facebook-f"></i></a></li>
-                    <li><a href="#"><i class="fab fa-twitter"></i></a></li>
-                    <li><a href="#"><i class="fab fa-instagram"></i></a></li>
-                    <li><a href="#"><i class="fab fa-linkedin-in"></i></a></li>
-                </ul>
-            </div>
-            
-            <div class="col-lg-2 col-md-6">
-                <h3 class="footer-heading">Explore</h3>
-                <ul class="footer-links">
-                    <li><a href="#">Home</a></li>
-                    <li><a href="#">About Us</a></li>
-                    <li><a href="#">Programs</a></li>
-                    <li><a href="#">Resources</a></li>
-                    <li><a href="#">Success Stories</a></li>
-                </ul>
-            </div>
-            
-            <div class="col-lg-3 col-md-6">
-                <h3 class="footer-heading">Programs</h3>
-                <ul class="footer-links">
-                    <li><a href="#">Crop Diversification</a></li>
-                    <li><a href="#">Sustainable Farming</a></li>
-                    <li><a href="#">Direct Marketplace</a></li>
-                    <li><a href="#">Training Programs</a></li>
-                    <li><a href="#">Community Initiatives</a></li>
-                </ul>
-            </div>
-            
-            <div class="col-lg-3 col-md-6">
-                <h3 class="footer-heading">Contact Us</h3>
-                <ul class="footer-links">
-                    <li><i class="fas fa-map-marker-alt mr-2"></i> 123 Farm Road, Agritown</li>
-                    <li><i class="fas fa-phone mr-2"></i> (123) 456-7890</li>
-                    <li><i class="fas fa-envelope mr-2"></i> info@agrichain.org</li>
-                </ul>
-            </div>
-        </div>
-        
-        <div class="footer-bottom">
-            <p>© {% now "Y" %} AGRICHAIN. All rights reserved.</p>
-        </div>
-    </div>
-</footer>
 {% endblock %}
 
 {% block extra_js %}
@@ -694,5 +626,32 @@
             }
         }
     });
+
+    // Enhance animations for other sections
+    const animateSections = () => {
+        const sections = [
+            '.programs-section .program-card',
+            '.testimonials-section .testimonial-card'
+        ];
+        
+        sections.forEach(selector => {
+            const elements = document.querySelectorAll(selector);
+            const triggerPoint = window.innerHeight * 0.8;
+            
+            elements.forEach((element, index) => {
+                const elementTop = element.getBoundingClientRect().top;
+                
+                if (elementTop < triggerPoint) {
+                    setTimeout(() => {
+                        element.classList.add('animated', 'fadeInUp');
+                    }, index * 150);
+                }
+            });
+        });
+    };
+    
+    // Run on load and scroll
+    window.addEventListener('load', animateSections);
+    window.addEventListener('scroll', animateSections);
 </script>
 {% endblock %}

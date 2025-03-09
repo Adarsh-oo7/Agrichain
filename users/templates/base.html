@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+{% load i18n %}
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -51,6 +52,9 @@
             color: white;
             padding: 1rem 0;
             box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
         }
         
         .navbar {
@@ -67,12 +71,21 @@
             font-weight: bold;
             text-decoration: none;
             color: white;
+            display: flex;
+            align-items: center;
+        }
+        
+        .logo i {
+            margin-right: 0.5rem;
+            font-size: 1.8rem;
         }
         
         .nav-links {
             display: flex;
             list-style: none;
             align-items: center;
+            margin: 0;
+            padding: 0;
         }
         
         .nav-links li {
@@ -82,31 +95,158 @@
         .nav-links a {
             color: white;
             text-decoration: none;
-            transition: color 0.3s;
+            transition: color 0.3s, transform 0.2s;
+            display: inline-block;
+            padding: 0.2rem 0;
+            position: relative;
         }
         
         .nav-links a:hover {
             color: var(--light-color);
+            transform: translateY(-2px);
         }
         
-        .login-btn {
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: 0;
+            left: 0;
+            background-color: var(--light-color);
+            transition: width 0.3s;
+        }
+        
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+        
+        .nav-actions {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        
+        .login-btn, .signup-btn {
             background-color: var(--secondary-color);
             padding: 0.5rem 1rem;
             border-radius: 4px;
             display: flex;
             align-items: center;
             gap: 0.5rem;
-            transition: background-color 0.3s;
+            transition: all 0.3s;
+            text-decoration: none;
+            color: white;
         }
         
-        .login-btn:hover {
+        .login-btn:hover, .signup-btn:hover {
             background-color: #1a252f;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            color: white;
+        }
+        
+        .signup-btn {
+            background-color: var(--accent-color);
+        }
+        
+        .signup-btn:hover {
+            background-color: #c0392b;
         }
         
         .hamburger {
             display: none;
             cursor: pointer;
             font-size: 1.5rem;
+            color: white;
+            border: none;
+            background: transparent;
+        }
+        
+        /* Improved Language Selector */
+        .language-selector {
+            position: relative;
+        }
+        
+        .language-btn {
+            background-color: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: none;
+            border-radius: 4px;
+            padding: 0.5rem 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+        }
+        
+        .language-btn:hover {
+            background-color: rgba(255, 255, 255, 0.3);
+        }
+        
+        .language-btn i {
+            font-size: 1rem;
+        }
+        
+        .language-dropdown {
+            position: absolute;
+            top: 100%;
+            right: 0;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            min-width: 180px;
+            z-index: 1000;
+            overflow: hidden;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(10px);
+            transition: all 0.3s ease;
+            margin-top: 0.5rem;
+        }
+        
+        .language-selector:hover .language-dropdown {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+        
+        .language-dropdown form {
+            width: 100%;
+        }
+        
+        .language-dropdown button {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            text-align: left;
+            background: none;
+            border: none;
+            color: var(--text-color);
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            display: flex;
+            align-items: center;
+        }
+        
+        .language-dropdown button:hover {
+            background-color: #f5f5f5;
+        }
+        
+        .language-dropdown button.active {
+            font-weight: bold;
+            background-color: #f0f0f0;
+            color: var(--primary-color);
+        }
+        
+        .language-flag {
+            width: 20px;
+            height: 15px;
+            margin-right: 10px;
+            border-radius: 2px;
+            display: inline-block;
         }
         
         /* Main Content */
@@ -119,10 +259,16 @@
         
         .content-section {
             background-color: white;
-            border-radius: 8px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+            padding: 2.5rem;
             margin-bottom: 2rem;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        
+        .content-section:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 30px rgba(0,0,0,0.1);
         }
         
         h1, h2, h3 {
@@ -130,15 +276,31 @@
             color: var(--secondary-color);
         }
         
+        h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+        }
+        
+        h2 {
+            font-size: 2rem;
+            font-weight: 600;
+        }
+        
+        h3 {
+            font-size: 1.5rem;
+            font-weight: 600;
+        }
+        
         p {
-            margin-bottom: 1rem;
+            margin-bottom: 1.5rem;
+            line-height: 1.8;
         }
         
         /* Footer */
         footer {
             background-color: var(--secondary-color);
             color: white;
-            padding: 2rem 0;
+            padding: 3rem 0 1.5rem;
             margin-top: auto;
         }
         
@@ -149,91 +311,176 @@
             display: flex;
             justify-content: space-between;
             flex-wrap: wrap;
+            gap: 2rem;
         }
         
         .footer-section {
             flex: 1;
             min-width: 250px;
-            margin-bottom: 1rem;
         }
         
         .footer-section h3 {
             color: white;
-            margin-bottom: 1rem;
+            margin-bottom: 1.2rem;
+            position: relative;
+            display: inline-block;
+        }
+        
+        .footer-section h3::after {
+            content: '';
+            position: absolute;
+            width: 50px;
+            height: 3px;
+            background-color: var(--accent-color);
+            bottom: -10px;
+            left: 0;
+            border-radius: 2px;
         }
         
         .footer-links {
             list-style: none;
+            padding: 0;
         }
         
         .footer-links li {
-            margin-bottom: 0.5rem;
+            margin-bottom: 0.8rem;
+            transition: transform 0.2s;
+        }
+        
+        .footer-links li:hover {
+            transform: translateX(5px);
         }
         
         .footer-links a {
             color: var(--light-color);
             text-decoration: none;
             transition: color 0.3s;
+            display: inline-flex;
+            align-items: center;
         }
         
         .footer-links a:hover {
             color: white;
         }
         
+        .footer-links i {
+            margin-right: 8px;
+            color: var(--accent-color);
+        }
+        
+        .social-icons {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+        
         .social-icons a {
-            display: inline-block;
-            margin-right: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: rgba(255,255,255,0.1);
             color: var(--light-color);
             font-size: 1.2rem;
-            transition: color 0.3s;
+            transition: all 0.3s;
         }
         
         .social-icons a:hover {
             color: white;
+            background-color: var(--primary-color);
+            transform: translateY(-5px);
         }
         
         .footer-bottom {
             max-width: 1200px;
-            margin: 0 auto;
-            padding: 1rem 2rem 0;
+            margin: 2rem auto 0;
+            padding: 1.5rem 2rem 0;
             text-align: center;
             border-top: 1px solid rgba(255,255,255,0.1);
+            font-size: 0.9rem;
+            color: var(--light-color);
         }
         
         /* Buttons */
         .btn {
             display: inline-block;
-            padding: 0.5rem 1rem;
+            padding: 0.8rem 1.5rem;
+            font-weight: 600;
             background-color: var(--primary-color);
             color: white;
             border: none;
-            border-radius: 4px;
+            border-radius: 6px;
             cursor: pointer;
             text-decoration: none;
-            transition: background-color 0.3s;
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+            box-shadow: 0 4px 10px rgba(52, 152, 219, 0.3);
+        }
+        
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 0;
+            height: 100%;
+            background-color: rgba(0,0,0,0.1);
+            transition: width 0.3s ease;
+            z-index: -1;
         }
         
         .btn:hover {
-            background-color: #2980b9;
+            transform: translateY(-3px);
+            box-shadow: 0 6px 15px rgba(52, 152, 219, 0.4);
+            color: white;
+        }
+        
+        .btn:hover::before {
+            width: 100%;
         }
         
         .btn-secondary {
             background-color: var(--secondary-color);
+            box-shadow: 0 4px 10px rgba(44, 62, 80, 0.3);
         }
         
         .btn-secondary:hover {
-            background-color: #1a252f;
+            box-shadow: 0 6px 15px rgba(44, 62, 80, 0.4);
         }
         
         .btn-accent {
             background-color: var(--accent-color);
+            box-shadow: 0 4px 10px rgba(231, 76, 60, 0.3);
         }
         
         .btn-accent:hover {
-            background-color: #c0392b;
+            box-shadow: 0 6px 15px rgba(231, 76, 60, 0.4);
+        }
+        
+        .btn-lg {
+            padding: 1rem 2rem;
+            font-size: 1.1rem;
         }
         
         /* Responsive Design */
+        @media (max-width: 992px) {
+            .navbar {
+                padding: 0 1.5rem;
+            }
+            
+            .nav-links li {
+                margin-left: 1rem;
+            }
+            
+            main {
+                padding: 0 1.5rem;
+            }
+        }
+        
         @media (max-width: 768px) {
             .hamburger {
                 display: block;
@@ -241,14 +488,16 @@
             
             .nav-links {
                 position: fixed;
-                top: 60px;
+                top: 70px;
                 left: -100%;
                 width: 100%;
+                height: calc(100vh - 70px);
                 background-color: var(--primary-color);
                 flex-direction: column;
-                padding: 1rem 0;
+                padding: 2rem 0;
                 transition: left 0.3s ease;
                 z-index: 100;
+                overflow-y: auto;
             }
             
             .nav-links.active {
@@ -256,13 +505,60 @@
             }
             
             .nav-links li {
-                margin: 0.5rem 0;
+                margin: 1rem 0;
                 text-align: center;
+                width: 100%;
+            }
+            
+            .nav-links a {
+                display: block;
+                padding: 0.8rem 0;
+                font-size: 1.1rem;
+            }
+            
+            .nav-actions {
+                flex-direction: column;
+                width: 100%;
+                gap: 1rem;
+                margin-top: 1rem;
+            }
+            
+            .login-btn, .signup-btn, .language-btn {
+                justify-content: center;
+                width: 80%;
+                margin: 0 auto;
+            }
+            
+            .language-selector {
+                width: 100%;
+                display: flex;
+                justify-content: center;
+            }
+            
+            .language-dropdown {
+                position: absolute;
+                top: 100%;
+                left: 50%;
+                transform: translateX(-50%) translateY(10px);
+                width: 80%;
+                max-width: 300px;
+            }
+            
+            .language-selector:hover .language-dropdown {
+                transform: translateX(-50%) translateY(5px);
+            }
+            
+            .content-section {
+                padding: 1.5rem;
             }
             
             .footer-section {
                 flex: 100%;
                 margin-bottom: 2rem;
+            }
+            
+            .footer-content {
+                gap: 1rem;
             }
         }
     </style>
@@ -272,31 +568,81 @@
 <body>
     <header>
         <nav class="navbar">
-            <a href="/" class="logo">AgiChain</a>
-            <div class="hamburger" id="hamburger">
+            <a href="/" class="logo">
+                <i class="fas fa-link"></i>
+                AgiChain
+            </a>
+            <button class="hamburger" id="hamburger" aria-label="Toggle menu">
                 <i class="fas fa-bars"></i>
-            </div>
+            </button>
             <ul class="nav-links" id="nav-links">
-                <li><a href="/">Home</a></li>
-                <li><a href="/about">About</a></li>
-                <li><a href="/services">Services</a></li>
-                <li><a href="/blog">Blog</a></li>
-                <li><a href="/contact">Contact</a></li>
-                {% if user.is_authenticated %}
-                    <li><a href="{% url 'logout' %}" class="login-btn"><i class="fas fa-user"></i> Logout</a></li>
-                {% else %}
-                    <li><a href="{% url 'login' %}" class="login-btn"><i class="fas fa-user"></i> Login</a></li>
-                {% endif %}
+                <li><a href="/"><i class="fas fa-home"></i> Home</a></li>
+                <li><a href="/about"><i class="fas fa-info-circle"></i> About</a></li>
+                <li><a href="/services"><i class="fas fa-cogs"></i> Services</a></li>
+                <li><a href="/blog"><i class="fas fa-blog"></i> Blog</a></li>
+                
+                <div class="nav-actions">
+                    {% if user.is_authenticated %}
+                        <a href="{% url 'logout' %}" class="login-btn">
+                            <i class="fas fa-sign-out-alt"></i> Logout
+                        </a>
+                    {% else %}
+                        <a href="{% url 'login' %}" class="login-btn">
+                            <i class="fas fa-sign-in-alt"></i> Login
+                        </a>
+                        {% comment %} <a href="{% url 'signup' %}" class="signup-btn">
+                            <i class="fas fa-user-plus"></i> Sign Up
+                        </a> {% endcomment %}
+                    {% endif %}
+                    
+                  
+                </div>
             </ul>
         </nav>
     </header>
+    <div class="language-selector">
+        <button type="button" class="language-btn">
+            <i class="fas fa-globe"></i>
+            {% get_current_language as CURRENT_LANGUAGE %}
+            {% for language in languages %}
+                {% if language.code == CURRENT_LANGUAGE %}
+                    {{ language.code|upper }}
+                {% endif %}
+            {% endfor %}
+            <i class="fas fa-chevron-down" style="font-size: 0.8rem;"></i>
+        </button>
+   
     
     <main>
+             <div class="language-dropdown">
+            {% get_current_language as CURRENT_LANGUAGE %}
+            {% get_available_languages as AVAILABLE_LANGUAGES %}
+            {% get_language_info_list for AVAILABLE_LANGUAGES as languages %}
+            {% for language in languages %}
+                <form action="{% url 'set_language' %}" method="post">
+                    {% csrf_token %}
+                    <input name="next" type="hidden" value="{{ request.get_full_path }}">
+                    <input name="language" type="hidden" value="{{ language.code }}">
+                    <button type="submit" class="{% if language.code == CURRENT_LANGUAGE %}active{% endif %}">
+                        {% if language.code == 'en' %}
+                            <span class="language-flag" style="background-color: #012169;"></span>
+                        {% elif language.code == 'ml' %}
+                            <span class="language-flag" style="background-color: #FF9933;"></span>
+                        {% else %}
+                            <span class="language-flag" style="background-color: #ddd;"></span>
+                        {% endif %}
+                        {{ language.name_local }}
+                    </button>
+                </form>
+            {% endfor %}
+        </div>
+    </div>
+ 
         {% block content %}
         <section class="content-section">
             <h1>Welcome to AgiChain</h1>
-            <p>This is the base template. Override the content block to add your own content.</p>
-            <a href="#" class="btn">Get Started</a>
+            <p>Revolutionizing the way businesses interact with blockchain technology. Our platform simplifies complex processes and enables seamless integration.</p>
+            <a href="#" class="btn btn-lg">Get Started <i class="fas fa-arrow-right"></i></a>
         </section>
         {% endblock %}
     </main>
@@ -305,44 +651,47 @@
         <div class="footer-content">
             <div class="footer-section">
                 <h3>About Us</h3>
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam in dui mauris.</p>
+                <p>AgiChain is a cutting-edge platform that combines agile methodologies with blockchain technology to deliver secure, scalable solutions for modern businesses.</p>
                 <div class="social-icons">
-                    <a href="#"><i class="fab fa-facebook"></i></a>
-                    <a href="#"><i class="fab fa-twitter"></i></a>
-                    <a href="#"><i class="fab fa-instagram"></i></a>
-                    <a href="#"><i class="fab fa-linkedin"></i></a>
+                    <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                    <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                    <a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
                 </div>
             </div>
             
             <div class="footer-section">
                 <h3>Quick Links</h3>
                 <ul class="footer-links">
-                    <li><a href="/">Home</a></li>
-                    <li><a href="/about">About</a></li>
-                    <li><a href="/services">Services</a></li>
-                    <li><a href="/blog">Blog</a></li>
-                    <li><a href="/contact">Contact</a></li>
+                    <li><a href="/"><i class="fas fa-chevron-right"></i> Home</a></li>
+                    <li><a href="/about"><i class="fas fa-chevron-right"></i> About</a></li>
+                    <li><a href="/services"><i class="fas fa-chevron-right"></i> Services</a></li>
+                    <li><a href="/blog"><i class="fas fa-chevron-right"></i> Blog</a></li>
+                    <li><a href="/contact"><i class="fas fa-chevron-right"></i> Contact</a></li>
                 </ul>
             </div>
             
             <div class="footer-section">
                 <h3>Contact Us</h3>
                 <ul class="footer-links">
-                    <li><i class="fas fa-map-marker-alt"></i> 123 Street, City, Country</li>
-                    <li><i class="fas fa-phone"></i> +1 234 567 890</li>
-                    <li><i class="fas fa-envelope"></i> info@myproject.com</li>
+                    <li><a href="#"><i class="fas fa-map-marker-alt"></i> 123 Blockchain Ave, Tech City</a></li>
+                    <li><a href="tel:+12345678901"><i class="fas fa-phone"></i> +1 234 567 8901</a></li>
+                    <li><a href="mailto:info@agichain.com"><i class="fas fa-envelope"></i> info@agichain.com</a></li>
+                    <li><a href="#"><i class="fas fa-clock"></i> Mon-Fri: 9AM-6PM</a></li>
                 </ul>
             </div>
         </div>
         
         <div class="footer-bottom">
-            <p>&copy; 2025 AgiChain. All rights reserved.</p>
+            <p>&copy; 2025 AgiChain. All rights reserved. | Designed with <i class="fas fa-heart" style="color: var(--accent-color);"></i> by AgiChain Team</p>
         </div>
     </footer>
     
     <script>
         document.getElementById('hamburger').addEventListener('click', function() {
             document.getElementById('nav-links').classList.toggle('active');
+            this.querySelector('i').classList.toggle('fa-bars');
+            this.querySelector('i').classList.toggle('fa-times');
         });
         
         // Close mobile menu when clicking outside
@@ -352,6 +701,8 @@
             
             if (!navLinks.contains(event.target) && !hamburger.contains(event.target) && navLinks.classList.contains('active')) {
                 navLinks.classList.remove('active');
+                hamburger.querySelector('i').classList.add('fa-bars');
+                hamburger.querySelector('i').classList.remove('fa-times');
             }
         });
     </script>

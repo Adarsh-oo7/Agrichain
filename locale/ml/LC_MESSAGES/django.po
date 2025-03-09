@@ -1,0 +1,951 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-03-09 01:37+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: ml\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+
+
+msgid "English"
+msgstr "ഇംഗ്ലീഷ്"
+
+msgid "Malayalam"
+msgstr "മലയാളം"
+
+msgid "Messages"
+msgstr "സന്ദേശങ്ങൾ"
+
+msgid "Site Maps"
+msgstr "സൈറ്റ് മാപ്പുകൾ"
+
+msgid "Static Files"
+msgstr "സ്റ്റാറ്റിക് ഫയലുകൾ"
+
+msgid "Syndication"
+msgstr "സിന്ഡിക്കേഷൻ"
+
+msgid "That page number is not an integer"
+msgstr "ആ പേജ് നമ്പർ ഒരു പൂർണ്ണസംഖ്യ അല്ല"
+
+msgid "That page number is less than 1"
+msgstr "ആ പേജ് നമ്പർ 1-ൽ കുറവാണ്"
+
+msgid "That page contains no results"
+msgstr "ആ പേജിൽ ഫലങ്ങൾ ഇല്ല"
+
+msgid "Enter a valid value."
+msgstr "ഒരു സാധുവായ മൂല്യം നൽകുക."
+
+msgid "Enter a valid domain name."
+msgstr "ഒരു സാധുവായ ഡൊമെയ്ൻ നാമം നൽകുക."
+
+msgid "Enter a valid URL."
+msgstr "ഒരു സാധുവായ URL നൽകുക."
+
+msgid "Enter a valid integer."
+msgstr "ഒരു സാധുവായ പൂർണ്ണസംഖ്യ നൽകുക."
+
+msgid "Enter a valid email address."
+msgstr "ഒരു സാധുവായ ഇമെയിൽ വിലാസം നൽകുക."
+
+msgid "Enter a valid slug consisting of letters, numbers, underscores or hyphens."
+msgstr "അക്ഷരങ്ങൾ, നമ്പറുകൾ, അണ്ടർസ്കോറുകൾ അല്ലെങ്കിൽ ഹൈഫനുകൾ ഉൾപ്പെടുന്ന ഒരു സാധുവായ സ്ലഗ് നൽകുക."
+
+msgid "Enter a valid slug consisting of Unicode letters, numbers, underscores, or hyphens."
+msgstr "യൂണികോഡ് അക്ഷരങ്ങൾ, നമ്പറുകൾ, അണ്ടർസ്കോറുകൾ അല്ലെങ്കിൽ ഹൈഫനുകൾ ഉൾപ്പെടുന്ന ഒരു സാധുവായ സ്ലഗ് നൽകുക."
+
+msgid "Enter a valid %(protocol)s address."
+msgstr "ഒരു സാധുവായ %(protocol)s വിലാസം നൽകുക."
+
+msgid "IPv4"
+msgstr "IPv4"
+
+msgid "IPv6"
+msgstr "IPv6"
+
+msgid "IPv4 or IPv6"
+msgstr "IPv4 അല്ലെങ്കിൽ IPv6"
+
+msgid "Enter only digits separated by commas."
+msgstr "കോമകളാൽ വേർതിരിച്ച അക്കങ്ങൾ മാത്രം നൽകുക."
+
+msgid "Ensure this value is %(limit_value)s (it is %(show_value)s)."
+msgstr "ഈ മൂല്യം %(limit_value)s ആണെന്ന് ഉറപ്പാക്കുക (ഇത് %(show_value)s ആണ്)."
+
+msgid "Ensure this value is less than or equal to %(limit_value)s."
+msgstr "ഈ മൂല്യം %(limit_value)s-ൽ കുറവോ തുല്യമോ ആണെന്ന് ഉറപ്പാക്കുക."
+
+msgid "Ensure this value is greater than or equal to %(limit_value)s."
+msgstr "ഈ മൂല്യം %(limit_value)s-ൽ കൂടുതലോ തുല്യമോ ആണെന്ന് ഉറപ്പാക്കുക."
+
+msgid "Ensure this value is a multiple of step size %(limit_value)s."
+msgstr "ഈ മൂല്യം %(limit_value)s ഘട്ടം വലുപ്പത്തിന്റെ ഒരു ഗുണിതമാണെന്ന് ഉറപ്പാക്കുക."
+
+msgid "Ensure this value is a multiple of step size %(limit_value)s, starting from %(offset)s, e.g. %(offset)s, %(valid_value1)s, %(valid_value2)s, and so on."
+msgstr "ഈ മൂല്യം %(limit_value)s ഘട്ടം വലുപ്പത്തിന്റെ ഒരു ഗുണിതമാണെന്ന് ഉറപ്പാക്കുക, %(offset)s-ൽ നിന്ന് ആരംഭിക്കുന്നു, ഉദാ. %(offset)s, %(valid_value1)s, %(valid_value2)s, തുടങ്ങിയവ."
+
+msgid "Ensure this value has at least %(limit_value)d character (it has %(show_value)d)."
+msgid_plural "Ensure this value has at least %(limit_value)d characters (it has %(show_value)d)."
+msgstr[0] "ഈ മൂല്യത്തിന് കുറഞ്ഞത് %(limit_value)d അക്ഷരമെങ്കിലും ഉണ്ടെന്ന് ഉറപ്പാക്കുക (ഇതിന് %(show_value)d ഉണ്ട്)."
+msgstr[1] "ഈ മൂല്യത്തിന് കുറഞ്ഞത് %(limit_value)d അക്ഷരങ്ങളെങ്കിലും ഉണ്ടെന്ന് ഉറപ്പാക്കുക (ഇതിന് %(show_value)d ഉണ്ട്)."
+
+msgid "Ensure this value has at most %(limit_value)d character (it has %(show_value)d)."
+msgid_plural "Ensure this value has at most %(limit_value)d characters (it has %(show_value)d)."
+msgstr[0] "ഈ മൂല്യത്തിന് കൂടുതൽ %(limit_value)d അക്ഷരമെങ്കിലും ഉണ്ടെന്ന് ഉറപ്പാക്കുക (ഇതിന് %(show_value)d ഉണ്ട്)."
+msgstr[1] "ഈ മൂല്യത്തിന് കൂടുതൽ %(limit_value)d അക്ഷരങ്ങളെങ്കിലും ഉണ്ടെന്ന് ഉറപ്പാക്കുക (ഇതിന് %(show_value)d ഉണ്ട്)."
+
+msgid "Enter a number."
+msgstr "ഒരു നമ്പർ നൽകുക."
+
+msgid "Ensure that there are no more than %(max)s digit in total."
+msgid_plural "Ensure that there are no more than %(max)s digits in total."
+msgstr[0] "ആകെ %(max)s അക്കത്തിൽ കൂടുതൽ ഇല്ലെന്ന് ഉറപ്പാക്കുക."
+msgstr[1] "ആകെ %(max)s അക്കങ്ങളിൽ കൂടുതൽ ഇല്ലെന്ന് ഉറപ്പാക്കുക."
+
+msgid "Ensure that there are no more than %(max)s decimal place."
+msgid_plural "Ensure that there are no more than %(max)s decimal places."
+msgstr[0] "ആകെ %(max)s ദശാംശ സ്ഥാനത്തിൽ കൂടുതൽ ഇല്ലെന്ന് ഉറപ്പാക്കുക."
+msgstr[1] "ആകെ %(max)s ദശാംശ സ്ഥാനങ്ങളിൽ കൂടുതൽ ഇല്ലെന്ന് ഉറപ്പാക്കുക."
+
+msgid "Ensure that there are no more than %(max)s digit before the decimal point."
+msgid_plural "Ensure that there are no more than %(max)s digits before the decimal point."
+msgstr[0] "ദശാംശ ബിന്ദുവിന് മുമ്പ് %(max)s അക്കത്തിൽ കൂടുതൽ ഇല്ലെന്ന് ഉറപ്പാക്കുക."
+msgstr[1] "ദശാംശ ബിന്ദുവിന് മുമ്പ് %(max)s അക്കങ്ങളിൽ കൂടുതൽ ഇല്ലെന്ന് ഉറപ്പാക്കുക."
+
+msgid "File extension %(extension)s is not allowed. Allowed extensions are: %(allowed_extensions)s."
+msgstr "ഫയൽ എക്സ്റ്റൻഷൻ %(extension)s അനുവദനീയമല്ല. അനുവദനീയമായ എക്സ്റ്റൻഷനുകൾ: %(allowed_extensions)s."
+
+msgid "Null characters are not allowed."
+msgstr "നൾ അക്ഷരങ്ങൾ അനുവദനീയമല്ല."
+
+msgid "and"
+msgstr "ഒപ്പം"
+
+msgid "%(model_name)s with this %(field_labels)s already exists."
+msgstr "ഈ %(field_labels)s ഉള്ള %(model_name)s ഇതിനകം തന്നെ നിലവിലുണ്ട്."
+
+msgid "Constraint %(name)s is violated."
+msgstr "നിയന്ത്രണം %(name)s ലംഘിക്കപ്പെട്ടു."
+
+msgid "Value %(value)r is not a valid choice."
+msgstr "മൂല്യം %(value)r ഒരു സാധുവായ ചോയ്സ് അല്ല."
+
+msgid "This field cannot be null."
+msgstr "ഈ ഫീൽഡ് ശൂന്യമാകാൻ പാടില്ല."
+
+msgid "This field cannot be blank."
+msgstr "ഈ ഫീൽഡ് ശൂന്യമാകാൻ പാടില്ല."
+
+msgid "%(model_name)s with this %(field_label)s already exists."
+msgstr "ഈ %(field_label)s ഉള്ള %(model_name)s ഇതിനകം തന്നെ നിലവിലുണ്ട്."
+
+msgid "%(field_label)s must be unique for %(date_field_label)s %(lookup_type)s."
+msgstr "%(date_field_label)s %(lookup_type)s-ന് %(field_label)s അദ്വിതീയമായിരിക്കണം."
+
+msgid "Field of type: %(field_type)s"
+msgstr "ഫീൽഡ് തരം: %(field_type)s"
+
+msgid "%(value)s value must be either True or False."
+msgstr "%(value)s മൂല്യം ഒന്നുകിൽ True അല്ലെങ്കിൽ False ആയിരിക്കണം."
+
+msgid "%(value)s value must be either True, False, or None."
+msgstr "%(value)s മൂല്യം ഒന്നുകിൽ True, False, അല്ലെങ്കിൽ None ആയിരിക്കണം."
+
+msgid "Boolean (Either True or False)"
+msgstr "ബൂളിയൻ (ഒന്നുകിൽ True അല്ലെങ്കിൽ False)"
+
+msgid "String (up to %(max_length)s)"
+msgstr "സ്ട്രിംഗ് (കൂടുതൽ %(max_length)s വരെ)"
+
+msgid "String (unlimited)"
+msgstr "സ്ട്രിംഗ് (അപരിമിതം)"
+
+msgid "Comma-separated integers"
+msgstr "കോമകളാൽ വേർതിരിച്ച പൂർണ്ണസംഖ്യകൾ"
+
+msgid "%(value)s value has an invalid date format. It must be in YYYY-MM-DD format."
+msgstr "%(value)s മൂല്യത്തിന് അസാധുവായ തീയതി ഫോർമാറ്റ് ഉണ്ട്. ഇത് YYYY-MM-DD ഫോർമാറ്റിൽ ആയിരിക്കണം."
+
+msgid "%(value)s value has the correct format (YYYY-MM-DD) but it is an invalid date."
+msgstr "%(value)s മൂല്യത്തിന് ശരിയായ ഫോർമാറ്റ് (YYYY-MM-DD) ഉണ്ട്, പക്ഷേ ഇത് അസാധുവായ തീയതിയാണ്."
+
+msgid "Date (without time)"
+msgstr "തീയതി (സമയം ഇല്ലാതെ)"
+
+msgid "%(value)s value has an invalid format. It must be in YYYY-MM-DD HH:MM[:ss[.uuuuuu]][TZ] format."
+msgstr "%(value)s മൂല്യത്തിന് അസാധുവായ ഫോർമാറ്റ് ഉണ്ട്. ഇത് YYYY-MM-DD HH:MM[:ss[.uuuuuu]][TZ] ഫോർമാറ്റിൽ ആയിരിക്കണം."
+
+msgid "%(value)s value has the correct format (YYYY-MM-DD HH:MM[:ss[.uuuuuu]][TZ]) but it is an invalid date/time."
+msgstr "%(value)s മൂല്യത്തിന് ശരിയായ ഫോർമാറ്റ് (YYYY-MM-DD HH:MM[:ss[.uuuuuu]][TZ]) ഉണ്ട്, പക്ഷേ ഇത് അസാധുവായ തീയതി/സമയമാണ്."
+
+msgid "Date (with time)"
+msgstr "തീയതി (സമയം ഉള്ള)"
+
+msgid "%(value)s value must be a decimal number."
+msgstr "%(value)s മൂല്യം ഒരു ദശാംശ സംഖ്യയായിരിക്കണം."
+
+msgid "Decimal number"
+msgstr "ദശാംശ സംഖ്യ"
+
+msgid "%(value)s value has an invalid format. It must be in [DD] [[HH:]MM:]ss[.uuuuuu] format."
+msgstr "%(value)s മൂല്യത്തിന് അസാധുവായ ഫോർമാറ്റ് ഉണ്ട്. ഇത് [DD] [[HH:]MM:]ss[.uuuuuu] ഫോർമാറ്റിൽ ആയിരിക്കണം."
+
+msgid "Duration"
+msgstr "കാലാവധി"
+
+msgid "Email address"
+msgstr "ഇമെയിൽ വിലാസം"
+
+msgid "File path"
+msgstr "ഫയൽ പാത"
+
+msgid "%(value)s value must be a float."
+msgstr "%(value)s മൂല്യം ഒരു ഫ്ലോട്ട് ആയിരിക്കണം."
+
+msgid "Floating point number"
+msgstr "ഫ്ലോട്ടിംഗ് പോയിന്റ് നമ്പർ"
+
+msgid "%(value)s value must be an integer."
+msgstr "%(value)s മൂല്യം ഒരു പൂർണ്ണസംഖ്യയായിരിക്കണം."
+
+msgid "Integer"
+msgstr "പൂർണ്ണസംഖ്യ"
+
+msgid "Big (8 byte) integer"
+msgstr "വലിയ (8 ബൈറ്റ്) പൂർണ്ണസംഖ്യ"
+
+msgid "Small integer"
+msgstr "ചെറിയ പൂർണ്ണസംഖ്യ"
+
+msgid "IPv4 address"
+msgstr "IPv4 വിലാസം"
+
+msgid "IP address"
+msgstr "IP വിലാസം"
+
+msgid "%(value)s value must be either None, True or False."
+msgstr "%(value)s മൂല്യം ഒന്നുകിൽ None, True അല്ലെങ്കിൽ False ആയിരിക്കണം."
+
+msgid "Boolean (Either True, False or None)"
+msgstr "ബൂളിയൻ (ഒന്നുകിൽ True, False അല്ലെങ്കിൽ None)"
+
+msgid "Positive big integer"
+msgstr "പോസിറ്റീവ് വലിയ പൂർണ്ണസംഖ്യ"
+
+msgid "Positive integer"
+msgstr "പോസിറ്റീവ് പൂർണ്ണസംഖ്യ"
+
+msgid "Positive small integer"
+msgstr "പോസിറ്റീവ് ചെറിയ പൂർണ്ണസംഖ്യ"
+
+msgid "Slug (up to %(max_length)s)"
+msgstr "സ്ലഗ് (കൂടുതൽ %(max_length)s വരെ)"
+
+msgid "Text"
+msgstr "ടെക്സ്റ്റ്"
+
+msgid "%(value)s value has an invalid format. It must be in HH:MM[:ss[.uuuuuu]] format."
+msgstr "%(value)s മൂല്യത്തിന് അസാധുവായ ഫോർമാറ്റ് ഉണ്ട്. ഇത് HH:MM[:ss[.uuuuuu]] ഫോർമാറ്റിൽ ആയിരിക്കണം."
+
+msgid "%(value)s value has the correct format (HH:MM[:ss[.uuuuuu]]) but it is an invalid time."
+msgstr "%(value)s മൂല്യത്തിന് ശരിയായ ഫോർമാറ്റ് (HH:MM[:ss[.uuuuuu]]) ഉണ്ട്, പക്ഷേ ഇത് അസാധുവായ സമയമാണ്."
+
+msgid "Time"
+msgstr "സമയം"
+
+msgid "URL"
+msgstr "URL"
+
+msgid "Raw binary data"
+msgstr "റോ ബൈനറി ഡാറ്റ"
+
+msgid "%(value)s is not a valid UUID."
+msgstr "%(value)s ഒരു സാധുവായ UUID അല്ല."
+
+msgid "Universally unique identifier"
+msgstr "യൂണിവേഴ്സൽ യൂണിക് ഐഡന്റിഫയർ"
+
+msgid "File"
+msgstr "ഫയൽ"
+
+msgid "Image"
+msgstr "ഇമേജ്"
+
+msgid "A JSON object"
+msgstr "ഒരു JSON ഒബ്ജക്റ്റ്"
+
+msgid "Value must be valid JSON."
+msgstr "മൂല്യം സാധുവായ JSON ആയിരിക്കണം."
+
+msgid "%(model)s instance with %(field)s %(value)r does not exist."
+msgstr "%(field)s %(value)r ഉള്ള %(model)s ഇൻസ്റ്റൻസ് നിലവിലില്ല."
+
+msgid "Foreign Key (type determined by related field)"
+msgstr "ഫോറിൻ കീ (തരം ബന്ധപ്പെട്ട ഫീൽഡ് നിർണ്ണയിക്കുന്നു)"
+
+msgid "One-to-one relationship"
+msgstr "ഒന്ന്-ടു-ഒന്ന് ബന്ധം"
+
+msgid "%(from)s-%(to)s relationship"
+msgstr "%(from)s-%(to)s ബന്ധം"
+
+msgid "%(from)s-%(to)s relationships"
+msgstr "%(from)s-%(to)s ബന്ധങ്ങൾ"
+
+msgid "Many-to-many relationship"
+msgstr "മനി-ടു-മനി ബന്ധം"
+
+msgid ":?.!"
+msgstr ":?.!"
+
+msgid "This field is required."
+msgstr "ഈ ഫീൽഡ് ആവശ്യമാണ്."
+
+msgid "Enter a whole number."
+msgstr "ഒരു പൂർണ്ണസംഖ്യ നൽകുക."
+
+msgid "Enter a valid date."
+msgstr "ഒരു സാധുവായ തീയതി നൽകുക."
+
+msgid "Enter a valid time."
+msgstr "ഒരു സാധുവായ സമയം നൽകുക."
+
+msgid "Enter a valid date/time."
+msgstr "ഒരു സാധുവായ തീയതി/സമയം നൽകുക."
+
+msgid "Enter a valid duration."
+msgstr "ഒരു സാധുവായ കാലാവധി നൽകുക."
+
+msgid "The number of days must be between {min_days} and {max_days}."
+msgstr "ദിവസങ്ങളുടെ എണ്ണം {min_days} നും {max_days} നും ഇടയിൽ ആയിരിക്കണം."
+
+msgid "No file was submitted. Check the encoding type on the form."
+msgstr "ഒരു ഫയലും സമർപ്പിച്ചിട്ടില്ല. ഫോമിലെ എൻകോഡിംഗ് തരം പരിശോധിക്കുക."
+
+msgid "No file was submitted."
+msgstr "ഒരു ഫയലും സമർപ്പിച്ചിട്ടില്ല."
+
+msgid "The submitted file is empty."
+msgstr "സമർപ്പിച്ച ഫയൽ ശൂന്യമാണ്."
+
+msgid "Ensure this filename has at most %(max)d character (it has %(length)d)."
+msgid_plural "Ensure this filename has at most %(max)d characters (it has %(length)d)."
+msgstr[0] "ഈ ഫയൽനാമത്തിന് കൂടുതൽ %(max)d അക്ഷരമെങ്കിലും ഉണ്ടെന്ന് ഉറപ്പാക്കുക (ഇതിന് %(length)d ഉണ്ട്)."
+msgstr[1] "ഈ ഫയൽനാമത്തിന് കൂടുതൽ %(max)d അക്ഷരങ്ങളെങ്കിലും ഉണ്ടെന്ന് ഉറപ്പാക്കുക (ഇതിന് %(length)d ഉണ്ട്)."
+
+msgid "Please either submit a file or check the clear checkbox, not both."
+msgstr "ദയവായി ഒന്നുകിൽ ഒരു ഫയൽ സമർപ്പിക്കുക അല്ലെങ്കിൽ ക്ലിയർ ചെക്ക്ബോക്സ് ചെക്ക് ചെയ്യുക, രണ്ടും അല്ല."
+
+msgid "Upload a valid image. The file you uploaded was either not an image or a corrupted image."
+msgstr "ഒരു സാധുവായ ഇമേജ് അപ്‌ലോഡ് ചെയ്യുക. നിങ്ങൾ അപ്‌ലോഡ് ചെയ്ത ഫയൽ ഒന്നുകിൽ ഒരു ഇമേജ് അല്ല അല്ലെങ്കിൽ ഒരു കേടുപാടുള്ള ഇമേജ് ആണ്."
+
+msgid "Select a valid choice. %(value)s is not one of the available choices."
+msgstr "ഒരു സാധുവായ ചോയ്സ് തിരഞ്ഞെടുക്കുക. %(value)s ലഭ്യമായ ചോയ്സുകളിൽ ഒന്നല്ല."
+
+msgid "Enter a list of values."
+msgstr "മൂല്യങ്ങളുടെ ഒരു ലിസ്റ്റ് നൽകുക."
+
+msgid "Enter a complete value."
+msgstr "ഒരു പൂർണ്ണ മൂല്യം നൽകുക."
+
+msgid "Enter a valid UUID."
+msgstr "ഒരു സാധുവായ UUID നൽകുക."
+
+msgid "Enter a valid JSON."
+msgstr "ഒരു സാധുവായ JSON നൽകുക."
+
+msgid ":"
+msgstr ":"
+
+msgid "(Hidden field %(name)s) %(error)s"
+msgstr "(മറഞ്ഞിരിക്കുന്ന ഫീൽഡ് %(name)s) %(error)s"
+
+msgid "ManagementForm data is missing or has been tampered with. Missing fields: %(field_names)s. You may need to file a bug report if the issue persists."
+msgstr "ManagementForm ഡാറ്റ കാണുന്നില്ല അല്ലെങ്കിൽ തിരുത്തപ്പെട്ടിട്ടുണ്ട്. കാണാതായ ഫീൽഡുകൾ: %(field_names)s. പ്രശ്നം തുടരുകയാണെങ്കിൽ നിങ്ങൾ ഒരു ബഗ് റിപ്പോർട്ട് ഫയൽ ചെയ്യേണ്ടിവരും."
+
+msgid "Please submit at most %(num)d form."
+msgid_plural "Please submit at most %(num)d forms."
+msgstr[0] "ദയവായി കൂടുതൽ %(num)d ഫോം സമർപ്പിക്കുക."
+msgstr[1] "ദയവായി കൂടുതൽ %(num)d ഫോമുകൾ സമർപ്പിക്കുക."
+
+msgid "Please submit at least %(num)d form."
+msgid_plural "Please submit at least %(num)d forms."
+msgstr[0] "ദയവായി കുറഞ്ഞത് %(num)d ഫോം സമർപ്പിക്കുക."
+msgstr[1] "ദയവായി കുറഞ്ഞത് %(num)d ഫോമുകൾ സമർപ്പിക്കുക."
+
+msgid "Order"
+msgstr "ഓർഡർ"
+
+msgid "Delete"
+msgstr "ഇല്ലാതാക്കുക"
+
+msgid "Please correct the duplicate data for %(field)s."
+msgstr "ദയവായി %(field)s-നുള്ള ഡ്യൂപ്ലിക്കേറ്റ് ഡാറ്റ ശരിയാക്കുക."
+
+msgid "Please correct the duplicate data for %(field)s, which must be unique."
+msgstr "ദയവായി %(field)s-നുള്ള ഡ്യൂപ്ലിക്കേറ്റ് ഡാറ്റ ശരിയാക്കുക, അത് അദ്വിതീയമായിരിക്കണം."
+
+msgid "Please correct the duplicate data for %(field_name)s which must be unique for the %(lookup)s in %(date_field)s."
+msgstr "ദയവായി %(field_name)s-നുള്ള ഡ്യൂപ്ലിക്കേറ്റ് ഡാറ്റ ശരിയാക്കുക, അത് %(date_field)s-ലെ %(lookup)s-ന് അദ്വിതീയമായിരിക്കണം."
+
+msgid "Please correct the duplicate values below."
+msgstr "ദയവായി താഴെയുള്ള ഡ്യൂപ്ലിക്കേറ്റ് മൂല്യങ്ങൾ ശരിയാക്കുക."
+
+msgid "The inline value did not match the parent instance."
+msgstr "ഇൻലൈൻ മൂല്യം പാരന്റ് ഇൻസ്റ്റൻസുമായി പൊരുത്തപ്പെടുന്നില്ല."
+
+msgid "Select a valid choice. That choice is not one of the available choices."
+msgstr "ഒരു സാധുവായ ചോയ്സ് തിരഞ്ഞെടുക്കുക. ആ ചോയ്സ് ലഭ്യമായ ചോയ്സുകളിൽ ഒന്നല്ല."
+
+msgid "%(pk)s is not a valid value."
+msgstr "%(pk)s ഒരു സാധുവായ മൂല്യമല്ല."
+
+msgid "%(datetime)s couldnt be interpreted in time zone %(current_timezone)s; it may be ambiguous or it may not exist."
+msgstr "%(datetime)s-നെ %(current_timezone)s സമയ മേഖലയിൽ വ്യാഖ്യാനിക്കാൻ കഴിഞ്ഞില്ല; ഇത് അസ്പഷ്ടമായിരിക്കാം അല്ലെങ്കിൽ നിലവിലില്ലാതെയിരിക്കാം."
+
+msgid "Clear"
+msgstr "ക്ലിയർ"
+
+msgid "Currently"
+msgstr "നിലവിൽ"
+
+msgid "Change"
+msgstr "മാറ്റം"
+
+msgid "Unknown"
+msgstr "അജ്ഞാതം"
+
+msgid "Yes"
+msgstr "അതെ"
+
+msgid "No"
+msgstr "ഇല്ല"
+
+msgid "yes,no,maybe"
+msgstr "അതെ,ഇല്ല,ഒരുപക്ഷേ"
+
+msgid "%(size)d byte"
+msgid_plural "%(size)d bytes"
+msgstr[0] "%(size)d ബൈറ്റ്"
+msgstr[1] "%(size)d ബൈറ്റുകൾ"
+
+msgid "%s KB"
+msgstr "%s KB"
+
+msgid "%s MB"
+msgstr "%s MB"
+
+msgid "%s GB"
+msgstr "%s GB"
+
+msgid "%s TB"
+msgstr "%s TB"
+
+msgid "%s PB"
+msgstr "%s PB"
+
+msgid "p.m."
+msgstr "പി.എം."
+
+msgid "a.m."
+msgstr "എ.എം."
+
+msgid "PM"
+msgstr "PM"
+
+msgid "AM"
+msgstr "AM"
+
+msgid "midnight"
+msgstr "മിഡ്നൈറ്റ്"
+
+msgid "noon"
+msgstr "നൂൺ"
+
+msgid "Monday"
+msgstr "തിങ്കൾ"
+
+msgid "Tuesday"
+msgstr "ചൊവ്വ"
+
+msgid "Wednesday"
+msgstr "ബുധൻ"
+
+msgid "Thursday"
+msgstr "വ്യാഴം"
+
+msgid "Friday"
+msgstr "വെള്ളി"
+
+msgid "Saturday"
+msgstr "ശനി"
+
+msgid "Sunday"
+msgstr "ഞായർ"
+
+msgid "Mon"
+msgstr "തിങ്കൾ"
+
+msgid "Tue"
+msgstr "ചൊവ്വ"
+
+msgid "Wed"
+msgstr "ബുധൻ"
+
+msgid "Thu"
+msgstr "വ്യാഴം"
+
+msgid "Fri"
+msgstr "വെള്ളി"
+
+msgid "Sat"
+msgstr "ശനി"
+
+msgid "Sun"
+msgstr "ഞായർ"
+
+msgid "January"
+msgstr "ജനുവരി"
+
+msgid "February"
+msgstr "ഫെബ്രുവരി"
+
+msgid "March"
+msgstr "മാർച്ച്"
+
+msgid "April"
+msgstr "ഏപ്രിൽ"
+
+msgid "May"
+msgstr "മെയ്"
+
+msgid "June"
+msgstr "ജൂൺ"
+
+msgid "July"
+msgstr "ജൂലൈ"
+
+msgid "August"
+msgstr "ഓഗസ്റ്റ്"
+
+msgid "September"
+msgstr "സെപ്റ്റംബർ"
+
+msgid "October"
+msgstr "ഒക്ടോബർ"
+
+msgid "November"
+msgstr "നവംബർ"
+
+msgid "December"
+msgstr "ഡിസംബർ"
+
+msgid "jan"
+msgstr "ജനു"
+
+msgid "feb"
+msgstr "ഫെബ്"
+
+msgid "mar"
+msgstr "മാർ"
+
+msgid "apr"
+msgstr "ഏപ്രിൽ"
+
+msgid "may"
+msgstr "മെയ്"
+
+msgid "jun"
+msgstr "ജൂൺ"
+
+msgid "jul"
+msgstr "ജൂലൈ"
+
+msgid "aug"
+msgstr "ഓഗ"
+
+msgid "sep"
+msgstr "സെപ്"
+
+msgid "oct"
+msgstr "ഒക്ടോ"
+
+msgid "nov"
+msgstr "നവം"
+
+msgid "dec"
+msgstr "ഡിസം"
+
+msgctxt "abbrev. month"
+msgid "Jan."
+msgstr "ജനു."
+
+msgctxt "abbrev. month"
+msgid "Feb."
+msgstr "ഫെബ്."
+
+msgctxt "abbrev. month"
+msgid "March"
+msgstr "മാർച്ച്"
+
+msgctxt "abbrev. month"
+msgid "April"
+msgstr "ഏപ്രിൽ"
+
+msgctxt "abbrev. month"
+msgid "May"
+msgstr "മെയ്"
+
+msgctxt "abbrev. month"
+msgid "June"
+msgstr "ജൂൺ"
+
+msgctxt "abbrev. month"
+msgid "July"
+msgstr "ജൂലൈ"
+
+msgctxt "abbrev. month"
+msgid "Aug."
+msgstr "ഓഗ."
+
+msgctxt "abbrev. month"
+msgid "Sept."
+msgstr "സെപ്റ്റം."
+
+msgctxt "abbrev. month"
+msgid "Oct."
+msgstr "ഒക്ടോ."
+
+msgctxt "abbrev. month"
+msgid "Nov."
+msgstr "നവം."
+
+msgctxt "abbrev. month"
+msgid "Dec."
+msgstr "ഡിസം."
+
+msgctxt "alt. month"
+msgid "January"
+msgstr "ജനുവരി"
+
+msgctxt "alt. month"
+msgid "February"
+msgstr "ഫെബ്രുവരി"
+
+msgctxt "alt. month"
+msgid "March"
+msgstr "മാർച്ച്"
+
+msgctxt "alt. month"
+msgid "April"
+msgstr "ഏപ്രിൽ"
+
+msgctxt "alt. month"
+msgid "May"
+msgstr "മെയ്"
+
+msgctxt "alt. month"
+msgid "June"
+msgstr "ജൂൺ"
+
+msgctxt "alt. month"
+msgid "July"
+msgstr "ജൂലൈ"
+
+msgctxt "alt. month"
+msgid "August"
+msgstr "ഓഗസ്റ്റ്"
+
+msgctxt "alt. month"
+msgid "September"
+msgstr "സെപ്റ്റംബർ"
+
+msgctxt "alt. month"
+msgid "October"
+msgstr "ഒക്ടോബർ"
+
+msgctxt "alt. month"
+msgid "November"
+msgstr "നവംബർ"
+
+msgctxt "alt. month"
+msgid "December"
+msgstr "ഡിസംബർ"
+
+msgid "This is not a valid IPv6 address."
+msgstr "ഇത് ഒരു സാധുവായ IPv6 വിലാസമല്ല."
+
+msgctxt "String to return when truncating text"
+msgid "%(truncated_text)s"
+msgstr "%(truncated_text)s"
+
+msgid "or"
+msgstr "അല്ലെങ്കിൽ"
+
+msgid ", "
+msgstr ", "
+
+msgid "%(num)d year"
+msgid_plural "%(num)d years"
+msgstr[0] "%(num)d വർഷം"
+msgstr[1] "%(num)d വർഷങ്ങൾ"
+
+msgid "%(num)d month"
+msgid_plural "%(num)d months"
+msgstr[0] "%(num)d മാസം"
+msgstr[1] "%(num)d മാസങ്ങൾ"
+
+msgid "%(num)d week"
+msgid_plural "%(num)d weeks"
+msgstr[0] "%(num)d ആഴ്ച"
+msgstr[1] "%(num)d ആഴ്ചകൾ"
+
+msgid "%(num)d day"
+msgid_plural "%(num)d days"
+msgstr[0] "%(num)d ദിവസം"
+msgstr[1] "%(num)d ദിവസങ്ങൾ"
+
+msgid "%(num)d hour"
+msgid_plural "%(num)d hours"
+msgstr[0] "%(num)d മണിക്കൂർ"
+msgstr[1] "%(num)d മണിക്കൂറുകൾ"
+
+msgid "%(num)d minute"
+msgid_plural "%(num)d minutes"
+msgstr[0] "%(num)d മിനിറ്റ്"
+msgstr[1] "%(num)d മിനിറ്റുകൾ"
+
+msgid "Forbidden"
+msgstr "നിഷിദ്ധം"
+
+msgid "CSRF verification failed. Request aborted."
+msgstr "CSRF പരിശോധന പരാജയപ്പെട്ടു. അഭ്യർത്ഥന ഉപേക്ഷിച്ചു."
+
+msgid "You are seeing this message because this HTTPS site requires a Referer header to be sent by your web browser, but none was sent. This header is required for security reasons, to ensure that your browser is not being hijacked by third parties."
+msgstr "നിങ്ങൾ ഈ സന്ദേശം കാണുന്നത് ഈ HTTPS സൈറ്റിന് നിങ്ങളുടെ വെബ് ബ്രൗസർ ഒരു Referer ഹെഡർ അയയ്ക്കേണ്ടതുണ്ട്, പക്ഷേ ഒന്നും അയയ്ക്കപ്പെട്ടിട്ടില്ല. നിങ്ങളുടെ ബ്രൗസർ മൂന്നാം കക്ഷികൾ ഹൈജാക്ക് ചെയ്യപ്പെടുന്നില്ലെന്ന് ഉറപ്പാക്കാൻ സുരക്ഷാ കാരണങ്ങളാൽ ഈ ഹെഡർ ആവശ്യമാണ്."
+
+msgid "If you have configured your browser to disable Referer headers, please re-enable them, at least for this site, or for HTTPS connections, or for same-origin requests."
+msgstr "നിങ്ങളുടെ ബ്രൗസർ Referer ഹെഡറുകൾ പ്രവർത്തനരഹിതമാക്കാൻ കോൺഫിഗർ ചെയ്തിട്ടുണ്ടെങ്കിൽ, ദയവായി അവ വീണ്ടും പ്രവർത്തനക്ഷമമാക്കുക, കുറഞ്ഞത് ഈ സൈറ്റിന്, അല്ലെങ്കിൽ HTTPS കണക്ഷനുകൾക്ക്, അല്ലെങ്കിൽ സെയ്‌ം-ഓറിജിൻ അഭ്യർത്ഥനകൾക്ക്."
+
+msgid "If you are using the <meta name=\"referrer\" content=\"no-referrer\"> tag or including the Referrer-Policy: no-referrer header, please remove them. The CSRF protection requires the Referer header to do strict referer checking. If youre concerned about privacy, use alternatives like <a rel=\"noreferrer\" > for links to third-party sites."
+msgstr "നിങ്ങൾ <meta name=\"referrer\" content=\"no-referrer\"> ടാഗ് ഉപയോഗിക്കുകയോ Referrer-Policy: no-referrer ഹെഡർ ഉൾപ്പെടുത്തുകയോ ചെയ്യുന്നുവെങ്കിൽ, ദയവായി അവ നീക്കം ചെയ്യുക. CSRF സംരക്ഷണത്തിന് കർശനമായ റഫറർ പരിശോധന നടത്താൻ Referer ഹെഡർ ആവശ്യമാണ്. നിങ്ങൾക്ക് സ്വകാര്യതയെക്കുറിച്ച് ആശങ്കയുണ്ടെങ്കിൽ, മൂന്നാം കക്ഷി സൈറ്റുകളിലേക്കുള്ള ലിങ്കുകൾക്ക് <a rel=\"noreferrer\" > പോലുള്ള ബദലുകൾ ഉപയോഗിക്കുക."
+
+msgid "You are seeing this message because this site requires a CSRF cookie when submitting forms. This cookie is required for security reasons, to ensure that your browser is not being hijacked by third parties."
+msgstr "നിങ്ങൾ ഈ സന്ദേശം കാണുന്നത് ഈ സൈറ്റിന് ഫോമുകൾ സമർപ്പിക്കുമ്പോൾ ഒരു CSRF കുക്കി ആവശ്യമാണ്. നിങ്ങളുടെ ബ്രൗസർ മൂന്നാം കക്ഷികൾ ഹൈജാക്ക് ചെയ്യപ്പെടുന്നില്ലെന്ന് ഉറപ്പാക്കാൻ സുരക്ഷാ കാരണങ്ങളാൽ ഈ കുക്കി ആവശ്യമാണ്."
+
+msgid "If you have configured your browser to disable cookies, please re-enable them, at least for this site, or for same-origin requests."
+msgstr "നിങ്ങളുടെ ബ്രൗസർ കുക്കികൾ പ്രവർത്തനരഹിതമാക്കാൻ കോൺഫിഗർ ചെയ്തിട്ടുണ്ടെങ്കിൽ, ദയവായി അവ വീണ്ടും പ്രവർത്തനക്ഷമമാക്കുക, കുറഞ്ഞത് ഈ സൈറ്റിന്, അല്ലെങ്കിൽ സെയ്‌ം-ഓറിജിൻ അഭ്യർത്ഥനകൾക്ക്."
+
+msgid "More information is available with DEBUG=True."
+msgstr "കൂടുതൽ വിവരങ്ങൾ DEBUG=True ഉപയോഗിച്ച് ലഭ്യമാണ്."
+
+msgid "No year specified"
+msgstr "വർഷം വ്യക്തമാക്കിയിട്ടില്ല"
+
+msgid "Date out of range"
+msgstr "തീയതി പരിധിയിൽ ഇല്ല"
+
+msgid "No month specified"
+msgstr "മാസം വ്യക്തമാക്കിയിട്ടില്ല"
+
+msgid "No day specified"
+msgstr "ദിവസം വ്യക്തമാക്കിയിട്ടില്ല"
+
+msgid "No week specified"
+msgstr "ആഴ്ച വ്യക്തമാക്കിയിട്ടില്ല"
+
+msgid "No %(verbose_name_plural)s available"
+msgstr "%(verbose_name_plural)s ലഭ്യമല്ല"
+
+msgid "Future %(verbose_name_plural)s not available because %(class_name)s.allow_future is False."
+msgstr "%(class_name)s.allow_future False ആയതിനാൽ ഭാവിയിലെ %(verbose_name_plural)s ലഭ്യമല്ല."
+
+msgid "Invalid date string %(datestr)s given format %(format)s"
+msgstr "അസാധുവായ തീയതി സ്ട്രിംഗ് %(datestr)s നൽകിയ ഫോർമാറ്റ് %(format)s"
+
+msgid "No %(verbose_name)s found matching the query"
+msgstr "ക്വറിയുമായി പൊരുത്തപ്പെടുന്ന %(verbose_name)s കണ്ടെത്തിയില്ല"
+
+msgid "Page is not last, nor can it be converted to an int."
+msgstr "പേജ് അവസാനത്തേതല്ല, അല്ലെങ്കിൽ അതിനെ ഒരു int ആക്കി മാറ്റാൻ കഴിയില്ല."
+
+msgid "Invalid page (%(page_number)s): %(message)s"
+msgstr "അസാധുവായ പേജ് (%(page_number)s): %(message)s"
+
+msgid "Empty list and %(class_name)s.allow_empty is False."
+msgstr "ശൂന്യമായ ലിസ്റ്റും %(class_name)s.allow_empty False ഉം."
+
+msgid "Directory indexes are not allowed here."
+msgstr "ഡയറക്ടറി ഇൻഡെക്സുകൾ ഇവിടെ അനുവദനീയമല്ല."
+
+msgid "%(path)s does not exist"
+msgstr "%(path)s നിലവിലില്ല"
+
+msgid "Index of %(directory)s"
+msgstr "%(directory)s ന്റെ ഇൻഡെക്സ്"
+
+msgid "The install worked successfully! Congratulations!"
+msgstr "ഇൻസ്റ്റാൾ വിജയകരമായി പൂർത്തിയായി! അഭിനന്ദനങ്ങൾ!"
+
+msgid "View <a href=\"https://docs.djangoproject.com/en/%(version)s/releases/\" target=\"_blank\" rel=\"noopener\">release notes</a> for Django %(version)s"
+msgstr "Django %(version)s-നുള്ള <a href=\"https://docs.djangoproject.com/en/%(version)s/releases/\" target=\"_blank\" rel=\"noopener\">റിലീസ് നോട്ടുകൾ</a> കാണുക"
+
+msgid "You are seeing this page because <a href=\"https://docs.djangoproject.com/en/%(version)s/ref/settings/#debug\" target=\"_blank\" rel=\"noopener\">DEBUG=True</a> is in your settings file and you have not configured any URLs."
+msgstr "നിങ്ങൾ ഈ പേജ് കാണുന്നത് <a href=\"https://docs.djangoproject.com/en/%(version)s/ref/settings/#debug\" target=\"_blank\" rel=\"noopener\">DEBUG=True</a> നിങ്ങളുടെ സെറ്റിംഗ് ഫയലിൽ ഉള്ളതിനാലും നിങ്ങൾ ഒരു URL-കളും കോൺഫിഗർ ചെയ്തിട്ടില്ലാത്തതിനാലുമാണ്."
+
+msgid "Django Documentation"
+msgstr "Django ഡോക്യുമെന്റേഷൻ"
+
+msgid "Topics, references, &amp; how-tos"
+msgstr "വിഷയങ്ങൾ, റഫറൻസുകൾ, &amp; എങ്ങനെ-കൾ"
+
+msgid "Tutorial: A Polling App"
+msgstr "ട്യൂട്ടോറിയൽ: ഒരു പോളിംഗ് ആപ്പ്"
+
+msgid "Get started with Django"
+msgstr "Django ഉപയോഗിച്ച് ആരംഭിക്കുക"
+
+msgid "Django Community"
+msgstr "Django കമ്മ്യൂണിറ്റി"
+
+msgid "Connect, get help, or contribute"
+msgstr "കണക്റ്റുചെയ്യുക, സഹായം നേടുക, അല്ലെങ്കിൽ സംഭാവന ചെയ്യുക"
+
+msgid "Home | AGRICHAIN"
+msgstr "ഹോം | AGRICHAIN"
+
+msgid "Empowering Farmers with AGRICHAIN"
+msgstr "AGRICHAIN ഉപയോഗിച്ച് കർഷകരെ ശക്തിപ്പെടുത്തുന്നു"
+
+msgid "Revolutionizing agriculture through real-time data, predictive analytics, and direct farmer-to-customer connectivity."
+msgstr "റിയൽ-ടൈം ഡാറ്റ, പ്രെഡിക്റ്റീവ് അനലിറ്റിക്സ്, നേരിട്ടുള്ള കർഷക-ടു-ഉപഭോക്തൃ കണക്റ്റിവിറ്റി എന്നിവയിലൂടെ കാർഷിക മേഖലയിൽ വിപ്ലവം സൃഷ്ടിക്കുന്നു."
+
+msgid "Join Now"
+msgstr "ഇപ്പോൾ ചേരുക"
+
+msgid "Learn More"
+msgstr "കൂടുതൽ അറിയുക"
+
+msgid "Key Features of AGRICHAIN"
+msgstr "AGRICHAIN-ന്റെ പ്രധാന സവിശേഷതകൾ"
+
+msgid "Real-Time Crop Data"
+msgstr "റിയൽ-ടൈം ക്രോപ്പ് ഡാറ്റ"
+
+msgid "Access real-time data on crops cultivated in your region to avoid cultivation collisions and optimize resource utilization."
+msgstr "നിങ്ങളുടെ പ്രദേശത്ത് കൃഷി ചെയ്യുന്ന ക്രോപ്പുകളെക്കുറിച്ചുള്ള റിയൽ-ടൈം ഡാറ്റ ആക്സസ് ചെയ്യുക, കൃഷി കൂട്ടിയിടികൾ ഒഴിവാക്കാനും വിഭവ ഉപയോഗം ഒപ്റ്റിമൈസ് ചെയ്യാനും."
+
+msgid "Crop Diversification"
+msgstr "ക്രോപ്പ് ഡൈവേഴ്സിഫിക്കേഷൻ"
+
+msgid "Promote crop diversification to reduce surplus, improve soil health, and increase profitability."
+msgstr "ക്രോപ്പ് ഡൈവേഴ്സിഫിക്കേഷൻ പ്രോത്സാഹിപ്പിക്കുക, സർപ്ലസ് കുറയ്ക്കാനും മണ്ണിന്റെ ആരോഗ്യം മെച്ചപ്പെടുത്താനും ലാഭം വർദ്ധിപ്പിക്കാനും."
+
+msgid "Direct Farmer-to-Customer"
+msgstr "നേരിട്ടുള്ള കർഷക-ടു-ഉപഭോക്തൃ"
+
+msgid "Eliminate middlemen by connecting directly with consumers, ensuring fair pricing and higher profits for farmers."
+msgstr "ഉപഭോക്താക്കളുമായി നേരിട്ട് കണക്റ്റുചെയ്യുക, കർഷകർക്ക് നീതിയുള്ള വിലനിർണ്ണയവും ഉയർന്ന ലാഭവും ഉറപ്പാക്കുക."
+
+msgid "Climatic & Soil Forecasting"
+msgstr "കാലാവസ്ഥ & മണ്ണ് പ്രവചനം"
+
+msgid "Get actionable insights on climatic and soil conditions tailored to your locality for improved yield and resilience."
+msgstr "നിങ്ങളുടെ പ്രദേശത്തിന് അനുയോജ്യമായ കാലാവസ്ഥയും മണ്ണിന്റെ അവസ്ഥയും സംബന്ധിച്ച പ്രവർത്തനാത്മക ഇൻസൈറ്റുകൾ നേടുക, ഉൽപ്പാദനവും പ്രതിരോധശേഷിയും മെച്ചപ്പെടുത്തുക."
+
+msgid "Supply-Demand Analytics"
+msgstr "സപ്ലൈ-ഡിമാൻഡ് അനലിറ്റിക്സ്"
+
+msgid "Leverage predictive analytics to forecast supply-demand dynamics and redistribute surplus produce to regions in need."
+msgstr "സപ്ലൈ-ഡിമാൻഡ് ഡൈനാമിക്സ് പ്രവചിക്കാനും സർപ്ലസ് ഉൽപ്പന്നങ്ങൾ ആവശ്യമുള്ള പ്രദേശങ്ങളിലേക്ക് വീണ്ടും വിതരണം ചെയ്യാനും പ്രെഡിക്റ്റീവ് അനലിറ്റിക്സ് ഉപയോഗിക്കുക."
+
+msgid "Community Collaboration"
+msgstr "കമ്മ്യൂണിറ്റി സഹകരണം"
+
+msgid "Join a network of farmers, government agencies, and NGOs to share knowledge and build sustainable agricultural practices."
+msgstr "കർഷകർ, സർക്കാർ ഏജൻസികൾ, എൻജിഒകൾ എന്നിവരുടെ ഒരു നെറ്റ്‌വർക്കിൽ ചേരുക, അറിവ് പങ്കിടുക, സുസ്ഥിര കാർഷിക പ്രയോഗങ്ങൾ നിർമ്മിക്കുക."
+
+msgid "Our Programs"
+msgstr "ഞങ്ങളുടെ പ്രോഗ്രാമുകൾ"
+
+msgid "Government"
+msgstr "സർക്കാർ"
+
+msgid "Subsidy Program"
+msgstr "സബ്സിഡി പ്രോഗ്രാം"
+
+msgid "Crop Diversification Grants"
+msgstr "ക്രോപ്പ് ഡൈവേഴ്സിഫിക്കേഷൻ ഗ്രാന്റുകൾ"
+
+msgid "Financial support for farmers to adopt crop diversification and sustainable farming practices."
+msgstr "ക്രോപ്പ് ഡൈവേഴ്സിഫിക്കേഷനും സുസ്ഥിര കാർഷിക പ്രയോഗങ്ങളും സ്വീകരിക്കാൻ കർഷകർക്ക് സാമ്പത്തിക പിന്തുണ."
+
+msgid "Non-Profit"
+msgstr "ലാഭേച്ഛയില്ലാത്ത"
+
+msgid "Training Program"
+msgstr "പരിശീലന പ്രോഗ്രാം"
+
+msgid "Sustainable Farming Training"
+msgstr "സുസ്ഥിര കാർഷിക പരിശീലനം"
+
+msgid "Workshops on organic farming, water conservation, and soil health management."
+msgstr "ഓർഗാനിക് ഫാർമിംഗ്, ജല സംരക്ഷണം, മണ്ണിന്റെ ആരോഗ്യ മാനേജ്മെന്റ് എന്നിവയെക്കുറിച്ചുള്ള വർക്ക്ഷോപ്പുകൾ."
+
+msgid "Farmer"
+msgstr "കർഷകൻ"
+
+msgid "Marketplace Program"
+msgstr "മാർക്കറ്റ്പ്ലേസ് പ്രോഗ്രാം"
+
+msgid "Direct Marketplace Access"
+msgstr "നേരിട്ടുള്ള മാർക്കറ്റ്പ്ലേസ് ആക്സസ്"
+
+msgid "Sell your produce directly to consumers through our digital marketplace at fair prices."
+msgstr "ഞങ്ങളുടെ ഡിജിറ്റൽ മാർക്കറ്റ്പ്ലേസിലൂടെ നിങ്ങളുടെ ഉൽപ്പന്നങ്ങൾ നേരിട്ട് ഉപഭോക്താക്കൾക്ക് നീതിയുള്ള വിലയിൽ വിൽക്കുക."
+
+msgid "What Farmers Say"
+msgstr "കർഷകർ എന്തു പറയുന്നു"
+
+msgid "AGRICHAIN has transformed the way I farm. The real-time data and predictive analytics have helped me make better decisions and increase my yield."
+msgstr "AGRICHAIN എന്റെ കൃഷി രീതി മാറ്റിമറിച്ചു. റിയൽ-ടൈം ഡാറ്റയും പ്രെഡിക്റ്റീവ് അനലിറ്റിക്സും എന്നെ മികച്ച തീരുമാനങ്ങൾ എടുക്കാനും എന്റെ ഉൽപ്പാദനം വർദ്ധിപ്പിക്കാനും സഹായിച്ചു."
+
+msgid "Rajesh Kumar"
+msgstr "രാജേഷ് കുമാർ"
+
+msgid "Farmer, Punjab"
+msgstr "കർഷകൻ, പഞ്ചാബ്"
+
+msgid "The direct marketplace has been a game-changer for me. I no longer rely on middlemen, and my profits have increased significantly."
+msgstr "നേരിട്ടുള്ള മാർക്കറ്റ്പ്ലേസ് എനിക്ക് ഒരു ഗെയിം-ചേഞ്ചർ ആയിരുന്നു. ഇനി ഞാൻ മിഡിൽമെൻമാരെ ആശ്രയിക്കുന്നില്ല, എന്റെ ലാഭം ഗണ്യമായി വർദ്ധിച്ചിട്ടുണ്ട്."
+
+msgid "Priya Sharma"
+msgstr "പ്രിയ ശർമ്മ"
+
+msgid "Farmer, Maharashtra"
+msgstr "കർഷകൻ, മഹാരാഷ്ട്ര"
+
+msgid "The climatic and soil forecasting tools have helped me adapt to changing conditions and improve my crop resilience."
+msgstr "കാലാവസ്ഥയും മണ്ണിന്റെ പ്രവചന ഉപകരണങ്ങളും മാറിക്കൊണ്ടിരിക്കുന്ന അവസ്ഥകളിലേക്ക് ഇണങ്ങാനും എന്റെ ക്രോപ്പ് പ്രതിരോധശേഷി മെച്ചപ്പെടുത്താനും സഹായിച്ചു."
+
+msgid "Anil Patel"
+msgstr "അനിൽ പട്ടേൽ"
+
+msgid "Farmer, Gujarat"
+msgstr "കർഷകൻ, ഗുജറാത്ത്"
+
+msgid "Join AGRICHAIN Today"
+msgstr "ഇന്ന് AGRICHAIN-ൽ ചേരുക"
+
+msgid "Empower your farming journey with real-time data, predictive analytics, and direct market access. Register now to get started!"
+msgstr "റിയൽ-ടൈം ഡാറ്റ, പ്രെഡിക്റ്റീവ് അനലിറ്റിക്സ്, നേരിട്ടുള്ള മാർക്കറ്റ് ആക്സസ് എന്നിവ ഉപയോഗിച്ച് നിങ്ങളുടെ കൃഷി യാത്ര ശക്തിപ്പെടുത്തുക. ആരംഭിക്കാൻ ഇപ്പോൾ രജിസ്റ്റർ ചെയ്യുക!"
+
+msgid "Register Now"
+msgstr "ഇപ്പോൾ രജിസ്റ്റർ ചെയ്യുക"
