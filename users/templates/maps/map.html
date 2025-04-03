@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Farm Map</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    <style>#map { height: 500px; width: 100%; }</style>
+</head>
+<body>
+    <h2>Farm Mapping & Crop Suggestion</h2>
+    <button id="saveLocation">Save Location</button>
+    <div id="map"></div>
+
+    <script>
+        var map = L.map('map').setView([20.5937, 78.9629], 5);
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
+
+        let marker = null;
+        let selectedLat = null, selectedLon = null;
+
+        // Get CSRF Token from cookies
+        function getCSRFToken() {
+            return document.cookie.split('; ').find(row => row.startsWith('csrftoken='))?.split('=')[1];
+        }
+
+        // Allow user to click and place marker
+        map.on('click', function(e) {
+            if (marker) map.removeLayer(marker);
+            selectedLat = e.latlng.lat;
+            selectedLon = e.latlng.lng;
+            marker = L.marker([selectedLat, selectedLon]).addTo(map)
+                .bindPopup("Selected Location").openPopup();
+        });
+
+        // Save location when button is clicked
+        document.getElementById('saveLocation').addEventListener('click', function() {
+            if (!selectedLat || !selectedLon) {
+                alert("Please select a location first!");
+                return;
+            }
+
+            fetch('/maps/save-location/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': getCSRFToken()
+                },
+                body: JSON.stringify({
+                    latitude: selectedLat,
+                    longitude: selectedLon
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.message) {
+                    alert(data.message);
+                } else {
+                    alert("Failed to save location!");
+                }
+            })
+            .catch(error => alert("Error saving location!"));
+        });
+
+        // Load existing farm locations
+        fetch('/maps/farm-data/')
+        .then(response => {
+            if (!response.ok) {
+                throw new Error("Network response was not ok");
+            }
+            return response.json();
+        })
+        .then(data => {
+            data.features.forEach(farm => {
+                let status = farm.properties.status;
+                let recommended_crop = farm.properties.recommended_crop;
+                let color = status === "red" ? "red" : status === "orange" ? "orange" : "green";
+
+                let farmMarker = L.circleMarker([farm.geometry.coordinates[1], farm.geometry.coordinates[0]], {
+                    color: color,
+                    radius: 10,
+                    fillOpacity: 0.5
+                }).addTo(map);
+
+                farmMarker.bindPopup(`<b>${farm.properties.name}</b><br>Status: ${status}<br>Recommended Crop: ${recommended_crop}`);
+            });
+        })
+        .catch(error => console.error("Error fetching farm data:", error));  
+    </script>
+</body>
+</html>

@@ -6,6 +6,8 @@ from django.conf.urls.i18n import i18n_patterns
 # URL patterns without language prefix
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path("maps/",include('maps.urls')),
+
     path('i18n/', include('django.conf.urls.i18n')),  # Built-in language switching
 ]
 

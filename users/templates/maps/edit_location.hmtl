@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Edit Farm Location</h2>
+
+<div id="map" style="height: 400px;"></div>
+
+<form method="post" id="edit-location-form">
+    {% csrf_token %}
+    <input type="hidden" id="latitude" name="latitude" value="{{ farm.latitude }}">
+    <input type="hidden" id="longitude" name="longitude" value="{{ farm.longitude }}">
+    <button type="submit">Save Changes</button>
+</form>
+
+<script>
+    var map = L.map("map").setView([{{ farm.latitude }}, {{ farm.longitude }}], 15);
+    L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png").addTo(map);
+
+    var marker = L.marker([{{ farm.latitude }}, {{ farm.longitude }}], {draggable: true}).addTo(map);
+
+    marker.on("dragend", function(event) {
+        var position = marker.getLatLng();
+        document.getElementById("latitude").value = position.lat;
+        document.getElementById("longitude").value = position.lng;
+    });
+</script>
+
+{% endblock %}

@@ -1,0 +1,70 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>Mark Your Farm Location</h2>
+
+<!-- Map Container -->
+<div id="map" style="height: 400px; width: 100%;"></div>
+
+<!-- Form to Submit Farm Data -->
+<form method="POST" action="{% url 'mark_location' %}">
+    {% csrf_token %}
+
+    <input type="hidden" id="latitude" name="latitude">
+    <input type="hidden" id="longitude" name="longitude">
+
+    <label for="soil_type">Soil Type:</label>
+    <select name="soil_type" id="soil_type" required>
+        <option value="loamy">Loamy</option>
+        <option value="sandy">Sandy</option>
+        <option value="clay">Clay</option>
+    </select>
+
+    <label for="climate">Climate:</label>
+    <select name="climate" id="climate" required>
+        <option value="hot">Hot</option>
+        <option value="cold">Cold</option>
+        <option value="temperate">Temperate</option>
+    </select>
+
+    <label for="oversupply_risk">Risk of Crop Oversupply:</label>
+    <select name="oversupply_risk" id="oversupply_risk">
+        <option value="true">High</option>
+        <option value="false">Low</option>
+    </select>
+
+    <button type="submit">Submit</button>
+</form>
+
+<!-- Include Leaflet.js for Maps -->
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+<script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+
+<script>
+    var map = L.map('map').setView([20, 78], 5); // Default View (India)
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 18 }).addTo(map);
+
+    // Get User Location
+    map.locate({ setView: true, maxZoom: 16 });
+
+    function onLocationFound(e) {
+        var lat = e.latlng.lat;
+        var lng = e.latlng.lng;
+        document.getElementById("latitude").value = lat;
+        document.getElementById("longitude").value = lng;
+
+        L.marker([lat, lng]).addTo(map)
+            .bindPopup("Your Farm Location")
+            .openPopup();
+    }
+
+    map.on('locationfound', onLocationFound);
+
+    // Handle Location Errors
+    function onLocationError(e) {
+        alert("Location access denied. Please select manually.");
+    }
+    map.on('locationerror', onLocationError);
+</script>
+
+{% endblock %}
