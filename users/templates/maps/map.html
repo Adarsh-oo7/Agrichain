@@ -1,92 +1,936 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Farm Map</title>
+{% extends 'base.html' %}
+{% load static %}
+{% load i18n %}
+
+{% block title %}mart Farm Map{% endblock %}
+
+{% block extra_css %}
+   
     <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
     <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
-    <style>#map { height: 500px; width: 100%; }</style>
-</head>
-<body>
-    <h2>Farm Mapping & Crop Suggestion</h2>
-    <button id="saveLocation">Save Location</button>
-    <div id="map"></div>
-
-    <script>
-        var map = L.map('map').setView([20.5937, 78.9629], 5);
-        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
-
-        let marker = null;
-        let selectedLat = null, selectedLon = null;
-
-        // Get CSRF Token from cookies
-        function getCSRFToken() {
-            return document.cookie.split('; ').find(row => row.startsWith('csrftoken='))?.split('=')[1];
+    <style>
+        :root {
+            --primary-color: #2ecc71;
+            --primary-dark: #27ae60;
+            --accent-color: #3498db;
+            --light-color: #f8f9fa;
+            --dark-color: #343a40;
+            --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: var(--light-color);
+            color: var(--dark-color);
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+            color: white;
+            padding: 20px 0;
+            border-radius: 0 0 15px 15px;
+            box-shadow: var(--shadow);
+            margin-bottom: 20px;
+        }
+        
+        h2 {
+            margin: 0;
+            padding: 0;
+            font-size: 28px;
+            letter-spacing: 0.5px;
+        }
+        
+        .subtitle {
+            font-size: 16px;
+            opacity: 0.9;
+            margin-top: 5px;
+        }
+        
+        #map {
+            height: 500px;
+            width: 100%;
+            border-radius: 15px;
+            box-shadow: var(--shadow);
+            margin-bottom: 20px;
+        }
+        
+        .button-container {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+        
+        button {
+            padding: 12px 16px;
+            border: none;
+            cursor: pointer;
+            border-radius: 8px;
+            background-color: var(--primary-color);
+            color: white;
+            font-size: 15px;
+            transition: transform 0.2s, background-color 0.3s;
+            box-shadow: var(--shadow);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex: 0 0 auto;
+        }
+        
+        button:hover {
+            background-color: var(--primary-dark);
+            transform: translateY(-2px);
+        }
+        
+        button:active {
+            transform: translateY(0);
+        }
+        
+        button:disabled {
+            background-color: #95a5a6;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        .map-container {
+            position: relative;
+        }
+        
+        .legend {
+            position: absolute;
+            z-index: 1000;
+            bottom: 30px;
+            right: 30px;
+            background: white;
+            padding: 10px 15px;
+            border-radius: 10px;
+            box-shadow: var(--shadow);
+            font-size: 14px;
+            opacity: 0.9;
+        }
+        
+        .legend-item {
+            display: flex;
+            align-items: center;
+            margin: 5px 0;
+        }
+        
+        .legend-color {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            margin-right: 10px;
+        }
+        
+        .footer {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 14px;
+            color: #6c757d;
+        }
+        
+        /* Styles for coordinates display panel */
+        #coordinates-panel {
+            background: white;
+            padding: 12px 15px;
+            border-radius: 10px;
+            box-shadow: var(--shadow);
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .coordinates-info {
+            font-size: 15px;
+        }
+        
+        .coordinates-value {
+            font-weight: bold;
+            color: var(--primary-color);
+        }
+        
+        /* Modal for advanced settings */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 2000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.5);
+        }
+        
+        .modal-content {
+            background-color: #fefefe;
+            margin: 10% auto;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: var(--shadow);
+            width: 80%;
+            max-width: 600px;
+        }
+        
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #ddd;
+        }
+        
+        .modal-title {
+            font-size: 20px;
+            font-weight: bold;
+            color: var(--primary-dark);
+        }
+        
+        .close-button {
+            color: #aaa;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        
+        .close-button:hover {
+            color: #333;
+        }
+        
+        .form-group {
+            margin-bottom: 15px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: var(--dark-color);
+        }
+        
+        .form-group input, .form-group select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        
+        .form-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+            margin-top: 20px;
+        }
+        
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            #map { 
+                height: 400px;
+            }
+            
+            .button-container {
+                justify-content: center;
+            }
+            
+            button {
+                padding: 10px 14px;
+                font-size: 14px;
+            }
+            
+            .modal-content {
+                width: 90%;
+                margin: 20% auto;
+            }
+            
+            #coordinates-panel {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 10px;
+            }
+        }
+        
+        @media (max-width: 600px) {
+            header {
+                padding: 15px 0;
+            }
+            
+            h2 {
+                font-size: 22px;
+            }
+            
+            .subtitle {
+                font-size: 14px;
+            }
+            
+            #map { 
+                height: 350px;
+            }
+            
+            .button-container {
+                flex-direction: column;
+                gap: 8px;
+            }
+            
+            button {
+                width: 100%;
+                justify-content: center;
+            }
+            
+            .legend {
+                bottom: 15px;
+                right: 15px;
+                padding: 8px 12px;
+                font-size: 12px;
+            }
         }
 
-        // Allow user to click and place marker
+        /* Custom map popup styling */
+        .leaflet-popup-content-wrapper {
+            border-radius: 10px;
+            padding: 5px;
+        }
+        
+        .leaflet-popup-content {
+            margin: 10px 12px;
+            line-height: 1.5;
+        }
+        
+        .popup-title {
+            font-weight: bold;
+            margin-bottom: 5px;
+            font-size: 16px;
+            color: var(--primary-dark);
+        }
+        
+        .popup-content {
+            font-size: 14px;
+        }
+        
+        .popup-status {
+            font-weight: bold;
+        }
+        
+        /* Additional styles for status indicators */
+        .status-indicator {
+            display: inline-block;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            margin-right: 5px;
+        }
+        
+        .status-green {
+            background-color: #2ecc71;
+        }
+        
+        .status-orange {
+            background-color: #f39c12;
+        }
+        
+        .status-red {
+            background-color: #e74c3c;
+        }
+        
+        /* Spinning animation for loading states */
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .spinning {
+            animation: spin 1s linear infinite;
+        }
+    </style>
+{% endblock%}
+{% block content %}
+    <header class="header">
+        <div class="container">
+            <h2>Smart Farm Mapping System</h2>
+            <div class="subtitle">Optimize your farming with location-based crop suggestions</div>
+        </div>
+    </header>
+    
+    <div class="container">
+        <div id="coordinates-panel">
+            <div class="coordinates-info">
+                Selected Location: <span id="selected-location-text">No location selected</span>
+            </div>
+            <div class="coordinates-value" id="coordinates-display"></div>
+        </div>
+        
+        <div class="button-container">
+            <button id="saveLocation">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path>
+                    <polyline points="17 21 17 13 7 13 7 21"></polyline>
+                    <polyline points="7 3 7 8 15 8"></polyline>
+                </svg>
+                Save Location
+            </button>
+            <button id="currentLocation">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <circle cx="12" cy="12" r="3"></circle>
+                </svg>
+                Use My Location
+            </button>
+            <button id="resetMap">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M3 2v6h6"></path>
+                    <path d="M21 12A9 9 0 0 0 6 5.3L3 8"></path>
+                    <path d="M21 22v-6h-6"></path>
+                    <path d="M3 12a9 9 0 0 0 15 6.7l3-2.7"></path>
+                </svg>
+                Reset Map
+            </button>
+            <button id="addFarm">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                    <line x1="12" y1="8" x2="12" y2="16"></line>
+                    <line x1="8" y1="12" x2="16" y2="12"></line>
+                </svg>
+                Add Farm
+            </button>
+            <button id="viewAllFarms">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                    <circle cx="12" cy="12" r="3"></circle>
+                </svg>
+                View All Farms
+            </button>
+            <button id="showSettings">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="3"></circle>
+                    <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+                </svg>
+                Settings
+            </button>
+            <button id="getSuggestions">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path>
+                </svg>
+                Get Crop Suggestions
+            </button>
+        </div>
+        
+        <div class="map-container">
+            <div id="map"></div>
+            <div class="legend">
+                <div class="legend-item">
+                    <div class="legend-color" style="background: radial-gradient(circle, red 30%, orange 65%, green 100%)"></div>
+                    <span>Farm Status Indicator</span>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Add Farm Modal -->
+        <div id="farmModal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <div class="modal-title">Add New Farm</div>
+                    <span class="close-button" id="closeFarmModal">&times;</span>
+                </div>
+                <form id="farmForm">
+                    <div class="form-group">
+                        <label for="farmName">Farm Name</label>
+                        <input type="text" id="farmName" name="farmName" required placeholder="Enter farm name">
+                    </div>
+                    <div class="form-group">
+                        <label for="farmSize">Farm Size (in acres)</label>
+                        <input type="number" id="farmSize" name="farmSize" min="0.1" step="0.1" required placeholder="Enter farm size">
+                    </div>
+                    <div class="form-group">
+                        <label for="farmStatus">Farm Status</label>
+                        <select id="farmStatus" name="farmStatus" required>
+                            <option value="">Select status</option>
+                            <option value="green">Good</option>
+                            <option value="orange">Warning</option>
+                            <option value="red">Attention Required</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Farm Location</label>
+                        <div id="locationDisplay">Please select a location on the map first</div>
+                    </div>
+                    <div class="form-actions">
+                        <button type="button" id="cancelFarm">Cancel</button>
+                        <button type="submit" id="submitFarm">Save Farm</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        
+        <!-- Settings Modal -->
+        <div id="settingsModal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <div class="modal-title">Map Settings</div>
+                    <span class="close-button" id="closeSettingsModal">&times;</span>
+                </div>
+                <form id="settingsForm">
+                    <div class="form-group">
+                        <label for="mapStyle">Map Style</label>
+                        <select id="mapStyle" name="mapStyle">
+                            <option value="default">Default</option>
+                            <option value="satellite">Satellite</option>
+                            <option value="terrain">Terrain</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="markerSize">Marker Size</label>
+                        <select id="markerSize" name="markerSize">
+                            <option value="small">Small</option>
+                            <option value="medium" selected>Medium</option>
+                            <option value="large">Large</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="defaultZoom">Default Zoom Level</label>
+                        <input type="range" id="defaultZoom" name="defaultZoom" min="1" max="18" value="5">
+                    </div>
+                    <div class="form-actions">
+                        <button type="button" id="cancelSettings">Cancel</button>
+                        <button type="submit" id="saveSettings">Save Settings</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        
+        <!-- Crop Suggestions Modal -->
+        <div id="suggestionsModal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <div class="modal-title">Crop Suggestions</div>
+                    <span class="close-button" id="closeSuggestionsModal">&times;</span>
+                </div>
+                <div id="suggestionsContent">
+                    <p>Based on the soil conditions and climate at your selected location, we recommend:</p>
+                    <ul id="cropSuggestions">
+                        <!-- Will be populated dynamically -->
+                    </ul>
+                </div>
+                <div class="form-actions">
+                    <button type="button" id="closeSuggestions">Close</button>
+                </div>
+            </div>
+        </div>
+        
+        <div class="footer">
+            &copy; 2025 Smart Farm Mapping System - All rights reserved
+        </div>
+    </div>
+
+    <script>
+        // Map initialization with configurable options
+        let mapConfig = {
+            defaultView: [20.5937, 78.9629],
+            defaultZoom: 5,
+            markerSize: 15,
+            mapStyle: 'default'
+        };
+        
+        // Define tile layers for different map styles
+        const tileLayers = {
+            default: L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+                opacity: 0.9
+            }),
+            satellite: L.tileLayer('https://{s}.google.com/vt/lyrs=s&x={x}&y={y}&z={z}', {
+                maxZoom: 20,
+                subdomains: ['mt0', 'mt1', 'mt2', 'mt3'],
+                attribution: '&copy; Google Maps'
+            }),
+            terrain: L.tileLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png', {
+                maxZoom: 17,
+                attribution: '&copy; OpenTopoMap'
+            })
+        };
+        
+        // Initialize map with default settings
+        var map = L.map('map', {
+            zoomControl: false
+        }).setView(mapConfig.defaultView, mapConfig.defaultZoom);
+        
+        // Add default tile layer
+        tileLayers.default.addTo(map);
+        
+        // Add zoom control to bottom right
+        L.control.zoom({
+            position: 'bottomright'
+        }).addTo(map);
+        
+        // Add attribution control to bottom left
+        L.control.attribution({
+            position: 'bottomleft'
+        }).addTo(map);
+
+        // Global variables
+        let marker = null;
+        let selectedLat = null, selectedLon = null;
+        let farmMarkers = []; // Array to track all farm markers
+        let lastSavedLocation = null; // Track last saved location
+        
+        // Create custom icon for selected location
+        const customIcon = L.icon({
+            iconUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon.png',
+            iconSize: [25, 41],
+            iconAnchor: [12, 41],
+            popupAnchor: [1, -34],
+            shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-shadow.png',
+            shadowSize: [41, 41]
+        });
+
+        // Helper function to create gradient circle markers
+        function createGradientCircleMarker(latlng, options = {}) {
+            const defaultOptions = {
+                radius: mapConfig.markerSize,
+                fillOpacity: 0.85
+            };
+            
+            const mergedOptions = {...defaultOptions, ...options};
+            
+            // Create a unique ID for this marker's gradient
+            const markerId = `marker_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+            
+            // Create a custom divIcon with SVG for gradient effect
+            const gradientIcon = L.divIcon({
+                html: `<svg height="${mergedOptions.radius * 2}" width="${mergedOptions.radius * 2}">
+                         <defs>
+                           <radialGradient id="gradient_${markerId}" cx="50%" cy="50%" r="50%" fx="50%" fy="50%">
+                             <stop offset="0%" style="stop-color:red;stop-opacity:1" />
+                             <stop offset="60%" style="stop-color:orange;stop-opacity:1" />
+                             <stop offset="100%" style="stop-color:green;stop-opacity:1" />
+                           </radialGradient>
+                         </defs>
+                         <circle cx="${mergedOptions.radius}" cy="${mergedOptions.radius}" r="${mergedOptions.radius}" fill="url(#gradient_${markerId})" />
+                       </svg>`,
+                className: "",
+                iconSize: [mergedOptions.radius * 2, mergedOptions.radius * 2],
+                iconAnchor: [mergedOptions.radius, mergedOptions.radius]
+            });
+            
+            return L.marker(latlng, {
+                icon: gradientIcon,
+                interactive: true
+            });
+        }
+
+        // Helper function to show notifications
+        function showNotification(message, type = "success") {
+            // Create notification element
+            const notification = document.createElement('div');
+            notification.style.position = 'fixed';
+            notification.style.bottom = '20px';
+            notification.style.left = '50%';
+            notification.style.transform = 'translateX(-50%)';
+            notification.style.backgroundColor = type === "success" ? '#2ecc71' : '#e74c3c';
+            notification.style.color = 'white';
+            notification.style.padding = '12px 20px';
+            notification.style.borderRadius = '8px';
+            notification.style.boxShadow = '0 4px 6px rgba(0, 0, 0, 0.1)';
+            notification.style.zIndex = '9999';
+            notification.style.opacity = '0';
+            notification.style.transition = 'opacity 0.3s ease-in-out';
+            notification.textContent = message;
+            
+            // Add to DOM
+            document.body.appendChild(notification);
+            
+            // Fade in
+            setTimeout(() => {
+                notification.style.opacity = '1';
+            }, 10);
+            
+            // Remove after delay
+            setTimeout(() => {
+                notification.style.opacity = '0';
+                setTimeout(() => {
+                    document.body.removeChild(notification);
+                }, 300);
+            }, 3000);
+        }
+
+        // Helper function to update coordinates display
+        function updateCoordinatesDisplay() {
+            const coordinatesDisplay = document.getElementById('coordinates-display');
+            const selectedLocationText = document.getElementById('selected-location-text');
+            
+            if (selectedLat !== null && selectedLon !== null) {
+                coordinatesDisplay.textContent = `Lat: ${selectedLat.toFixed(6)}, Lon: ${selectedLon.toFixed(6)}`;
+                selectedLocationText.textContent = 'Location Selected';
+            } else {
+                coordinatesDisplay.textContent = '';
+                selectedLocationText.textContent = 'No location selected';
+            }
+        }
+
+        // Allow user to click and place marker with enhanced popup
         map.on('click', function(e) {
             if (marker) map.removeLayer(marker);
             selectedLat = e.latlng.lat;
             selectedLon = e.latlng.lng;
-            marker = L.marker([selectedLat, selectedLon]).addTo(map)
-                .bindPopup("Selected Location").openPopup();
+            
+            marker = L.marker([selectedLat, selectedLon], {icon: customIcon}).addTo(map)
+                .bindPopup("<div class='popup-title'>Selected Location</div><div class='popup-content'>Latitude: " + selectedLat.toFixed(6) + "<br>Longitude: " + selectedLon.toFixed(6) + "</div>");
+            
+            marker.openPopup();
+            updateCoordinatesDisplay();
+            
+            // Update location display in add farm modal if it's open
+            const locationDisplay = document.getElementById('locationDisplay');
+            if (locationDisplay) {
+                locationDisplay.textContent = `Latitude: ${selectedLat.toFixed(6)}, Longitude: ${selectedLon.toFixed(6)}`;
+            }
         });
 
-        // Save location when button is clicked
-        document.getElementById('saveLocation').addEventListener('click', function() {
+        // Save location when button is clicked with improved feedback
+          document.getElementById('saveLocation').addEventListener('click', function() {
             if (!selectedLat || !selectedLon) {
-                alert("Please select a location first!");
+                showNotification("Please select a location on the map first!", "error");
                 return;
             }
-
+            
+            // Show saving feedback
+            const originalText = this.innerHTML;
+            this.innerHTML = '<svg class="spinning" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12a9 9 0 1 1-6.219-8.56"></path></svg> Saving...';
+            
             fetch('/maps/save-location/', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
-                    'X-CSRFToken': getCSRFToken()
+                    'X-CSRFToken': '{{ csrf_token }}'
                 },
-                body: JSON.stringify({
-                    latitude: selectedLat,
-                    longitude: selectedLon
-                })
+                body: JSON.stringify({ latitude: selectedLat, longitude: selectedLon })
             })
             .then(response => response.json())
             .then(data => {
-                if (data.message) {
-                    alert(data.message);
-                } else {
-                    alert("Failed to save location!");
-                }
+                showNotification(data.message || "Location saved successfully!");
+                
+                // Reset button text
+                this.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path><polyline points="17 21 17 13 7 13 7 21"></polyline><polyline points="7 3 7 8 15 8"></polyline></svg> Save Location';
             })
-            .catch(error => alert("Error saving location!"));
+            .catch(error => {
+                showNotification("Error saving location!", "error");
+                
+                // Reset button text
+                this.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path><polyline points="17 21 17 13 7 13 7 21"></polyline><polyline points="7 3 7 8 15 8"></polyline></svg> Save Location';
+            });
+
+            setTimeout(() => {
+                lastSavedLocation = {
+                    latitude: selectedLat,
+                    longitude: selectedLon
+                };
+                
+                showNotification("Location saved successfully!");
+                
+                // Reset button
+                this.innerHTML = originalText;
+                this.disabled = false;
+                
+                // For demo purposes, let's create a new farm marker
+                const farmMarker = createGradientCircleMarker([selectedLat, selectedLon]);
+                farmMarker.addTo(map);
+                farmMarker.bindPopup(`<div class="popup-title">New Farm</div><div class="popup-content">Recently saved location</div>`);
+                farmMarkers.push(farmMarker);
+                
+            }, 800); // Simulate network delay
+        }); 
+
+        {% comment %} // Save location when button is clicked with improved feedback
+        document.getElementById('saveLocation').addEventListener('click', function() {
+            if (!selectedLat || !selectedLon) {
+                showNotification("Please select a location on the map first!");
+                return;
+            }
+            
+            // Show saving feedback
+            this.innerHTML = '<svg class="spinning" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12a9 9 0 1 1-6.219-8.56"></path></svg> Saving...';
+            
+            fetch('/maps/save-location/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': '{{ csrf_token }}'
+                },
+                body: JSON.stringify({ latitude: selectedLat, longitude: selectedLon })
+            })
+            .then(response => response.json())
+            .then(data => {
+                showNotification(data.message || "Location saved successfully!");
+                
+                // Reset button text
+                this.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path><polyline points="17 21 17 13 7 13 7 21"></polyline><polyline points="7 3 7 8 15 8"></polyline></svg> Save Location';
+            })
+            .catch(error => {
+                showNotification("Error saving location!", "error");
+                
+                // Reset button text
+                this.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path><polyline points="17 21 17 13 7 13 7 21"></polyline><polyline points="7 3 7 8 15 8"></polyline></svg> Save Location';
+            });
+        }); {% endcomment %}
+
+        // Get user's current location with improved UX
+        document.getElementById('currentLocation').addEventListener('click', function() {
+            const originalText = this.innerHTML;
+            this.innerHTML = '<svg class="spinning" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12a9 9 0 1 1-6.219-8.56"></path></svg> Getting location...';
+            this.disabled = true;
+            
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(
+                    function(position) {
+                        let lat = position.coords.latitude;
+                        let lon = position.coords.longitude;
+                        if (marker) map.removeLayer(marker);
+                        marker = L.marker([lat, lon], {icon: customIcon}).addTo(map)
+                            .bindPopup("<div class='popup-title'>Your Current Location</div><div class='popup-content'>Latitude: " + lat.toFixed(6) + "<br>Longitude: " + lon.toFixed(6) + "</div>").openPopup();
+                        map.setView([lat, lon], 13);
+                        selectedLat = lat;
+                        selectedLon = lon;
+                        
+                        // Reset button
+                        document.getElementById('currentLocation').innerHTML = originalText;
+                        document.getElementById('currentLocation').disabled = false;
+                    },
+                    function(error) {
+                        let errorMsg;
+                        switch(error.code) {
+                            case error.PERMISSION_DENIED:
+                                errorMsg = "Location access was denied. Please enable location services.";
+                                break;
+                            case error.POSITION_UNAVAILABLE:
+                                errorMsg = "Location information is unavailable. Please try again later.";
+                                break;
+                            case error.TIMEOUT:
+                                errorMsg = "The request to get location timed out. Please try again.";
+                                break;
+                            default:
+                                errorMsg = "An unknown error occurred while getting location.";
+                        }
+                        showNotification(errorMsg, "error");
+                        
+                        // Reset button
+                        document.getElementById('currentLocation').innerHTML = originalText;
+                        document.getElementById('currentLocation').disabled = false;
+                    },
+                    {
+                        enableHighAccuracy: true,
+                        timeout: 10000,
+                        maximumAge: 0
+                    }
+                );
+            } else {
+                showNotification("Geolocation is not supported by your browser.", "error");
+                
+                // Reset button
+                document.getElementById('currentLocation').innerHTML = originalText;
+                document.getElementById('currentLocation').disabled = false;
+            }
         });
 
-        // Load existing farm locations
+        // Reset map view with smooth animation
+        document.getElementById('resetMap').addEventListener('click', function() {
+            map.flyTo([20.5937, 78.9629], 5, {
+                animate: true,
+                duration: 1.5
+            });
+            if (marker) map.removeLayer(marker);
+            selectedLat = null;
+            selectedLon = null;
+        });
+
+        // Load existing farm locations with enhanced markers and popups
         fetch('/maps/farm-data/')
-        .then(response => {
-            if (!response.ok) {
-                throw new Error("Network response was not ok");
-            }
-            return response.json();
-        })
+        .then(response => response.json())
         .then(data => {
             data.features.forEach(farm => {
-                let status = farm.properties.status;
-                let recommended_crop = farm.properties.recommended_crop;
-                let color = status === "red" ? "red" : status === "orange" ? "orange" : "green";
-
-                let farmMarker = L.circleMarker([farm.geometry.coordinates[1], farm.geometry.coordinates[0]], {
-                    color: color,
-                    radius: 10,
-                    fillOpacity: 0.5
-                }).addTo(map);
-
-                farmMarker.bindPopup(`<b>${farm.properties.name}</b><br>Status: ${status}<br>Recommended Crop: ${recommended_crop}`);
+                let latlng = [farm.geometry.coordinates[1], farm.geometry.coordinates[0]];
+                let farmMarker = createGradientCircleMarker(latlng);
+                
+                farmMarker.addTo(map);
+                
+                // Create enhanced popup content
+                let popupContent = `
+                    <div class="popup-title">${farm.properties.name}</div>
+                    <div class="popup-content">
+                        <div><span class="popup-status" style="color:${farm.properties.status === "red" ? "red" : farm.properties.status === "orange" ? "orange" : "green"}">
+                            Status: ${farm.properties.status}</span>
+                        </div>
+                        <div>Recommended Crop: ${farm.properties.recommended_crop}</div>
+                    </div>
+                `;
+                
+                farmMarker.bindPopup(popupContent);
             });
         })
-        .catch(error => console.error("Error fetching farm data:", error));  
+        .catch(error => {
+            console.error("Error fetching farm data:", error);
+            showNotification("Failed to load farm data. Please try refreshing the page.", "error");
+        });
+        
+        // Custom notification function
+        function showNotification(message, type = "success") {
+            // Create notification element
+            const notification = document.createElement('div');
+            notification.style.position = 'fixed';
+            notification.style.bottom = '20px';
+            notification.style.left = '50%';
+            notification.style.transform = 'translateX(-50%)';
+            notification.style.backgroundColor = type === "success" ? '#2ecc71' : '#e74c3c';
+            notification.style.color = 'white';
+            notification.style.padding = '12px 20px';
+            notification.style.borderRadius = '8px';
+            notification.style.boxShadow = '0 4px 6px rgba(0, 0, 0, 0.1)';
+            notification.style.zIndex = '9999';
+            notification.style.opacity = '0';
+            notification.style.transition = 'opacity 0.3s ease-in-out';
+            notification.textContent = message;
+            
+            // Add to DOM
+            document.body.appendChild(notification);
+            
+            // Fade in
+            setTimeout(() => {
+                notification.style.opacity = '1';
+            }, 10);
+            
+            // Remove after delay
+            setTimeout(() => {
+                notification.style.opacity = '0';
+                setTimeout(() => {
+                    document.body.removeChild(notification);
+                }, 300);
+            }, 3000);
+        }
+        
+        // Add spinning animation style
+        const style = document.createElement('style');
+        style.textContent = `
+            .spinning {
+                animation: spin 1s linear infinite;
+            }
+            @keyframes spin {
+                0% { transform: rotate(0deg); }
+                100% { transform: rotate(360deg); }
+            }
+        `;
+        document.head.appendChild(style);
+        
+        // Handle window resize for better responsiveness
+        window.addEventListener('resize', function() {
+            map.invalidateSize();
+        });
     </script>
-</body>
-</html>
+{% endblock %}

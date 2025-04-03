@@ -47,7 +47,7 @@
         }
         
         /* Header Styles */
-        header {
+        .header1 {
             background-color: var(--primary-color);
             color: white;
             padding: 1rem 0;
@@ -166,6 +166,7 @@
         /* Improved Language Selector */
         .language-selector {
             position: relative;
+            margin-left: 1.5rem;
         }
         
         .language-btn {
@@ -533,6 +534,8 @@
                 width: 100%;
                 display: flex;
                 justify-content: center;
+                margin-left: 0;
+                margin-top: 1rem;
             }
             
             .language-dropdown {
@@ -566,7 +569,7 @@
     {% block extra_css %}{% endblock %}
 </head>
 <body>
-    <header>
+    <header class="header1">
         <nav class="navbar">
             <a href="/" class="logo">
                 <i class="fas fa-link"></i>
@@ -577,7 +580,7 @@
             </button>
             <ul class="nav-links" id="nav-links">
                 <li><a href="/"><i class="fas fa-home"></i> Home</a></li>
-                <li><a href="/about"><i class="fas fa-info-circle"></i> About</a></li>
+                <li><a href="{% url 'farm-map' %}"><i class="fas fa-info-circle"></i> About</a></li>
                 <li><a href="/services"><i class="fas fa-cogs"></i> Services</a></li>
                 <li><a href="/blog"><i class="fas fa-blog"></i> Blog</a></li>
                 
@@ -595,49 +598,46 @@
                         </a> {% endcomment %}
                     {% endif %}
                     
-                  
+                    <div class="language-selector">
+                        <button type="button" class="language-btn">
+                            <i class="fas fa-globe"></i>
+                            {% get_current_language as CURRENT_LANGUAGE %}
+                            {% for language in languages %}
+                                {% if language.code == CURRENT_LANGUAGE %}
+                                    {{ language.code|upper }}
+                                {% endif %}
+                            {% endfor %}
+                            <i class="fas fa-chevron-down" style="font-size: 0.8rem;"></i>
+                        </button>
+                        <div class="language-dropdown">
+                            {% get_current_language as CURRENT_LANGUAGE %}
+                            {% get_available_languages as AVAILABLE_LANGUAGES %}
+                            {% get_language_info_list for AVAILABLE_LANGUAGES as languages %}
+                            {% for language in languages %}
+                                <form action="{% url 'set_language' %}" method="post">
+                                    {% csrf_token %}
+                                    <input name="next" type="hidden" value="{{ request.get_full_path }}">
+                                    <input name="language" type="hidden" value="{{ language.code }}">
+                                    <button type="submit" class="{% if language.code == CURRENT_LANGUAGE %}active{% endif %}">
+                                        {% if language.code == 'en' %}
+                                            <span class="language-flag" style="background-color: #012169;"></span>
+                                        {% elif language.code == 'ml' %}
+                                            <span class="language-flag" style="background-color: #FF9933;"></span>
+                                        {% else %}
+                                            <span class="language-flag" style="background-color: #ddd;"></span>
+                                        {% endif %}
+                                        {{ language.name_local }}
+                                    </button>
+                                </form>
+                            {% endfor %}
+                        </div>
+                    </div>
                 </div>
             </ul>
         </nav>
     </header>
-    <div class="language-selector">
-        <button type="button" class="language-btn">
-            <i class="fas fa-globe"></i>
-            {% get_current_language as CURRENT_LANGUAGE %}
-            {% for language in languages %}
-                {% if language.code == CURRENT_LANGUAGE %}
-                    {{ language.code|upper }}
-                {% endif %}
-            {% endfor %}
-            <i class="fas fa-chevron-down" style="font-size: 0.8rem;"></i>
-        </button>
-   
     
-    <main>
-             <div class="language-dropdown">
-            {% get_current_language as CURRENT_LANGUAGE %}
-            {% get_available_languages as AVAILABLE_LANGUAGES %}
-            {% get_language_info_list for AVAILABLE_LANGUAGES as languages %}
-            {% for language in languages %}
-                <form action="{% url 'set_language' %}" method="post">
-                    {% csrf_token %}
-                    <input name="next" type="hidden" value="{{ request.get_full_path }}">
-                    <input name="language" type="hidden" value="{{ language.code }}">
-                    <button type="submit" class="{% if language.code == CURRENT_LANGUAGE %}active{% endif %}">
-                        {% if language.code == 'en' %}
-                            <span class="language-flag" style="background-color: #012169;"></span>
-                        {% elif language.code == 'ml' %}
-                            <span class="language-flag" style="background-color: #FF9933;"></span>
-                        {% else %}
-                            <span class="language-flag" style="background-color: #ddd;"></span>
-                        {% endif %}
-                        {{ language.name_local }}
-                    </button>
-                </form>
-            {% endfor %}
-        </div>
-    </div>
- 
+  
         {% block content %}
         <section class="content-section">
             <h1>Welcome to AgiChain</h1>
@@ -645,7 +645,7 @@
             <a href="#" class="btn btn-lg">Get Started <i class="fas fa-arrow-right"></i></a>
         </section>
         {% endblock %}
-    </main>
+  
     
     <footer>
         <div class="footer-content">
