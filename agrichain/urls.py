@@ -7,6 +7,8 @@ from django.conf.urls.i18n import i18n_patterns
 urlpatterns = [
     path('admin/', admin.site.urls),
     path("maps/",include('maps.urls')),
+    path('crop-ai/', include('crop_ai.urls')),
+
 
     path('i18n/', include('django.conf.urls.i18n')),  # Built-in language switching
 ]

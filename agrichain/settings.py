@@ -27,6 +27,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'users',
     'maps',
+    'crop_ai',
     'crispy_forms',
 ]
 
