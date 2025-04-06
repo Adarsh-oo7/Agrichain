@@ -55,8 +55,15 @@ def recommend_crop_ml(area, climate, soil_type, nearby_crop, preferred_crop):
         preferred_crop_enc = le_preferred.transform([preferred_crop])[0]
     except ValueError as e:
         print(f"Encoding error: {e}")
-        return "Generic Crop"  # Return fallback for unknown labels
+        return "Generic Crop"
 
-    input_data = np.array([[area, climate_enc, soil_type_enc, nearby_crop_enc, preferred_crop_enc]])
-    pred_encoded = model.predict(input_data)[0]
+    input_df = pd.DataFrame([{
+        "area": area,
+        "climate_enc": climate_enc,
+        "soil_type_enc": soil_type_enc,
+        "nearby_crop_enc": nearby_crop_enc,
+        "preferred_crop_enc": preferred_crop_enc,
+    }])
+
+    pred_encoded = model.predict(input_df)[0]
     return le_recommend.inverse_transform([pred_encoded])[0]

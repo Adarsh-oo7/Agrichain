@@ -3,23 +3,20 @@
 <head>
     <title>Crop Recommendation</title>
     <style>
-        /* Base styles */
-        .crop-recommendation-body {
+        body {
             font-family: 'Arial', sans-serif;
             padding: 30px;
             background-color: #f0f9f4;
             margin: 0;
         }
-        
-        /* Header styles */
-        .crop-recommendation-header {
+
+        .header {
             text-align: center;
             color: #2c3e50;
             margin-bottom: 30px;
         }
-        
-        /* Form container */
-        .crop-form-container {
+
+        .form-container {
             background: #ffffff;
             padding: 25px;
             border-radius: 10px;
@@ -27,17 +24,15 @@
             margin: 0 auto;
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
         }
-        
-        /* Form elements */
-        .crop-form-label {
+
+        .form-label {
             display: block;
             margin-bottom: 8px;
             font-weight: 600;
             color: #2c3e50;
         }
-        
-        .crop-form-input,
-        .crop-form-select {
+
+        .form-select {
             width: 100%;
             padding: 12px;
             margin-bottom: 20px;
@@ -46,16 +41,14 @@
             font-size: 16px;
             transition: border-color 0.3s ease;
         }
-        
-        .crop-form-input:focus,
-        .crop-form-select:focus {
+
+        .form-select:focus {
             outline: none;
             border-color: #28a745;
             box-shadow: 0 0 0 2px rgba(40, 167, 69, 0.2);
         }
-        
-        /* Submit button */
-        .crop-form-submit {
+
+        .form-submit {
             width: 100%;
             padding: 14px;
             background-color: #28a745;
@@ -67,13 +60,12 @@
             cursor: pointer;
             transition: background-color 0.3s ease;
         }
-        
-        .crop-form-submit:hover {
+
+        .form-submit:hover {
             background-color: #218838;
         }
-        
-        /* Result display */
-        .crop-result-container {
+
+        .result-container {
             text-align: center;
             margin-top: 25px;
             background-color: #d1ffd6;
@@ -84,57 +76,49 @@
             margin-left: auto;
             margin-right: auto;
         }
-        
-        .crop-result-text {
-            font-size: 18px;
-            margin: 0;
+
+        .error-message {
+            color: red;
+            text-align: center;
+            margin-top: 20px;
         }
-        
-        .crop-result-highlight {
+
+        .highlight {
             font-weight: bold;
             color: #0c5460;
         }
-        
-        /* Responsive adjustments */
+
         @media (max-width: 600px) {
-            .crop-recommendation-body {
+            body {
                 padding: 15px;
             }
-            
-            .crop-form-container {
+
+            .form-container {
                 padding: 20px;
             }
         }
     </style>
 </head>
-<div class="crop-recommendation-body">
-    <h1 class="crop-recommendation-header">🌾 AI-Powered Crop Recommendation</h1>
+<body>
 
-    <div class="crop-form-container">
+    <h1 class="header">🌾 AI-Powered Crop Recommendation</h1>
+
+    {% if error %}
+        <p class="error-message">{{ error }}</p>
+    {% endif %}
+
+    <div class="form-container">
         <form method="POST">
             {% csrf_token %}
-            <label class="crop-form-label">Farm Area (acres):</label>
-            <input type="number" class="crop-form-input" name="area" step="0.1" required>
 
-            <label class="crop-form-label">Climate:</label>
-            <select class="crop-form-select" name="climate" required>
-                <option value="">-- Select --</option>
-                <option value="hot">Hot</option>
-                <option value="cold">Cold</option>
-                <option value="humid">Humid</option>
-                <option value="dry">Dry</option>
-            </select>
+            <label class="form-label">Climate (from your farm profile):</label>
+            <p class="form-label" style="color: #555;">Used from farm data</p>
 
-            <label class="crop-form-label">Soil Type:</label>
-            <select class="crop-form-select" name="soil_type" required>
-                <option value="">-- Select --</option>
-                <option value="clay">Clay</option>
-                <option value="loamy">Loamy</option>
-                <option value="sandy">Sandy</option>
-            </select>
+            <label class="form-label">Soil Type (from your farm profile):</label>
+            <p class="form-label" style="color: #555;">Used from farm data</p>
 
-            <label class="crop-form-label">Nearby Farms' Major Crop:</label>
-            <select class="crop-form-select" name="nearby_crop" required>
+            <label class="form-label">Your Preferred Crop:</label>
+            <select class="form-select" name="preferred_crop" required>
                 <option value="">-- Select --</option>
                 <option value="wheat">Wheat</option>
                 <option value="rice">Rice</option>
@@ -142,25 +126,17 @@
                 <option value="barley">Barley</option>
             </select>
 
-            <label class="crop-form-label">Farmer's Preferred Crop:</label>
-            <select class="crop-form-select" name="preferred_crop" required>
-                <option value="">-- Select --</option>
-                <option value="wheat">Wheat</option>
-                <option value="rice">Rice</option>
-                <option value="maize">Maize</option>
-                <option value="barley">Barley</option>
-            </select>
-
-            <button type="submit" class="crop-form-submit">🔍 Recommend Crop</button>
+            <button type="submit" class="form-submit">🔍 Recommend Crop</button>
         </form>
     </div>
 
     {% if submitted %}
-        <div class="crop-result-container">
-            <p class="crop-result-text">
-                🌱 Recommended Crop: <span class="crop-result-highlight">{{ recommended }}</span>
-            </p>
+        <div class="result-container">
+            <p>🌱 Recommended Crop: <span class="highlight">{{ recommended }}</span></p>
+            <p>📏 Average Area Considered: <span class="highlight">{{ avg_area_used|floatformat:2 }} acres</span></p>
+            <p>🌾 Nearby Farms' Major Crop: <span class="highlight">{{ nearby_crop_used }}</span></p>
         </div>
     {% endif %}
-    </div>
+
+</body>
 </html>

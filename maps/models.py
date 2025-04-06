@@ -14,15 +14,19 @@ class Farm(models.Model):
         ('corn', 'Corn'),
         ('vegetables', 'Vegetables'),
         ('fruits', 'Fruits'),
+        ('maize', 'Maize'),
+        ('barley', 'Barley'),
     ]
 
-    farmer = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)  # Corrected here
+    farmer = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     latitude = models.FloatField()
     longitude = models.FloatField()
+    area = models.FloatField(default=1.0, help_text="Farm area in acres or hectares")
     soil_type = models.CharField(max_length=50)
     climate = models.CharField(max_length=50)
     oversupply_risk = models.BooleanField(default=False)
     recommended_crop = models.CharField(max_length=50, choices=CROP_CHOICES, blank=True, null=True)
+    user_crop_preferences = models.CharField(max_length=50, choices=CROP_CHOICES, blank=True, null=True)  # ✅ NEW
     status = models.CharField(max_length=10, choices=FARM_STATUS_CHOICES, default='green')
 
     def __str__(self):

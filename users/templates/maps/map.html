@@ -2,12 +2,11 @@
 {% load static %}
 {% load i18n %}
 
-{% block title %}mart Farm Map{% endblock %}
+{% block title %}Smart Farm Map{% endblock %}
 
 {% block extra_css %}
-   
     <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
-    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
             --primary-color: #2ecc71;
@@ -16,117 +15,8 @@
             --light-color: #f8f9fa;
             --dark-color: #343a40;
             --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        }
-        
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            margin: 0;
-            padding: 0;
-            background: var(--light-color);
-            color: var(--dark-color);
-        }
-
-        /* Base styles */
-        .crop-recommendation-body {
-            font-family: 'Arial', sans-serif;
-            padding: 30px;
-            background-color: #f0f9f4;
-            margin: 0;
-        }
-        
-        /* Header styles */
-        .crop-recommendation-header {
-            text-align: center;
-            color: #2c3e50;
-            margin-bottom: 30px;
-        }
-        
-        /* Form container */
-        .crop-form-container {
-            background: #ffffff;
-            padding: 25px;
-            border-radius: 10px;
-            max-width: 500px;
-            margin: 0 auto;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-        }
-        
-        /* Form elements */
-        .crop-form-label {
-            display: block;
-            margin-bottom: 8px;
-            font-weight: 600;
-            color: #2c3e50;
-        }
-        
-        .crop-form-input,
-        .crop-form-select {
-            width: 100%;
-            padding: 12px;
-            margin-bottom: 20px;
-            border-radius: 8px;
-            border: 1px solid #d1d5db;
-            font-size: 16px;
-            transition: border-color 0.3s ease;
-        }
-        
-        .crop-form-input:focus,
-        .crop-form-select:focus {
-            outline: none;
-            border-color: #28a745;
-            box-shadow: 0 0 0 2px rgba(40, 167, 69, 0.2);
-        }
-        
-        /* Submit button */
-        .crop-form-submit {
-            width: 100%;
-            padding: 14px;
-            background-color: #28a745;
-            color: white;
-            font-weight: bold;
-            border: none;
-            border-radius: 8px;
-            font-size: 16px;
-            cursor: pointer;
-            transition: background-color 0.3s ease;
-        }
-        
-        .crop-form-submit:hover {
-            background-color: #218838;
-        }
-        
-        /* Result display */
-        .crop-result-container {
-            text-align: center;
-            margin-top: 25px;
-            background-color: #d1ffd6;
-            padding: 20px;
-            border-radius: 8px;
-            color: #155724;
-            max-width: 500px;
-            margin-left: auto;
-            margin-right: auto;
-        }
-        
-        .crop-result-text {
-            font-size: 18px;
-            margin: 0;
-        }
-        
-        .crop-result-highlight {
-            font-weight: bold;
-            color: #0c5460;
-        }
-        
-        /* Responsive adjustments */
-        @media (max-width: 600px) {
-            .crop-recommendation-body {
-                padding: 15px;
-            }
-            
-            .crop-form-container {
-                padding: 20px;
-            }
+            --error-color: #e74c3c;
+            --warning-color: #f39c12;
         }
         
         .container {
@@ -181,12 +71,11 @@
             background-color: var(--primary-color);
             color: white;
             font-size: 15px;
-            transition: transform 0.2s, background-color 0.3s;
+            transition: all 0.3s ease;
             box-shadow: var(--shadow);
             display: flex;
             align-items: center;
             gap: 8px;
-            flex: 0 0 auto;
         }
         
         button:hover {
@@ -204,6 +93,22 @@
             transform: none;
         }
         
+        button.warning {
+            background-color: var(--warning-color);
+        }
+        
+        button.warning:hover {
+            background-color: #e67e22;
+        }
+        
+        button.error {
+            background-color: var(--error-color);
+        }
+        
+        button.error:hover {
+            background-color: #c0392b;
+        }
+        
         .map-container {
             position: relative;
         }
@@ -218,7 +123,6 @@
             border-radius: 10px;
             box-shadow: var(--shadow);
             font-size: 14px;
-            opacity: 0.9;
         }
         
         .legend-item {
@@ -234,14 +138,7 @@
             margin-right: 10px;
         }
         
-        .footer {
-            text-align: center;
-            margin-top: 20px;
-            font-size: 14px;
-            color: #6c757d;
-        }
-        
-        /* Styles for coordinates display panel */
+        /* Coordinates panel */
         #coordinates-panel {
             background: white;
             padding: 12px 15px;
@@ -262,7 +159,7 @@
             color: var(--primary-color);
         }
         
-        /* Modal for advanced settings */
+        /* Modal styles */
         .modal {
             display: none;
             position: fixed;
@@ -271,8 +168,8 @@
             top: 0;
             width: 100%;
             height: 100%;
-            overflow: auto;
             background-color: rgba(0,0,0,0.5);
+            overflow: auto;
         }
         
         .modal-content {
@@ -280,9 +177,15 @@
             margin: 10% auto;
             padding: 20px;
             border-radius: 15px;
-            box-shadow: var(--shadow);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
             width: 80%;
             max-width: 600px;
+            animation: modalopen 0.3s;
+        }
+        
+        @keyframes modalopen {
+            from {opacity: 0; transform: translateY(-50px);}
+            to {opacity: 1; transform: translateY(0);}
         }
         
         .modal-header {
@@ -291,7 +194,7 @@
             align-items: center;
             margin-bottom: 20px;
             padding-bottom: 10px;
-            border-bottom: 1px solid #ddd;
+            border-bottom: 1px solid #eee;
         }
         
         .modal-title {
@@ -305,6 +208,7 @@
             font-size: 28px;
             font-weight: bold;
             cursor: pointer;
+            transition: color 0.3s;
         }
         
         .close-button:hover {
@@ -322,12 +226,22 @@
             color: var(--dark-color);
         }
         
-        .form-group input, .form-group select {
+        .form-group input, 
+        .form-group select,
+        .form-group textarea {
             width: 100%;
             padding: 10px;
             border: 1px solid #ddd;
             border-radius: 5px;
             font-size: 16px;
+            transition: border-color 0.3s;
+        }
+        
+        .form-group input:focus, 
+        .form-group select:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 2px rgba(46, 204, 113, 0.2);
         }
         
         .form-actions {
@@ -335,6 +249,63 @@
             justify-content: flex-end;
             gap: 10px;
             margin-top: 20px;
+        }
+        
+        /* Custom map popup styling */
+        .leaflet-popup-content-wrapper {
+            border-radius: 10px;
+            padding: 5px;
+        }
+        
+        .leaflet-popup-content {
+            margin: 10px 12px;
+            line-height: 1.5;
+        }
+        
+        .popup-title {
+            font-weight: bold;
+            margin-bottom: 5px;
+            font-size: 16px;
+            color: var(--primary-dark);
+        }
+        
+        .popup-content {
+            font-size: 14px;
+        }
+        
+        .popup-status {
+            font-weight: bold;
+        }
+        
+        /* Status indicators */
+        .status-indicator {
+            display: inline-block;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            margin-right: 5px;
+        }
+        
+        .status-green {
+            background-color: var(--primary-color);
+        }
+        
+        .status-orange {
+            background-color: var(--warning-color);
+        }
+        
+        .status-red {
+            background-color: var(--error-color);
+        }
+        
+        /* Loading spinner */
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .spinning {
+            animation: spin 1s linear infinite;
         }
         
         /* Responsive adjustments */
@@ -356,16 +327,10 @@
                 width: 90%;
                 margin: 20% auto;
             }
-            
-            #coordinates-panel {
-                flex-direction: column;
-                align-items: flex-start;
-                gap: 10px;
-            }
         }
         
         @media (max-width: 600px) {
-            header {
+            .header {
                 padding: 15px 0;
             }
             
@@ -399,64 +364,42 @@
             }
         }
 
-        /* Custom map popup styling */
-        .leaflet-popup-content-wrapper {
-            border-radius: 10px;
-            padding: 5px;
+        /* Notification system */
+        .notification {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            padding: 12px 20px;
+            border-radius: 8px;
+            box-shadow: var(--shadow);
+            z-index: 9999;
+            opacity: 0;
+            transition: opacity 0.3s ease-in-out;
+            color: white;
+            display: flex;
+            align-items: center;
+            gap: 10px;
         }
         
-        .leaflet-popup-content {
-            margin: 10px 12px;
-            line-height: 1.5;
+        .notification.show {
+            opacity: 1;
         }
         
-        .popup-title {
-            font-weight: bold;
-            margin-bottom: 5px;
-            font-size: 16px;
-            color: var(--primary-dark);
+        .notification.success {
+            background-color: var(--primary-color);
         }
         
-        .popup-content {
-            font-size: 14px;
+        .notification.error {
+            background-color: var(--error-color);
         }
         
-        .popup-status {
-            font-weight: bold;
-        }
-        
-        /* Additional styles for status indicators */
-        .status-indicator {
-            display: inline-block;
-            width: 12px;
-            height: 12px;
-            border-radius: 50%;
-            margin-right: 5px;
-        }
-        
-        .status-green {
-            background-color: #2ecc71;
-        }
-        
-        .status-orange {
-            background-color: #f39c12;
-        }
-        
-        .status-red {
-            background-color: #e74c3c;
-        }
-        
-        /* Spinning animation for loading states */
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-        
-        .spinning {
-            animation: spin 1s linear infinite;
+        .notification.warning {
+            background-color: var(--warning-color);
         }
     </style>
-{% endblock%}
+{% endblock %}
+
 {% block content %}
     <header class="header">
         <div class="container">
@@ -465,10 +408,6 @@
         </div>
     </header>
 
-
-  
-
-    
     <div class="container">
         <div id="coordinates-panel">
             <div class="coordinates-info">
@@ -479,66 +418,49 @@
         
         <div class="button-container">
             <button id="saveLocation">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path>
-                    <polyline points="17 21 17 13 7 13 7 21"></polyline>
-                    <polyline points="7 3 7 8 15 8"></polyline>
-                </svg>
+                <i class="fas fa-save"></i>
                 Save Location
             </button>
             <button id="currentLocation">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <circle cx="12" cy="12" r="10"></circle>
-                    <circle cx="12" cy="12" r="3"></circle>
-                </svg>
+                <i class="fas fa-location-arrow"></i>
                 Use My Location
             </button>
-            <button id="resetMap">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M3 2v6h6"></path>
-                    <path d="M21 12A9 9 0 0 0 6 5.3L3 8"></path>
-                    <path d="M21 22v-6h-6"></path>
-                    <path d="M3 12a9 9 0 0 0 15 6.7l3-2.7"></path>
-                </svg>
+            <button id="resetMap" class="warning">
+                <i class="fas fa-sync-alt"></i>
                 Reset Map
             </button>
             <button id="addFarm">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
-                    <line x1="12" y1="8" x2="12" y2="16"></line>
-                    <line x1="8" y1="12" x2="16" y2="12"></line>
-                </svg>
+                <i class="fas fa-plus"></i>
                 Add Farm
             </button>
             <button id="viewAllFarms">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
-                    <circle cx="12" cy="12" r="3"></circle>
-                </svg>
+                <i class="fas fa-eye"></i>
                 View All Farms
             </button>
             <button id="showSettings">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <circle cx="12" cy="12" r="3"></circle>
-                    <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
-                </svg>
+                <i class="fas fa-cog"></i>
                 Settings
             </button>
-            <button id="getSuggestions"><a href="{%url 'recommend-crop'%}">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path>
-                </svg>
+            <a href="{% url 'recommend-crop' %}" class="btn" id="getSuggestions">
+                <i class="fas fa-seedling"></i>
                 Get Crop Suggestions
             </a>
-            </button>
         </div>
         
         <div class="map-container">
             <div id="map"></div>
             <div class="legend">
                 <div class="legend-item">
-                    <div class="legend-color" style="background: radial-gradient(circle, red 30%, orange 65%, green 100%)"></div>
-                    <span>Farm Status Indicator</span>
+                    <div class="legend-color status-green"></div>
+                    <span>Good Condition</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color status-orange"></div>
+                    <span>Needs Attention</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color status-red"></div>
+                    <span>Critical Condition</span>
                 </div>
             </div>
         </div>
@@ -569,11 +491,31 @@
                         </select>
                     </div>
                     <div class="form-group">
+                        <label for="soilType">Soil Type</label>
+                        <select id="soilType" name="soilType" required>
+                            <option value="">Select soil type</option>
+                            <option value="loamy">Loamy</option>
+                            <option value="clay">Clay</option>
+                            <option value="sandy">Sandy</option>
+                            <option value="silt">Silt</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="climate">Climate</label>
+                        <select id="climate" name="climate" required>
+                            <option value="">Select climate</option>
+                            <option value="tropical">Tropical</option>
+                            <option value="subtropical">Subtropical</option>
+                            <option value="temperate">Temperate</option>
+                            <option value="arid">Arid</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
                         <label>Farm Location</label>
                         <div id="locationDisplay">Please select a location on the map first</div>
                     </div>
                     <div class="form-actions">
-                        <button type="button" id="cancelFarm">Cancel</button>
+                        <button type="button" id="cancelFarm" class="warning">Cancel</button>
                         <button type="submit" id="submitFarm">Save Farm</button>
                     </div>
                 </form>
@@ -607,24 +549,25 @@
                     <div class="form-group">
                         <label for="defaultZoom">Default Zoom Level</label>
                         <input type="range" id="defaultZoom" name="defaultZoom" min="1" max="18" value="5">
+                        <span id="zoomValue">5</span>
                     </div>
                     <div class="form-actions">
-                        <button type="button" id="cancelSettings">Cancel</button>
+                        <button type="button" id="cancelSettings" class="warning">Cancel</button>
                         <button type="submit" id="saveSettings">Save Settings</button>
                     </div>
                 </form>
             </div>
         </div>
         
-      
         <div class="footer">
             &copy; 2025 Smart Farm Mapping System - All rights reserved
         </div>
     </div>
 
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
     <script>
-        // Map initialization with configurable options
-        let mapConfig = {
+        // Initialize map with default settings
+        const mapConfig = {
             defaultView: [20.5937, 78.9629],
             defaultZoom: 5,
             markerSize: 15,
@@ -648,20 +591,20 @@
             })
         };
         
-        // Initialize map with default settings
-        var map = L.map('map', {
+        // Initialize map
+        const map = L.map('map', {
             zoomControl: false
         }).setView(mapConfig.defaultView, mapConfig.defaultZoom);
         
         // Add default tile layer
         tileLayers.default.addTo(map);
         
-        // Add zoom control to bottom right
+        // Add zoom control
         L.control.zoom({
             position: 'bottomright'
         }).addTo(map);
         
-        // Add attribution control to bottom left
+        // Add attribution control
         L.control.attribution({
             position: 'bottomleft'
         }).addTo(map);
@@ -669,10 +612,10 @@
         // Global variables
         let marker = null;
         let selectedLat = null, selectedLon = null;
-        let farmMarkers = []; // Array to track all farm markers
-        let lastSavedLocation = null; // Track last saved location
+        let farmMarkers = [];
+        let lastSavedLocation = null;
         
-        // Create custom icon for selected location
+        // Custom icon for selected location
         const customIcon = L.icon({
             iconUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon.png',
             iconSize: [25, 41],
@@ -682,77 +625,51 @@
             shadowSize: [41, 41]
         });
 
-        // Helper function to create gradient circle markers
-        function createGradientCircleMarker(latlng, options = {}) {
-            const defaultOptions = {
-                radius: mapConfig.markerSize,
-                fillOpacity: 0.85
-            };
-            
-            const mergedOptions = {...defaultOptions, ...options};
-            
-            // Create a unique ID for this marker's gradient
-            const markerId = `marker_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
-            
-            // Create a custom divIcon with SVG for gradient effect
-            const gradientIcon = L.divIcon({
-                html: `<svg height="${mergedOptions.radius * 2}" width="${mergedOptions.radius * 2}">
-                         <defs>
-                           <radialGradient id="gradient_${markerId}" cx="50%" cy="50%" r="50%" fx="50%" fy="50%">
-                             <stop offset="0%" style="stop-color:red;stop-opacity:1" />
-                             <stop offset="60%" style="stop-color:orange;stop-opacity:1" />
-                             <stop offset="100%" style="stop-color:green;stop-opacity:1" />
-                           </radialGradient>
-                         </defs>
-                         <circle cx="${mergedOptions.radius}" cy="${mergedOptions.radius}" r="${mergedOptions.radius}" fill="url(#gradient_${markerId})" />
-                       </svg>`,
-                className: "",
-                iconSize: [mergedOptions.radius * 2, mergedOptions.radius * 2],
-                iconAnchor: [mergedOptions.radius, mergedOptions.radius]
-            });
-            
-            return L.marker(latlng, {
-                icon: gradientIcon,
-                interactive: true
-            });
-        }
+        // Status icons for farm markers
+        const statusIcons = {
+            green: L.icon({
+                iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-green.png',
+                iconSize: [25, 41],
+                iconAnchor: [12, 41],
+                popupAnchor: [1, -34]
+            }),
+            orange: L.icon({
+                iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-orange.png',
+                iconSize: [25, 41],
+                iconAnchor: [12, 41],
+                popupAnchor: [1, -34]
+            }),
+            red: L.icon({
+                iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-red.png',
+                iconSize: [25, 41],
+                iconAnchor: [12, 41],
+                popupAnchor: [1, -34]
+            })
+        };
 
         // Helper function to show notifications
         function showNotification(message, type = "success") {
-            // Create notification element
             const notification = document.createElement('div');
-            notification.style.position = 'fixed';
-            notification.style.bottom = '20px';
-            notification.style.left = '50%';
-            notification.style.transform = 'translateX(-50%)';
-            notification.style.backgroundColor = type === "success" ? '#2ecc71' : '#e74c3c';
-            notification.style.color = 'white';
-            notification.style.padding = '12px 20px';
-            notification.style.borderRadius = '8px';
-            notification.style.boxShadow = '0 4px 6px rgba(0, 0, 0, 0.1)';
-            notification.style.zIndex = '9999';
-            notification.style.opacity = '0';
-            notification.style.transition = 'opacity 0.3s ease-in-out';
-            notification.textContent = message;
-            
-            // Add to DOM
+            notification.className = `notification ${type}`;
+            notification.innerHTML = `
+                <i class="fas ${type === 'success' ? 'fa-check-circle' : type === 'error' ? 'fa-exclamation-circle' : 'fa-exclamation-triangle'}"></i>
+                ${message}
+            `;
             document.body.appendChild(notification);
             
-            // Fade in
             setTimeout(() => {
-                notification.style.opacity = '1';
+                notification.classList.add('show');
             }, 10);
             
-            // Remove after delay
             setTimeout(() => {
-                notification.style.opacity = '0';
+                notification.classList.remove('show');
                 setTimeout(() => {
                     document.body.removeChild(notification);
                 }, 300);
             }, 3000);
         }
 
-        // Helper function to update coordinates display
+        // Update coordinates display
         function updateCoordinatesDisplay() {
             const coordinatesDisplay = document.getElementById('coordinates-display');
             const selectedLocationText = document.getElementById('selected-location-text');
@@ -760,41 +677,43 @@
             if (selectedLat !== null && selectedLon !== null) {
                 coordinatesDisplay.textContent = `Lat: ${selectedLat.toFixed(6)}, Lon: ${selectedLon.toFixed(6)}`;
                 selectedLocationText.textContent = 'Location Selected';
+                
+                // Update location display in add farm modal if it's open
+                const locationDisplay = document.getElementById('locationDisplay');
+                if (locationDisplay) {
+                    locationDisplay.textContent = `Latitude: ${selectedLat.toFixed(6)}, Longitude: ${selectedLon.toFixed(6)}`;
+                    locationDisplay.style.color = 'var(--primary-dark)';
+                    locationDisplay.style.fontWeight = 'bold';
+                }
             } else {
                 coordinatesDisplay.textContent = '';
                 selectedLocationText.textContent = 'No location selected';
             }
         }
 
-        // Allow user to click and place marker with enhanced popup
+        // Handle map click
         map.on('click', function(e) {
             if (marker) map.removeLayer(marker);
             selectedLat = e.latlng.lat;
             selectedLon = e.latlng.lng;
             
             marker = L.marker([selectedLat, selectedLon], {icon: customIcon}).addTo(map)
-                .bindPopup("<div class='popup-title'>Selected Location</div><div class='popup-content'>Latitude: " + selectedLat.toFixed(6) + "<br>Longitude: " + selectedLon.toFixed(6) + "</div>");
+                .bindPopup("<div class='popup-title'>Selected Location</div><div class='popup-content'>Latitude: " + selectedLat.toFixed(6) + "<br>Longitude: " + selectedLon.toFixed(6) + "</div>")
+                .openPopup();
             
-            marker.openPopup();
             updateCoordinatesDisplay();
-            
-            // Update location display in add farm modal if it's open
-            const locationDisplay = document.getElementById('locationDisplay');
-            if (locationDisplay) {
-                locationDisplay.textContent = `Latitude: ${selectedLat.toFixed(6)}, Longitude: ${selectedLon.toFixed(6)}`;
-            }
         });
 
-        // Save location when button is clicked with improved feedback
-          document.getElementById('saveLocation').addEventListener('click', function() {
+        // Save location
+        document.getElementById('saveLocation').addEventListener('click', function() {
             if (!selectedLat || !selectedLon) {
                 showNotification("Please select a location on the map first!", "error");
                 return;
             }
             
-            // Show saving feedback
             const originalText = this.innerHTML;
-            this.innerHTML = '<svg class="spinning" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12a9 9 0 1 1-6.219-8.56"></path></svg> Saving...';
+            this.innerHTML = '<i class="fas fa-spinner spinning"></i> Saving...';
+            this.disabled = true;
             
             fetch('/maps/save-location/', {
                 method: 'POST',
@@ -802,97 +721,62 @@
                     'Content-Type': 'application/json',
                     'X-CSRFToken': '{{ csrf_token }}'
                 },
-                body: JSON.stringify({ latitude: selectedLat, longitude: selectedLon })
+                body: JSON.stringify({ 
+                    latitude: selectedLat, 
+                    longitude: selectedLon 
+                })
             })
             .then(response => response.json())
             .then(data => {
                 showNotification(data.message || "Location saved successfully!");
+                lastSavedLocation = { latitude: selectedLat, longitude: selectedLon };
                 
-                // Reset button text
-                this.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path><polyline points="17 21 17 13 7 13 7 21"></polyline><polyline points="7 3 7 8 15 8"></polyline></svg> Save Location';
+                // For demo purposes, create a new farm marker
+                const farmMarker = L.marker([selectedLat, selectedLon], {
+                    icon: statusIcons.green
+                }).addTo(map);
+                
+                farmMarker.bindPopup(`
+                    <div class="popup-title">New Farm Location</div>
+                    <div class="popup-content">
+                        <div><span class="status-indicator status-green"></span> Status: Good</div>
+                        <div>Coordinates: ${selectedLat.toFixed(6)}, ${selectedLon.toFixed(6)}</div>
+                    </div>
+                `);
+                
+                farmMarkers.push(farmMarker);
             })
             .catch(error => {
                 showNotification("Error saving location!", "error");
-                
-                // Reset button text
-                this.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path><polyline points="17 21 17 13 7 13 7 21"></polyline><polyline points="7 3 7 8 15 8"></polyline></svg> Save Location';
-            });
-
-            setTimeout(() => {
-                lastSavedLocation = {
-                    latitude: selectedLat,
-                    longitude: selectedLon
-                };
-                
-                showNotification("Location saved successfully!");
-                
-                // Reset button
+                console.error('Error:', error);
+            })
+            .finally(() => {
                 this.innerHTML = originalText;
                 this.disabled = false;
-                
-                // For demo purposes, let's create a new farm marker
-                const farmMarker = createGradientCircleMarker([selectedLat, selectedLon]);
-                farmMarker.addTo(map);
-                farmMarker.bindPopup(`<div class="popup-title">New Farm</div><div class="popup-content">Recently saved location</div>`);
-                farmMarkers.push(farmMarker);
-                
-            }, 800); // Simulate network delay
-        }); 
-
-        {% comment %} // Save location when button is clicked with improved feedback
-        document.getElementById('saveLocation').addEventListener('click', function() {
-            if (!selectedLat || !selectedLon) {
-                showNotification("Please select a location on the map first!");
-                return;
-            }
-            
-            // Show saving feedback
-            this.innerHTML = '<svg class="spinning" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12a9 9 0 1 1-6.219-8.56"></path></svg> Saving...';
-            
-            fetch('/maps/save-location/', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRFToken': '{{ csrf_token }}'
-                },
-                body: JSON.stringify({ latitude: selectedLat, longitude: selectedLon })
-            })
-            .then(response => response.json())
-            .then(data => {
-                showNotification(data.message || "Location saved successfully!");
-                
-                // Reset button text
-                this.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path><polyline points="17 21 17 13 7 13 7 21"></polyline><polyline points="7 3 7 8 15 8"></polyline></svg> Save Location';
-            })
-            .catch(error => {
-                showNotification("Error saving location!", "error");
-                
-                // Reset button text
-                this.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path><polyline points="17 21 17 13 7 13 7 21"></polyline><polyline points="7 3 7 8 15 8"></polyline></svg> Save Location';
             });
-        }); {% endcomment %}
+        });
 
-        // Get user's current location with improved UX
+        // Get current location
         document.getElementById('currentLocation').addEventListener('click', function() {
             const originalText = this.innerHTML;
-            this.innerHTML = '<svg class="spinning" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12a9 9 0 1 1-6.219-8.56"></path></svg> Getting location...';
+            this.innerHTML = '<i class="fas fa-spinner spinning"></i> Locating...';
             this.disabled = true;
             
             if (navigator.geolocation) {
                 navigator.geolocation.getCurrentPosition(
                     function(position) {
-                        let lat = position.coords.latitude;
-                        let lon = position.coords.longitude;
+                        const lat = position.coords.latitude;
+                        const lon = position.coords.longitude;
+                        
                         if (marker) map.removeLayer(marker);
                         marker = L.marker([lat, lon], {icon: customIcon}).addTo(map)
-                            .bindPopup("<div class='popup-title'>Your Current Location</div><div class='popup-content'>Latitude: " + lat.toFixed(6) + "<br>Longitude: " + lon.toFixed(6) + "</div>").openPopup();
-                        map.setView([lat, lon], 13);
+                            .bindPopup("<div class='popup-title'>Your Current Location</div><div class='popup-content'>Latitude: " + lat.toFixed(6) + "<br>Longitude: " + lon.toFixed(6) + "</div>")
+                            .openPopup();
+                        
+                        map.setView([lat, lon], 14);
                         selectedLat = lat;
                         selectedLon = lon;
-                        
-                        // Reset button
-                        document.getElementById('currentLocation').innerHTML = originalText;
-                        document.getElementById('currentLocation').disabled = false;
+                        updateCoordinatesDisplay();
                     },
                     function(error) {
                         let errorMsg;
@@ -901,19 +785,15 @@
                                 errorMsg = "Location access was denied. Please enable location services.";
                                 break;
                             case error.POSITION_UNAVAILABLE:
-                                errorMsg = "Location information is unavailable. Please try again later.";
+                                errorMsg = "Location information is unavailable.";
                                 break;
                             case error.TIMEOUT:
-                                errorMsg = "The request to get location timed out. Please try again.";
+                                errorMsg = "The request to get location timed out.";
                                 break;
                             default:
-                                errorMsg = "An unknown error occurred while getting location.";
+                                errorMsg = "An unknown error occurred.";
                         }
                         showNotification(errorMsg, "error");
-                        
-                        // Reset button
-                        document.getElementById('currentLocation').innerHTML = originalText;
-                        document.getElementById('currentLocation').disabled = false;
                     },
                     {
                         enableHighAccuracy: true,
@@ -923,104 +803,175 @@
                 );
             } else {
                 showNotification("Geolocation is not supported by your browser.", "error");
-                
-                // Reset button
-                document.getElementById('currentLocation').innerHTML = originalText;
-                document.getElementById('currentLocation').disabled = false;
             }
+            
+            this.innerHTML = originalText;
+            this.disabled = false;
         });
 
-        // Reset map view with smooth animation
+        // Reset map
         document.getElementById('resetMap').addEventListener('click', function() {
-            map.flyTo([20.5937, 78.9629], 5, {
+            map.flyTo(mapConfig.defaultView, mapConfig.defaultZoom, {
                 animate: true,
                 duration: 1.5
             });
+            
             if (marker) map.removeLayer(marker);
             selectedLat = null;
             selectedLon = null;
+            updateCoordinatesDisplay();
         });
 
-        // Load existing farm locations with enhanced markers and popups
-        fetch('/maps/farm-data/')
-        .then(response => response.json())
-        .then(data => {
-            data.features.forEach(farm => {
-                let latlng = [farm.geometry.coordinates[1], farm.geometry.coordinates[0]];
-                let farmMarker = createGradientCircleMarker(latlng);
-                
-                farmMarker.addTo(map);
-                
-                // Create enhanced popup content
-                let popupContent = `
-                    <div class="popup-title">${farm.properties.name}</div>
-                    <div class="popup-content">
-                        <div><span class="popup-status" style="color:${farm.properties.status === "red" ? "red" : farm.properties.status === "orange" ? "orange" : "green"}">
-                            Status: ${farm.properties.status}</span>
-                        </div>
-                        <div>Recommended Crop: ${farm.properties.recommended_crop}</div>
-                    </div>
-                `;
-                
-                farmMarker.bindPopup(popupContent);
-            });
-        })
-        .catch(error => {
-            console.error("Error fetching farm data:", error);
-            showNotification("Failed to load farm data. Please try refreshing the page.", "error");
+        // Modal handling
+        document.getElementById('addFarm').addEventListener('click', function() {
+            if (!selectedLat || !selectedLon) {
+                showNotification("Please select a location on the map first!", "error");
+                return;
+            }
+            
+            document.getElementById('farmModal').style.display = 'block';
         });
-        
-        // Custom notification function
-        function showNotification(message, type = "success") {
-            // Create notification element
-            const notification = document.createElement('div');
-            notification.style.position = 'fixed';
-            notification.style.bottom = '20px';
-            notification.style.left = '50%';
-            notification.style.transform = 'translateX(-50%)';
-            notification.style.backgroundColor = type === "success" ? '#2ecc71' : '#e74c3c';
-            notification.style.color = 'white';
-            notification.style.padding = '12px 20px';
-            notification.style.borderRadius = '8px';
-            notification.style.boxShadow = '0 4px 6px rgba(0, 0, 0, 0.1)';
-            notification.style.zIndex = '9999';
-            notification.style.opacity = '0';
-            notification.style.transition = 'opacity 0.3s ease-in-out';
-            notification.textContent = message;
+
+        document.getElementById('closeFarmModal').addEventListener('click', function() {
+            document.getElementById('farmModal').style.display = 'none';
+        });
+
+        document.getElementById('cancelFarm').addEventListener('click', function() {
+            document.getElementById('farmModal').style.display = 'none';
+        });
+
+        document.getElementById('showSettings').addEventListener('click', function() {
+            document.getElementById('settingsModal').style.display = 'block';
+        });
+
+        document.getElementById('closeSettingsModal').addEventListener('click', function() {
+            document.getElementById('settingsModal').style.display = 'none';
+        });
+
+        document.getElementById('cancelSettings').addEventListener('click', function() {
+            document.getElementById('settingsModal').style.display = 'none';
+        });
+
+        // Close modals when clicking outside
+        window.addEventListener('click', function(event) {
+            if (event.target.className === 'modal') {
+                event.target.style.display = 'none';
+            }
+        });
+
+        // Settings form handling
+        document.getElementById('defaultZoom').addEventListener('input', function() {
+            document.getElementById('zoomValue').textContent = this.value;
+        });
+
+        document.getElementById('settingsForm').addEventListener('submit', function(e) {
+            e.preventDefault();
             
-            // Add to DOM
-            document.body.appendChild(notification);
+            mapConfig.mapStyle = document.getElementById('mapStyle').value;
+            mapConfig.defaultZoom = parseInt(document.getElementById('defaultZoom').value);
+            mapConfig.markerSize = document.getElementById('markerSize').value === 'small' ? 12 : 
+                                  document.getElementById('markerSize').value === 'medium' ? 15 : 18;
             
-            // Fade in
+            // Change map style
+            Object.values(tileLayers).forEach(layer => map.removeLayer(layer));
+            tileLayers[mapConfig.mapStyle].addTo(map);
+            
+            showNotification("Settings saved successfully!");
+            document.getElementById('settingsModal').style.display = 'none';
+        });
+
+        // Farm form handling
+        document.getElementById('farmForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const farmName = document.getElementById('farmName').value;
+            const farmSize = document.getElementById('farmSize').value;
+            const farmStatus = document.getElementById('farmStatus').value;
+            const soilType = document.getElementById('soilType').value;
+            const climate = document.getElementById('climate').value;
+            
+            const submitBtn = document.getElementById('submitFarm');
+            const originalText = submitBtn.innerHTML;
+            submitBtn.innerHTML = '<i class="fas fa-spinner spinning"></i> Saving...';
+            submitBtn.disabled = true;
+            
+            // Simulate API call
             setTimeout(() => {
-                notification.style.opacity = '1';
-            }, 10);
+                const farmMarker = L.marker([selectedLat, selectedLon], {
+                    icon: statusIcons[farmStatus]
+                }).addTo(map);
+                
+                farmMarker.bindPopup(`
+                    <div class="popup-title">${farmName}</div>
+                    <div class="popup-content">
+                        <div><span class="status-indicator status-${farmStatus}"></span> Status: ${farmStatus}</div>
+                        <div>Size: ${farmSize} acres</div>
+                        <div>Soil: ${soilType}</div>
+                        <div>Climate: ${climate}</div>
+                    </div>
+                `);
+                
+                farmMarkers.push(farmMarker);
+                
+                showNotification("Farm saved successfully!");
+                document.getElementById('farmModal').style.display = 'none';
+                this.reset();
+                
+                submitBtn.innerHTML = originalText;
+                submitBtn.disabled = false;
+            }, 1500);
+        });
+
+        // View all farms
+        document.getElementById('viewAllFarms').addEventListener('click', function() {
+            if (farmMarkers.length === 0) {
+                showNotification("No farms to display. Add a farm first.", "warning");
+                return;
+            }
             
-            // Remove after delay
-            setTimeout(() => {
-                notification.style.opacity = '0';
-                setTimeout(() => {
-                    document.body.removeChild(notification);
-                }, 300);
-            }, 3000);
+            const bounds = L.latLngBounds(farmMarkers.map(marker => marker.getLatLng()));
+            map.fitBounds(bounds, { padding: [50, 50] });
+        });
+
+        // Load existing farm data
+        function loadFarmData() {
+            fetch('/maps/farm-data/')
+            .then(response => response.json())
+            .then(data => {
+                data.features.forEach(farm => {
+                    const latlng = [farm.geometry.coordinates[1], farm.geometry.coordinates[0]];
+                    const farmMarker = L.marker(latlng, {
+                        icon: statusIcons[farm.properties.status]
+                    }).addTo(map);
+                    
+                    farmMarker.bindPopup(`
+                        <div class="popup-title">${farm.properties.name}</div>
+                        <div class="popup-content">
+                            <div><span class="status-indicator status-${farm.properties.status}"></span> Status: ${farm.properties.status}</div>
+                            <div>Size: ${farm.properties.size} acres</div>
+                            <div>Soil: ${farm.properties.soil_type}</div>
+                            <div>Climate: ${farm.properties.climate}</div>
+                            <div>Recommended Crop: ${farm.properties.recommended_crop || 'Not available'}</div>
+                        </div>
+                    `);
+                    
+                    farmMarkers.push(farmMarker);
+                });
+            })
+            .catch(error => {
+                console.error("Error fetching farm data:", error);
+                showNotification("Failed to load farm data", "error");
+            });
         }
-        
-        // Add spinning animation style
-        const style = document.createElement('style');
-        style.textContent = `
-            .spinning {
-                animation: spin 1s linear infinite;
-            }
-            @keyframes spin {
-                0% { transform: rotate(0deg); }
-                100% { transform: rotate(360deg); }
-            }
-        `;
-        document.head.appendChild(style);
-        
-        // Handle window resize for better responsiveness
-        window.addEventListener('resize', function() {
-            map.invalidateSize();
+
+        // Initialize the application
+        document.addEventListener('DOMContentLoaded', function() {
+            loadFarmData();
+            
+            // Handle window resize
+            window.addEventListener('resize', function() {
+                map.invalidateSize();
+            });
         });
     </script>
 {% endblock %}
