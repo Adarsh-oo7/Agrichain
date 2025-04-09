@@ -26,7 +26,7 @@ class Farm(models.Model):
     climate = models.CharField(max_length=50)
     oversupply_risk = models.BooleanField(default=False)
     recommended_crop = models.CharField(max_length=50, choices=CROP_CHOICES, blank=True, null=True)
-    user_crop_preferences = models.CharField(max_length=50, choices=CROP_CHOICES, blank=True, null=True)  # ✅ NEW
+    user_crop_preferences = models.CharField(max_length=50, choices=CROP_CHOICES, blank=True, null=True)
     status = models.CharField(max_length=10, choices=FARM_STATUS_CHOICES, default='green')
 
     def __str__(self):

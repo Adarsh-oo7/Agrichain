@@ -2,26 +2,42 @@
 {% block content %}
 <h2>Edit Farm Location</h2>
 
-<div id="map" style="height: 400px;"></div>
+{% block title %}Edit Farm Location{% endblock %}
 
-<form method="post" id="edit-location-form">
-    {% csrf_token %}
-    <input type="hidden" id="latitude" name="latitude" value="{{ farm.latitude }}">
-    <input type="hidden" id="longitude" name="longitude" value="{{ farm.longitude }}">
-    <button type="submit">Save Changes</button>
-</form>
-
-<script>
-    var map = L.map("map").setView([{{ farm.latitude }}, {{ farm.longitude }}], 15);
-    L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png").addTo(map);
-
-    var marker = L.marker([{{ farm.latitude }}, {{ farm.longitude }}], {draggable: true}).addTo(map);
-
-    marker.on("dragend", function(event) {
-        var position = marker.getLatLng();
-        document.getElementById("latitude").value = position.lat;
-        document.getElementById("longitude").value = position.lng;
-    });
-</script>
-
+{% block content %}
+    <h1>Edit Farm Location</h1>
+    <form method="post">
+        {% csrf_token %}
+        <div class="form-group">
+            <label for="latitude">Latitude</label>
+            <input type="number" step="any" name="latitude" value="{{ farm.latitude }}" required>
+        </div>
+        <div class="form-group">
+            <label for="longitude">Longitude</label>
+            <input type="number" step="any" name="longitude" value="{{ farm.longitude }}" required>
+        </div>
+        <div class="form-group">
+            <label for="area">Area (acres/hectares)</label>
+            <input type="number" step="0.1" name="area" value="{{ farm.area }}" required>
+        </div>
+        <div class="form-group">
+            <label for="soil_type">Soil Type</label>
+            <input type="text" name="soil_type" value="{{ farm.soil_type }}" required>
+        </div>
+        <div class="form-group">
+            <label for="climate">Climate</label>
+            <input type="text" name="climate" value="{{ farm.climate }}" required>
+        </div>
+        <div class="form-group">
+            <label for="user_crop_preferences">Preferred Crop</label>
+            <select name="user_crop_preferences">
+                <option value="">None</option>
+                {% for value, label in farm.CROP_CHOICES %}
+                    <option value="{{ value }}" {% if farm.user_crop_preferences == value %}selected{% endif %}>{{ label }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <button type="submit" class="btn btn-primary">Save</button>
+    </form>
+    <a href="{% url 'farm-map' %}" class="btn btn-secondary">Back</a>
 {% endblock %}

@@ -1,22 +1,19 @@
-# train_model.py
+# crop_ai/train_model.py
 import pandas as pd
 from sklearn.ensemble import RandomForestClassifier
-from sklearn.model_selection import train_test_split
 import joblib
 
-# Load your dataset (CSV with 100+ rows)
-df = pd.read_csv('kerala_crop_data.csv')
+# Load the dataset
+data = pd.read_csv("Crop_recommendation.csv")  # Ensure this file is in crop_ai/
 
 # Features and target
-X = df[['area', 'ph', 'rainfall', 'elevation', 'climate_code', 'soil_code']]
-y = df['recommended_crop']
+X = data[["N", "P", "K", "temperature", "humidity", "ph", "rainfall"]]
+y = data["label"]
 
-# Train-test split
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2)
+# Train the model
+model = RandomForestClassifier(n_estimators=100, random_state=42)
+model.fit(X, y)
 
-# Train model
-model = RandomForestClassifier(n_estimators=100)
-model.fit(X_train, y_train)
-
-# Save the model
-joblib.dump(model, 'crop_model.pkl')
+# Save the model to the maps app directory (adjusted path)
+joblib.dump(model, "../maps/crop_recommendation_model.pkl")  # Go up one level to agrichain/, then into maps/
+print("Model trained and saved as '../maps/crop_recommendation_model.pkl'")

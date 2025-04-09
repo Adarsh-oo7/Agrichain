@@ -8,828 +8,429 @@
     <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        :root {
-            --primary-color: #2ecc71;
-            --primary-dark: #27ae60;
-            --accent-color: #3498db;
-            --light-color: #f8f9fa;
-            --dark-color: #343a40;
-            --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            --error-color: #e74c3c;
-            --warning-color: #f39c12;
-        }
-        
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 20px;
-        }
-        
-        .header {
-            background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
-            color: white;
-            padding: 20px 0;
-            border-radius: 0 0 15px 15px;
-            box-shadow: var(--shadow);
-            margin-bottom: 20px;
-        }
-        
-        h2 {
-            margin: 0;
-            padding: 0;
-            font-size: 28px;
-            letter-spacing: 0.5px;
-        }
-        
-        .subtitle {
-            font-size: 16px;
-            opacity: 0.9;
-            margin-top: 5px;
-        }
-        
-        #map {
-            height: 500px;
-            width: 100%;
-            border-radius: 15px;
-            box-shadow: var(--shadow);
-            margin-bottom: 20px;
-        }
-        
-        .button-container {
-            display: flex;
-            justify-content: center;
-            gap: 12px;
-            margin-bottom: 20px;
-            flex-wrap: wrap;
-        }
-        
-        button {
-            padding: 12px 16px;
-            border: none;
-            cursor: pointer;
-            border-radius: 8px;
-            background-color: var(--primary-color);
-            color: white;
-            font-size: 15px;
-            transition: all 0.3s ease;
-            box-shadow: var(--shadow);
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-        
-        button:hover {
-            background-color: var(--primary-dark);
-            transform: translateY(-2px);
-        }
-        
-        button:active {
-            transform: translateY(0);
-        }
-        
-        button:disabled {
-            background-color: #95a5a6;
-            cursor: not-allowed;
-            transform: none;
-        }
-        
-        button.warning {
-            background-color: var(--warning-color);
-        }
-        
-        button.warning:hover {
-            background-color: #e67e22;
-        }
-        
-        button.error {
-            background-color: var(--error-color);
-        }
-        
-        button.error:hover {
-            background-color: #c0392b;
-        }
-        
-        .map-container {
-            position: relative;
-        }
-        
-        .legend {
-            position: absolute;
-            z-index: 1000;
-            bottom: 30px;
-            right: 30px;
-            background: white;
-            padding: 10px 15px;
-            border-radius: 10px;
-            box-shadow: var(--shadow);
-            font-size: 14px;
-        }
-        
-        .legend-item {
-            display: flex;
-            align-items: center;
-            margin: 5px 0;
-        }
-        
-        .legend-color {
-            width: 20px;
-            height: 20px;
-            border-radius: 50%;
-            margin-right: 10px;
-        }
-        
-        /* Coordinates panel */
-        #coordinates-panel {
-            background: white;
-            padding: 12px 15px;
-            border-radius: 10px;
-            box-shadow: var(--shadow);
-            margin-bottom: 20px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        
-        .coordinates-info {
-            font-size: 15px;
-        }
-        
-        .coordinates-value {
-            font-weight: bold;
-            color: var(--primary-color);
-        }
-        
-        /* Modal styles */
-        .modal {
-            display: none;
-            position: fixed;
-            z-index: 2000;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0,0,0,0.5);
-            overflow: auto;
-        }
-        
-        .modal-content {
-            background-color: #fefefe;
-            margin: 10% auto;
-            padding: 20px;
-            border-radius: 15px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
-            width: 80%;
-            max-width: 600px;
-            animation: modalopen 0.3s;
-        }
-        
-        @keyframes modalopen {
-            from {opacity: 0; transform: translateY(-50px);}
-            to {opacity: 1; transform: translateY(0);}
-        }
-        
-        .modal-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
-            padding-bottom: 10px;
-            border-bottom: 1px solid #eee;
-        }
-        
-        .modal-title {
-            font-size: 20px;
-            font-weight: bold;
-            color: var(--primary-dark);
-        }
-        
-        .close-button {
-            color: #aaa;
-            font-size: 28px;
-            font-weight: bold;
-            cursor: pointer;
-            transition: color 0.3s;
-        }
-        
-        .close-button:hover {
-            color: #333;
-        }
-        
-        .form-group {
-            margin-bottom: 15px;
-        }
-        
-        .form-group label {
-            display: block;
-            margin-bottom: 5px;
-            font-weight: bold;
-            color: var(--dark-color);
-        }
-        
-        .form-group input, 
-        .form-group select,
-        .form-group textarea {
-            width: 100%;
-            padding: 10px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            font-size: 16px;
-            transition: border-color 0.3s;
-        }
-        
-        .form-group input:focus, 
-        .form-group select:focus {
-            outline: none;
-            border-color: var(--primary-color);
-            box-shadow: 0 0 0 2px rgba(46, 204, 113, 0.2);
-        }
-        
-        .form-actions {
-            display: flex;
-            justify-content: flex-end;
-            gap: 10px;
-            margin-top: 20px;
-        }
-        
-        /* Custom map popup styling */
-        .leaflet-popup-content-wrapper {
-            border-radius: 10px;
-            padding: 5px;
-        }
-        
-        .leaflet-popup-content {
-            margin: 10px 12px;
-            line-height: 1.5;
-        }
-        
-        .popup-title {
-            font-weight: bold;
-            margin-bottom: 5px;
-            font-size: 16px;
-            color: var(--primary-dark);
-        }
-        
-        .popup-content {
-            font-size: 14px;
-        }
-        
-        .popup-status {
-            font-weight: bold;
-        }
-        
-        /* Status indicators */
-        .status-indicator {
-            display: inline-block;
-            width: 12px;
-            height: 12px;
-            border-radius: 50%;
-            margin-right: 5px;
-        }
-        
-        .status-green {
-            background-color: var(--primary-color);
-        }
-        
-        .status-orange {
-            background-color: var(--warning-color);
-        }
-        
-        .status-red {
-            background-color: var(--error-color);
-        }
-        
-        /* Loading spinner */
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-        
-        .spinning {
-            animation: spin 1s linear infinite;
-        }
-        
-        /* Responsive adjustments */
-        @media (max-width: 768px) {
-            #map { 
-                height: 400px;
-            }
-            
-            .button-container {
-                justify-content: center;
-            }
-            
-            button {
-                padding: 10px 14px;
-                font-size: 14px;
-            }
-            
-            .modal-content {
-                width: 90%;
-                margin: 20% auto;
-            }
-        }
-        
-        @media (max-width: 600px) {
-            .header {
-                padding: 15px 0;
-            }
-            
-            h2 {
-                font-size: 22px;
-            }
-            
-            .subtitle {
-                font-size: 14px;
-            }
-            
-            #map { 
-                height: 350px;
-            }
-            
-            .button-container {
-                flex-direction: column;
-                gap: 8px;
-            }
-            
-            button {
-                width: 100%;
-                justify-content: center;
-            }
-            
-            .legend {
-                bottom: 15px;
-                right: 15px;
-                padding: 8px 12px;
-                font-size: 12px;
-            }
-        }
-
-        /* Notification system */
-        .notification {
-            position: fixed;
-            bottom: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            padding: 12px 20px;
-            border-radius: 8px;
-            box-shadow: var(--shadow);
-            z-index: 9999;
-            opacity: 0;
-            transition: opacity 0.3s ease-in-out;
-            color: white;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        
-        .notification.show {
-            opacity: 1;
-        }
-        
-        .notification.success {
-            background-color: var(--primary-color);
-        }
-        
-        .notification.error {
-            background-color: var(--error-color);
-        }
-        
-        .notification.warning {
-            background-color: var(--warning-color);
-        }
+        main { padding: 0; margin: 0; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+        .header { background: linear-gradient(135deg, var(--primary-color), var(--accent-color)); color: white; padding: 20px 0; border-radius: 0 0 15px 15px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); margin-bottom: 20px; }
+        h2 { margin: 0; padding: 0; font-size: 28px; letter-spacing: 0.5px; }
+        .subtitle { font-size: 16px; opacity: 0.9; margin-top: 5px; }
+        #map { height: 500px; width: 100%; border-radius: 15px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); margin-bottom: 20px; }
+        .button-container { display: flex; justify-content: center; gap: 12px; margin-bottom: 20px; flex-wrap: wrap; }
+        button { padding: 12px 16px; border: none; cursor: pointer; border-radius: 8px; background-color: var(--primary-color); color: white; font-size: 15px; transition: all 0.3s ease; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); display: flex; align-items: center; gap: 8px; }
+        button:hover { background-color: #2980b9; transform: translateY(-2px); }
+        button:active { transform: translateY(0); }
+        button:disabled { background-color: #95a5a6; cursor: not-allowed; transform: none; }
+        button.warning { background-color: var(--warning-color); }
+        button.warning:hover { background-color: #e67e22; }
+        .map-container { position: relative; }
+        .legend { position: absolute; z-index: 1000; bottom: 30px; right: 30px; background: white; padding: 10px 15px; border-radius: 10px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); font-size: 14px; }
+        .legend-item { display: flex; align-items: center; margin: 5px 0; }
+        .legend-color { width: 20px; height: 20px; border-radius: 50%; margin-right: 10px; }
+        #coordinates-panel { background: white; padding: 12px 15px; border-radius: 10px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center; }
+        .coordinates-info { font-size: 15px; }
+        .coordinates-value { font-weight: bold; color: var(--primary-color); }
+        .modal { display: none; position: fixed; z-index: 2000; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.5); overflow: auto; }
+        .modal-content { background-color: #fefefe; margin: 10% auto; padding: 20px; border-radius: 15px; box-shadow: 0 5px 15px rgba(0,0,0,0.3); width: 80%; max-width: 600px; animation: modalopen 0.3s; }
+        @keyframes modalopen { from {opacity: 0; transform: translateY(-50px);} to {opacity: 1; transform: translateY(0);} }
+        .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; padding-bottom: 10px; border-bottom: 1px solid #eee; }
+        .modal-title { font-size: 20px; font-weight: bold; color: #2980b9; }
+        .close-button { color: #aaa; font-size: 28px; font-weight: bold; cursor: pointer; transition: color 0.3s; }
+        .close-button:hover { color: #333; }
+        .form-group { margin-bottom: 15px; }
+        .form-group label { display: block; margin-bottom: 5px; font-weight: bold; color: var(--dark-color); }
+        .form-group input, .form-group select { width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px; font-size: 16px; transition: border-color 0.3s; }
+        .form-group input:focus, .form-group select:focus { outline: none; border-color: var(--primary-color); box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.2); }
+        .form-actions { display: flex; justify-content: flex-end; gap: 10px; margin-top: 20px; }
+        .leaflet-popup-content-wrapper { border-radius: 10px; padding: 5px; }
+        .leaflet-popup-content { margin: 10px 12px; line-height: 1.5; }
+        .popup-title { font-weight: bold; margin-bottom: 5px; font-size: 16px; color: #2980b9; }
+        .popup-content { font-size: 14px; }
+        .status-indicator { display: inline-block; width: 12px; height: 12px; border-radius: 50%; margin-right: 5px; }
+        .status-green { background-color: #2ecc71; }
+        .status-orange { background-color: #f39c12; }
+        .status-red { background-color: #e74c3c; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        .spinning { animation: spin 1s linear infinite; }
+        .notification { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); padding: 12px 20px; border-radius: 8px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); z-index: 9999; opacity: 0; transition: opacity 0.3s ease-in-out; color: white; display: flex; align-items: center; gap: 10px; }
+        .notification.show { opacity: 1; }
+        .notification.success { background-color: var(--primary-color); }
+        .notification.error { background-color: var(--danger-color); }
+        .notification.warning { background-color: var(--warning-color); }
+        @media (max-width: 768px) { #map { height: 400px; } .button-container { justify-content: center; } button { padding: 10px 14px; font-size: 14px; } .modal-content { width: 90%; margin: 20% auto; } }
+        @media (max-width: 600px) { .header { padding: 15px 0; } h2 { font-size: 22px; } .subtitle { font-size: 14px; } #map { height: 350px; } .button-container { flex-direction: column; gap: 8px; } button { width: 100%; justify-content: center; } .legend { bottom: 15px; right: 15px; padding: 8px 12px; font-size: 12px; } }
     </style>
 {% endblock %}
 
 {% block content %}
-    <header class="header">
+    <main>
+        <div class="header">
+            <div class="container">
+                <h2>Smart Farm Mapping System</h2>
+                <div class="subtitle">Optimize your farming with location-based crop suggestions</div>
+            </div>
+        </div>
+
         <div class="container">
-            <h2>Smart Farm Mapping System</h2>
-            <div class="subtitle">Optimize your farming with location-based crop suggestions</div>
+            <div id="coordinates-panel">
+                <div class="coordinates-info">Selected Location: <span id="selected-location-text">No location selected</span></div>
+                <div class="coordinates-value" id="coordinates-display"></div>
+            </div>
+            
+            <div class="button-container">
+                <button id="saveLocation"><i class="fas fa-save"></i> Save Location</button>
+                <button id="currentLocation"><i class="fas fa-location-arrow"></i> Use My Location</button>
+                <button id="resetMap" class="warning"><i class="fas fa-sync-alt"></i> Reset Map</button>
+                <button id="addFarm"><i class="fas fa-plus"></i> Add Farm</button>
+                <button id="viewAllFarms"><i class="fas fa-eye"></i> View All Farms</button>
+                <a href="{% url 'farm-map' %}" class="btn btn-primary"><i class="fas fa-sync-alt"></i> Refresh Map</a>
+            </div>
+            
+            <div class="map-container">
+                <div id="map"></div>
+                <div class="legend">
+                    <div class="legend-item"><div class="legend-color status-green"></div> <span>Good Condition</span></div>
+                    <div class="legend-item"><div class="legend-color status-orange"></div> <span>Moderate Risk</span></div>
+                    <div class="legend-item"><div class="legend-color status-red"></div> <span>High Risk</span></div>
+                </div>
+            </div>
+            
+            <!-- Add Farm Modal -->
+            <div id="farmModal" class="modal">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <div class="modal-title">Add New Farm</div>
+                        <span class="close-button" id="closeFarmModal">×</span>
+                    </div>
+                    <form id="farmForm">
+                        <div class="form-group">
+                            <label for="farmSize">Farm Size (acres/hectares)</label>
+                            <input type="number" id="farmSize" name="farmSize" min="0.1" step="0.1" value="1.0" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="farmStatus">Farm Status</label>
+                            <select id="farmStatus" name="farmStatus" required>
+                                <option value="green" selected>Good Condition</option>
+                                <option value="orange">Moderate Risk</option>
+                                <option value="red">High Risk</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="soilType">Soil Type</label>
+                            <select id="soilType" name="soilType" required>
+                                <option value="loamy" selected>Loamy</option>
+                                <option value="clay">Clay</option>
+                                <option value="sandy">Sandy</option>
+                                <option value="silt">Silt</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="climate">Climate</label>
+                            <select id="climate" name="climate" required>
+                                <option value="hot" selected>Hot</option>
+                                <option value="tropical">Tropical</option>
+                                <option value="subtropical">Subtropical</option>
+                                <option value="temperate">Temperate</option>
+                                <option value="arid">Arid</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="userCropPreferences">Preferred Crop</label>
+                            <select id="userCropPreferences" name="userCropPreferences">
+                                <option value="" selected>None</option>
+                                {% for value, label in Farm.CROP_CHOICES %}
+                                    <option value="{{ value }}">{{ label }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Farm Location</label>
+                            <div id="locationDisplay">Please select a location on the map first</div>
+                        </div>
+                        <div class="form-actions">
+                            <button type="button" id="cancelFarm" class="warning">Cancel</button>
+                            <button type="submit" id="submitFarm">Save Farm</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
         </div>
-    </header>
+    </main>
+{% endblock %}
 
-    <div class="container">
-        <div id="coordinates-panel">
-            <div class="coordinates-info">
-                Selected Location: <span id="selected-location-text">No location selected</span>
-            </div>
-            <div class="coordinates-value" id="coordinates-display"></div>
-        </div>
-        
-        <div class="button-container">
-            <button id="saveLocation">
-                <i class="fas fa-save"></i>
-                Save Location
-            </button>
-            <button id="currentLocation">
-                <i class="fas fa-location-arrow"></i>
-                Use My Location
-            </button>
-            <button id="resetMap" class="warning">
-                <i class="fas fa-sync-alt"></i>
-                Reset Map
-            </button>
-            <button id="addFarm">
-                <i class="fas fa-plus"></i>
-                Add Farm
-            </button>
-            <button id="viewAllFarms">
-                <i class="fas fa-eye"></i>
-                View All Farms
-            </button>
-            <button id="showSettings">
-                <i class="fas fa-cog"></i>
-                Settings
-            </button>
-            <a href="{% url 'recommend-crop' %}" class="btn" id="getSuggestions">
-                <i class="fas fa-seedling"></i>
-                Get Crop Suggestions
-            </a>
-        </div>
-        
-        <div class="map-container">
-            <div id="map"></div>
-            <div class="legend">
-                <div class="legend-item">
-                    <div class="legend-color status-green"></div>
-                    <span>Good Condition</span>
-                </div>
-                <div class="legend-item">
-                    <div class="legend-color status-orange"></div>
-                    <span>Needs Attention</span>
-                </div>
-                <div class="legend-item">
-                    <div class="legend-color status-red"></div>
-                    <span>Critical Condition</span>
-                </div>
-            </div>
-        </div>
-        
-        <!-- Add Farm Modal -->
-        <div id="farmModal" class="modal">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <div class="modal-title">Add New Farm</div>
-                    <span class="close-button" id="closeFarmModal">&times;</span>
-                </div>
-                <form id="farmForm">
-                    <div class="form-group">
-                        <label for="farmName">Farm Name</label>
-                        <input type="text" id="farmName" name="farmName" required placeholder="Enter farm name">
-                    </div>
-                    <div class="form-group">
-                        <label for="farmSize">Farm Size (in acres)</label>
-                        <input type="number" id="farmSize" name="farmSize" min="0.1" step="0.1" required placeholder="Enter farm size">
-                    </div>
-                    <div class="form-group">
-                        <label for="farmStatus">Farm Status</label>
-                        <select id="farmStatus" name="farmStatus" required>
-                            <option value="">Select status</option>
-                            <option value="green">Good</option>
-                            <option value="orange">Warning</option>
-                            <option value="red">Attention Required</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label for="soilType">Soil Type</label>
-                        <select id="soilType" name="soilType" required>
-                            <option value="">Select soil type</option>
-                            <option value="loamy">Loamy</option>
-                            <option value="clay">Clay</option>
-                            <option value="sandy">Sandy</option>
-                            <option value="silt">Silt</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label for="climate">Climate</label>
-                        <select id="climate" name="climate" required>
-                            <option value="">Select climate</option>
-                            <option value="tropical">Tropical</option>
-                            <option value="subtropical">Subtropical</option>
-                            <option value="temperate">Temperate</option>
-                            <option value="arid">Arid</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label>Farm Location</label>
-                        <div id="locationDisplay">Please select a location on the map first</div>
-                    </div>
-                    <div class="form-actions">
-                        <button type="button" id="cancelFarm" class="warning">Cancel</button>
-                        <button type="submit" id="submitFarm">Save Farm</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-        
-        <!-- Settings Modal -->
-        <div id="settingsModal" class="modal">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <div class="modal-title">Map Settings</div>
-                    <span class="close-button" id="closeSettingsModal">&times;</span>
-                </div>
-                <form id="settingsForm">
-                    <div class="form-group">
-                        <label for="mapStyle">Map Style</label>
-                        <select id="mapStyle" name="mapStyle">
-                            <option value="default">Default</option>
-                            <option value="satellite">Satellite</option>
-                            <option value="terrain">Terrain</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label for="markerSize">Marker Size</label>
-                        <select id="markerSize" name="markerSize">
-                            <option value="small">Small</option>
-                            <option value="medium" selected>Medium</option>
-                            <option value="large">Large</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label for="defaultZoom">Default Zoom Level</label>
-                        <input type="range" id="defaultZoom" name="defaultZoom" min="1" max="18" value="5">
-                        <span id="zoomValue">5</span>
-                    </div>
-                    <div class="form-actions">
-                        <button type="button" id="cancelSettings" class="warning">Cancel</button>
-                        <button type="submit" id="saveSettings">Save Settings</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-        
-        <div class="footer">
-            &copy; 2025 Smart Farm Mapping System - All rights reserved
-        </div>
-    </div>
-
+{% block extra_js %}
     <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
     <script>
-        // Initialize map with default settings
-        const mapConfig = {
-            defaultView: [20.5937, 78.9629],
-            defaultZoom: 5,
-            markerSize: 15,
-            mapStyle: 'default'
-        };
-        
-        // Define tile layers for different map styles
+        const mapConfig = { defaultView: [20.5937, 78.9629], defaultZoom: 5, markerSize: 15 };
         const tileLayers = {
-            default: L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-                opacity: 0.9
-            }),
-            satellite: L.tileLayer('https://{s}.google.com/vt/lyrs=s&x={x}&y={y}&z={z}', {
-                maxZoom: 20,
-                subdomains: ['mt0', 'mt1', 'mt2', 'mt3'],
-                attribution: '&copy; Google Maps'
-            }),
-            terrain: L.tileLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png', {
-                maxZoom: 17,
-                attribution: '&copy; OpenTopoMap'
-            })
+            default: L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { attribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors', opacity: 0.9 })
         };
-        
-        // Initialize map
-        const map = L.map('map', {
-            zoomControl: false
-        }).setView(mapConfig.defaultView, mapConfig.defaultZoom);
-        
-        // Add default tile layer
+        const map = L.map('map', { zoomControl: false }).setView(mapConfig.defaultView, mapConfig.defaultZoom);
         tileLayers.default.addTo(map);
-        
-        // Add zoom control
-        L.control.zoom({
-            position: 'bottomright'
-        }).addTo(map);
-        
-        // Add attribution control
-        L.control.attribution({
-            position: 'bottomleft'
-        }).addTo(map);
+        L.control.zoom({ position: 'bottomright' }).addTo(map);
+        L.control.attribution({ position: 'bottomleft' }).addTo(map);
 
-        // Global variables
         let marker = null;
         let selectedLat = null, selectedLon = null;
         let farmMarkers = [];
-        let lastSavedLocation = null;
-        
-        // Custom icon for selected location
+
         const customIcon = L.icon({
             iconUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon.png',
-            iconSize: [25, 41],
-            iconAnchor: [12, 41],
-            popupAnchor: [1, -34],
+            iconSize: [25, 41], iconAnchor: [12, 41], popupAnchor: [1, -34],
             shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-shadow.png',
             shadowSize: [41, 41]
         });
 
-        // Status icons for farm markers
         const statusIcons = {
-            green: L.icon({
-                iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-green.png',
-                iconSize: [25, 41],
-                iconAnchor: [12, 41],
-                popupAnchor: [1, -34]
-            }),
-            orange: L.icon({
-                iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-orange.png',
-                iconSize: [25, 41],
-                iconAnchor: [12, 41],
-                popupAnchor: [1, -34]
-            }),
-            red: L.icon({
-                iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-red.png',
-                iconSize: [25, 41],
-                iconAnchor: [12, 41],
-                popupAnchor: [1, -34]
-            })
+            green: L.icon({ iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-green.png', iconSize: [25, 41], iconAnchor: [12, 41], popupAnchor: [1, -34] }),
+            orange: L.icon({ iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-orange.png', iconSize: [25, 41], iconAnchor: [12, 41], popupAnchor: [1, -34] }),
+            red: L.icon({ iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-red.png', iconSize: [25, 41], iconAnchor: [12, 41], popupAnchor: [1, -34] })
         };
 
-        // Helper function to show notifications
         function showNotification(message, type = "success") {
             const notification = document.createElement('div');
             notification.className = `notification ${type}`;
-            notification.innerHTML = `
-                <i class="fas ${type === 'success' ? 'fa-check-circle' : type === 'error' ? 'fa-exclamation-circle' : 'fa-exclamation-triangle'}"></i>
-                ${message}
-            `;
+            notification.innerHTML = `<i class="fas ${type === 'success' ? 'fa-check-circle' : type === 'error' ? 'fa-exclamation-circle' : 'fa-exclamation-triangle'}"></i> ${message}`;
             document.body.appendChild(notification);
-            
-            setTimeout(() => {
-                notification.classList.add('show');
-            }, 10);
-            
-            setTimeout(() => {
-                notification.classList.remove('show');
-                setTimeout(() => {
-                    document.body.removeChild(notification);
-                }, 300);
-            }, 3000);
+            setTimeout(() => notification.classList.add('show'), 10);
+            setTimeout(() => { notification.classList.remove('show'); setTimeout(() => document.body.removeChild(notification), 300); }, 3000);
         }
 
-        // Update coordinates display
         function updateCoordinatesDisplay() {
             const coordinatesDisplay = document.getElementById('coordinates-display');
             const selectedLocationText = document.getElementById('selected-location-text');
-            
+            const locationDisplay = document.getElementById('locationDisplay');
             if (selectedLat !== null && selectedLon !== null) {
                 coordinatesDisplay.textContent = `Lat: ${selectedLat.toFixed(6)}, Lon: ${selectedLon.toFixed(6)}`;
                 selectedLocationText.textContent = 'Location Selected';
-                
-                // Update location display in add farm modal if it's open
-                const locationDisplay = document.getElementById('locationDisplay');
                 if (locationDisplay) {
                     locationDisplay.textContent = `Latitude: ${selectedLat.toFixed(6)}, Longitude: ${selectedLon.toFixed(6)}`;
-                    locationDisplay.style.color = 'var(--primary-dark)';
+                    locationDisplay.style.color = '#2980b9';
                     locationDisplay.style.fontWeight = 'bold';
                 }
             } else {
                 coordinatesDisplay.textContent = '';
                 selectedLocationText.textContent = 'No location selected';
+                if (locationDisplay) locationDisplay.textContent = 'Please select a location on the map first';
             }
         }
 
-        // Handle map click
         map.on('click', function(e) {
             if (marker) map.removeLayer(marker);
             selectedLat = e.latlng.lat;
             selectedLon = e.latlng.lng;
-            
-            marker = L.marker([selectedLat, selectedLon], {icon: customIcon}).addTo(map)
-                .bindPopup("<div class='popup-title'>Selected Location</div><div class='popup-content'>Latitude: " + selectedLat.toFixed(6) + "<br>Longitude: " + selectedLon.toFixed(6) + "</div>")
-                .openPopup();
-            
-            updateCoordinatesDisplay();
-        });
 
-        // Save location
-        document.getElementById('saveLocation').addEventListener('click', function() {
-            if (!selectedLat || !selectedLon) {
-                showNotification("Please select a location on the map first!", "error");
-                return;
-            }
-            
-            const originalText = this.innerHTML;
-            this.innerHTML = '<i class="fas fa-spinner spinning"></i> Saving...';
-            this.disabled = true;
-            
-            fetch('/maps/save-location/', {
+            fetch('/maps/get-farm-by-coords/', {
                 method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRFToken': '{{ csrf_token }}'
-                },
-                body: JSON.stringify({ 
-                    latitude: selectedLat, 
-                    longitude: selectedLon 
-                })
+                headers: { 'Content-Type': 'application/json', 'X-CSRFToken': '{{ csrf_token }}' },
+                body: JSON.stringify({ latitude: selectedLat, longitude: selectedLon })
             })
-            .then(response => response.json())
+            .then(response => {
+                if (response.status === 404) return null;
+                if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
+                return response.json();
+            })
             .then(data => {
-                showNotification(data.message || "Location saved successfully!");
-                lastSavedLocation = { latitude: selectedLat, longitude: selectedLon };
-                
-                // For demo purposes, create a new farm marker
-                const farmMarker = L.marker([selectedLat, selectedLon], {
-                    icon: statusIcons.green
-                }).addTo(map);
-                
-                farmMarker.bindPopup(`
-                    <div class="popup-title">New Farm Location</div>
-                    <div class="popup-content">
-                        <div><span class="status-indicator status-green"></span> Status: Good</div>
-                        <div>Coordinates: ${selectedLat.toFixed(6)}, ${selectedLon.toFixed(6)}</div>
-                    </div>
-                `);
-                
-                farmMarkers.push(farmMarker);
+                if (data) {
+                    // Existing farm found
+                    marker = L.marker([selectedLat, selectedLon], {icon: statusIcons[data.status]}).addTo(map);
+                    marker.bindPopup(`
+                        <div class="popup-title">${data.farmer_name}'s Farm</div>
+                        <div class="popup-content">
+                            <div><strong>Farmer:</strong> ${data.farmer_name}</div>
+                            <div><span class="status-indicator status-${data.status}"></span> <strong>Status:</strong> ${data.status === 'green' ? 'Good Condition' : data.status === 'orange' ? 'Moderate Risk' : 'High Risk'}</div>
+                            <div><strong>Size:</strong> ${data.area ? data.area + ' acres/hectares' : 'Not set'}</div>
+                            <div><strong>Soil Type:</strong> ${_capitalize(data.soil_type)}</div>
+                            <div><strong>Climate:</strong> ${_capitalize(data.climate)}</div>
+                            <div><strong>Preferred Crop:</strong> ${data.user_crop_preferences || 'None'}</div>
+                            <div><strong>Recommended Crop:</strong> ${_capitalize(data.recommended_crop) || 'Not Set'}</div>
+                            <div><strong>Oversupply Risk:</strong> ${data.oversupply_risk ? 'Yes' : 'No'}</div>
+                            <div><strong>Coordinates:</strong> Lat: ${data.latitude.toFixed(6)}, Lon: ${data.longitude.toFixed(6)}</div>
+                        </div>
+                    `).openPopup();
+                } else {
+                    // No farm found, fetch location details
+                    fetch('/maps/get-location-details/', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json', 'X-CSRFToken': '{{ csrf_token }}' },
+                        body: JSON.stringify({ latitude: selectedLat, longitude: selectedLon })
+                    })
+                    .then(response => {
+                        if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
+                        return response.json();
+                    })
+                    .then(data => {
+                        marker = L.marker([selectedLat, selectedLon], {icon: customIcon}).addTo(map);
+                        marker.bindPopup(`
+                            <div class="popup-title">New Location Details</div>
+                            <div class="popup-content">
+                                <div><strong>Temperature:</strong> ${data.weather.temperature}°C</div>
+                                <div><strong>Humidity:</strong> ${data.weather.humidity}%</div>
+                                <div><strong>Rainfall (Hourly):</strong> ${data.weather.rainfall} mm</div>
+                                <div><strong>Soil Type:</strong> ${_capitalize(data.soil.soil_type)}</div>
+                                <div><strong>Soil pH:</strong> ${data.soil.ph}</div>
+                                <div><strong>Soil NPK:</strong> N:${data.soil.N}, P:${data.soil.P}, K:${data.soil.K}</div>
+                                <div><strong>Avg Temperature:</strong> ${data.climate.avg_temp}°C</div>
+                                <div><strong>Avg Rainfall:</strong> ${data.climate.avg_rainfall} mm</div>
+                                <div><strong>Recommended Crop:</strong> ${_capitalize(data.recommended_crop)}</div>
+                                <div><strong>Coordinates:</strong> Lat: ${selectedLat.toFixed(6)}, Lon: ${selectedLon.toFixed(6)}</div>
+                                <div>Click "Add Farm" to create a farm here.</div>
+                            </div>
+                        `).openPopup();
+                    })
+                    .catch(error => {
+                        showNotification("Error fetching location details: " + error.message, "error");
+                        console.error('Error:', error);
+                        marker = L.marker([selectedLat, selectedLon], {icon: customIcon}).addTo(map)
+                            .bindPopup(`<div class='popup-title'>New Location</div><div class='popup-content'>Latitude: ${selectedLat.toFixed(6)}<br>Longitude: ${selectedLon.toFixed(6)}<br>Error fetching details</div>`)
+                            .openPopup();
+                    });
+                }
+                updateCoordinatesDisplay();
             })
             .catch(error => {
-                showNotification("Error saving location!", "error");
+                showNotification("Error checking farm location: " + error.message, "error");
                 console.error('Error:', error);
-            })
-            .finally(() => {
-                this.innerHTML = originalText;
-                this.disabled = false;
+                marker = L.marker([selectedLat, selectedLon], {icon: customIcon}).addTo(map)
+                    .bindPopup(`<div class='popup-title'>New Location</div><div class='popup-content'>Latitude: ${selectedLat.toFixed(6)}<br>Longitude: ${selectedLon.toFixed(6)}</div>`)
+                    .openPopup();
+                updateCoordinatesDisplay();
             });
         });
 
-        // Get current location
+        document.getElementById('saveLocation').addEventListener('click', function() {
+            if (!selectedLat || !selectedLon) { showNotification("Please select a location!", "error"); return; }
+            const originalText = this.innerHTML;
+            this.innerHTML = '<i class="fas fa-spinner spinning"></i> Saving...';
+            this.disabled = true;
+            fetch('/maps/save-location/', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json', 'X-CSRFToken': '{{ csrf_token }}' },
+                body: JSON.stringify({ latitude: selectedLat, longitude: selectedLon })
+            })
+            .then(response => response.json())
+            .then(data => {
+                showNotification(data.message || "Location saved!");
+                const farmMarker = L.marker([selectedLat, selectedLon], {icon: statusIcons.green}).addTo(map);
+                farmMarker.bindPopup(`<div class="popup-title">{{ user.username }}'s Farm</div><div class="popup-content"><div><span class="status-indicator status-green"></span> Status: Good Condition</div><div>Coordinates: ${selectedLat.toFixed(6)}, ${selectedLon.toFixed(6)}</div></div>`);
+                farmMarkers.push(farmMarker);
+            })
+            .catch(error => { showNotification("Error saving location!", "error"); console.error('Error:', error); })
+            .finally(() => { this.innerHTML = originalText; this.disabled = false; });
+        });
+
         document.getElementById('currentLocation').addEventListener('click', function() {
             const originalText = this.innerHTML;
             this.innerHTML = '<i class="fas fa-spinner spinning"></i> Locating...';
             this.disabled = true;
-            
             if (navigator.geolocation) {
                 navigator.geolocation.getCurrentPosition(
-                    function(position) {
+                    position => {
                         const lat = position.coords.latitude;
                         const lon = position.coords.longitude;
-                        
                         if (marker) map.removeLayer(marker);
-                        marker = L.marker([lat, lon], {icon: customIcon}).addTo(map)
-                            .bindPopup("<div class='popup-title'>Your Current Location</div><div class='popup-content'>Latitude: " + lat.toFixed(6) + "<br>Longitude: " + lon.toFixed(6) + "</div>")
-                            .openPopup();
-                        
-                        map.setView([lat, lon], 14);
                         selectedLat = lat;
                         selectedLon = lon;
-                        updateCoordinatesDisplay();
+                        fetch('/maps/get-farm-by-coords/', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json', 'X-CSRFToken': '{{ csrf_token }}' },
+                            body: JSON.stringify({ latitude: selectedLat, longitude: selectedLon })
+                        })
+                        .then(response => {
+                            if (response.status === 404) return null;
+                            if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
+                            return response.json();
+                        })
+                        .then(data => {
+                            if (data) {
+                                marker = L.marker([selectedLat, selectedLon], {icon: statusIcons[data.status]}).addTo(map);
+                                marker.bindPopup(`
+                                    <div class="popup-title">${data.farmer_name}'s Farm</div>
+                                    <div class="popup-content">
+                                        <div><strong>Farmer:</strong> ${data.farmer_name}</div>
+                                        <div><span class="status-indicator status-${data.status}"></span> <strong>Status:</strong> ${data.status === 'green' ? 'Good Condition' : data.status === 'orange' ? 'Moderate Risk' : 'High Risk'}</div>
+                                        <div><strong>Size:</strong> ${data.area ? data.area + ' acres/hectares' : 'Not set'}</div>
+                                        <div><strong>Soil Type:</strong> ${_capitalize(data.soil_type)}</div>
+                                        <div><strong>Climate:</strong> ${_capitalize(data.climate)}</div>
+                                        <div><strong>Preferred Crop:</strong> ${data.user_crop_preferences || 'None'}</div>
+                                        <div><strong>Recommended Crop:</strong> ${_capitalize(data.recommended_crop) || 'Not Set'}</div>
+                                        <div><strong>Oversupply Risk:</strong> ${data.oversupply_risk ? 'Yes' : 'No'}</div>
+                                        <div><strong>Coordinates:</strong> Lat: ${data.latitude.toFixed(6)}, Lon: ${data.longitude.toFixed(6)}</div>
+                                    </div>
+                                `).openPopup();
+                            } else {
+                                fetch('/maps/get-location-details/', {
+                                    method: 'POST',
+                                    headers: { 'Content-Type': 'application/json', 'X-CSRFToken': '{{ csrf_token }}' },
+                                    body: JSON.stringify({ latitude: selectedLat, longitude: selectedLon })
+                                })
+                                .then(response => {
+                                    if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
+                                    return response.json();
+                                })
+                                .then(data => {
+                                    marker = L.marker([selectedLat, selectedLon], {icon: customIcon}).addTo(map);
+                                    marker.bindPopup(`
+                                        <div class="popup-title">Your Location Details</div>
+                                        <div class="popup-content">
+                                            <div><strong>Temperature:</strong> ${data.weather.temperature}°C</div>
+                                            <div><strong>Humidity:</strong> ${data.weather.humidity}%</div>
+                                            <div><strong>Rainfall (Hourly):</strong> ${data.weather.rainfall} mm</div>
+                                            <div><strong>Soil Type:</strong> ${_capitalize(data.soil.soil_type)}</div>
+                                            <div><strong>Soil pH:</strong> ${data.soil.ph}</div>
+                                            <div><strong>Soil NPK:</strong> N:${data.soil.N}, P:${data.soil.P}, K:${data.soil.K}</div>
+                                            <div><strong>Avg Temperature:</strong> ${data.climate.avg_temp}°C</div>
+                                            <div><strong>Avg Rainfall:</strong> ${data.climate.avg_rainfall} mm</div>
+                                            <div><strong>Recommended Crop:</strong> ${_capitalize(data.recommended_crop)}</div>
+                                            <div><strong>Coordinates:</strong> Lat: ${lat.toFixed(6)}, Lon: ${lon.toFixed(6)}</div>
+                                            <div>Click "Add Farm" to create a farm here.</div>
+                                        </div>
+                                    `).openPopup();
+                                })
+                                .catch(error => {
+                                    showNotification("Error fetching location details: " + error.message, "error");
+                                    marker = L.marker([selectedLat, selectedLon], {icon: customIcon}).addTo(map)
+                                        .bindPopup(`<div class='popup-title'>Your Location</div><div class='popup-content'>Latitude: ${lat.toFixed(6)}<br>Longitude: ${lon.toFixed(6)}</div>`)
+                                        .openPopup();
+                                });
+                            }
+                            map.setView([lat, lon], 14);
+                            updateCoordinatesDisplay();
+                        });
                     },
-                    function(error) {
-                        let errorMsg;
-                        switch(error.code) {
-                            case error.PERMISSION_DENIED:
-                                errorMsg = "Location access was denied. Please enable location services.";
-                                break;
-                            case error.POSITION_UNAVAILABLE:
-                                errorMsg = "Location information is unavailable.";
-                                break;
-                            case error.TIMEOUT:
-                                errorMsg = "The request to get location timed out.";
-                                break;
-                            default:
-                                errorMsg = "An unknown error occurred.";
-                        }
-                        showNotification(errorMsg, "error");
-                    },
-                    {
-                        enableHighAccuracy: true,
-                        timeout: 10000,
-                        maximumAge: 0
-                    }
+                    error => { showNotification("Error getting location!", "error"); },
+                    { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 }
                 );
-            } else {
-                showNotification("Geolocation is not supported by your browser.", "error");
-            }
-            
+            } else { showNotification("Geolocation not supported!", "error"); }
             this.innerHTML = originalText;
             this.disabled = false;
         });
 
-        // Reset map
         document.getElementById('resetMap').addEventListener('click', function() {
-            map.flyTo(mapConfig.defaultView, mapConfig.defaultZoom, {
-                animate: true,
-                duration: 1.5
-            });
-            
+            map.flyTo(mapConfig.defaultView, mapConfig.defaultZoom, { animate: true, duration: 1.5 });
             if (marker) map.removeLayer(marker);
             selectedLat = null;
             selectedLon = null;
             updateCoordinatesDisplay();
         });
 
-        // Modal handling
         document.getElementById('addFarm').addEventListener('click', function() {
-            if (!selectedLat || !selectedLon) {
-                showNotification("Please select a location on the map first!", "error");
-                return;
-            }
-            
-            document.getElementById('farmModal').style.display = 'block';
+            if (!selectedLat || !selectedLon) { showNotification("Please select a location first!", "error"); return; }
+            fetch('/maps/get-farm-by-coords/', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json', 'X-CSRFToken': '{{ csrf_token }}' },
+                body: JSON.stringify({ latitude: selectedLat, longitude: selectedLon })
+            })
+            .then(response => response.status === 404 ? null : response.json())
+            .then(data => {
+                if (data && data.id) {
+                    showNotification("A farm already exists at this location!", "warning");
+                } else {
+                    document.getElementById('farmModal').style.display = 'block';
+                }
+            })
+            .catch(error => {
+                showNotification("Error checking farm location: " + error.message, "error");
+                document.getElementById('farmModal').style.display = 'block'; // Allow adding anyway
+            });
         });
 
         document.getElementById('closeFarmModal').addEventListener('click', function() {
@@ -840,138 +441,117 @@
             document.getElementById('farmModal').style.display = 'none';
         });
 
-        document.getElementById('showSettings').addEventListener('click', function() {
-            document.getElementById('settingsModal').style.display = 'block';
-        });
-
-        document.getElementById('closeSettingsModal').addEventListener('click', function() {
-            document.getElementById('settingsModal').style.display = 'none';
-        });
-
-        document.getElementById('cancelSettings').addEventListener('click', function() {
-            document.getElementById('settingsModal').style.display = 'none';
-        });
-
-        // Close modals when clicking outside
-        window.addEventListener('click', function(event) {
-            if (event.target.className === 'modal') {
-                event.target.style.display = 'none';
-            }
-        });
-
-        // Settings form handling
-        document.getElementById('defaultZoom').addEventListener('input', function() {
-            document.getElementById('zoomValue').textContent = this.value;
-        });
-
-        document.getElementById('settingsForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            mapConfig.mapStyle = document.getElementById('mapStyle').value;
-            mapConfig.defaultZoom = parseInt(document.getElementById('defaultZoom').value);
-            mapConfig.markerSize = document.getElementById('markerSize').value === 'small' ? 12 : 
-                                  document.getElementById('markerSize').value === 'medium' ? 15 : 18;
-            
-            // Change map style
-            Object.values(tileLayers).forEach(layer => map.removeLayer(layer));
-            tileLayers[mapConfig.mapStyle].addTo(map);
-            
-            showNotification("Settings saved successfully!");
-            document.getElementById('settingsModal').style.display = 'none';
-        });
-
-        // Farm form handling
         document.getElementById('farmForm').addEventListener('submit', function(e) {
             e.preventDefault();
-            
-            const farmName = document.getElementById('farmName').value;
             const farmSize = document.getElementById('farmSize').value;
             const farmStatus = document.getElementById('farmStatus').value;
             const soilType = document.getElementById('soilType').value;
             const climate = document.getElementById('climate').value;
-            
+            const userCropPreferences = document.getElementById('userCropPreferences').value;
+
+            if (!farmSize || farmSize <= 0) { showNotification("Farm size must be positive!", "error"); return; }
+
             const submitBtn = document.getElementById('submitFarm');
             const originalText = submitBtn.innerHTML;
             submitBtn.innerHTML = '<i class="fas fa-spinner spinning"></i> Saving...';
             submitBtn.disabled = true;
-            
-            // Simulate API call
-            setTimeout(() => {
-                const farmMarker = L.marker([selectedLat, selectedLon], {
-                    icon: statusIcons[farmStatus]
-                }).addTo(map);
-                
+
+            fetch('/maps/add-farm/', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json', 'X-CSRFToken': '{{ csrf_token }}' },
+                body: JSON.stringify({
+                    farmSize: farmSize,
+                    farmStatus: farmStatus,
+                    soilType: soilType,
+                    climate: climate,
+                    latitude: selectedLat,
+                    longitude: selectedLon,
+                    user_crop_preferences: userCropPreferences === "" ? null : userCropPreferences
+                })
+            })
+            .then(response => {
+                if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
+                return response.json();
+            })
+            .then(data => {
+                if (data.error) throw new Error(data.error);
+                const farmMarker = L.marker([selectedLat, selectedLon], {icon: statusIcons[farmStatus]}).addTo(map);
                 farmMarker.bindPopup(`
-                    <div class="popup-title">${farmName}</div>
+                    <div class="popup-title">{{ user.username }}'s Farm</div>
                     <div class="popup-content">
-                        <div><span class="status-indicator status-${farmStatus}"></span> Status: ${farmStatus}</div>
-                        <div>Size: ${farmSize} acres</div>
-                        <div>Soil: ${soilType}</div>
-                        <div>Climate: ${climate}</div>
+                        <div><strong>Farmer:</strong> {{ user.username }}</div>
+                        <div><span class="status-indicator status-${farmStatus}"></span> <strong>Status:</strong> ${farmStatus === 'green' ? 'Good Condition' : farmStatus === 'orange' ? 'Moderate Risk' : 'High Risk'}</div>
+                        <div><strong>Size:</strong> ${farmSize} acres/hectares</div>
+                        <div><strong>Soil Type:</strong> ${_capitalize(data.soil.soil_type)}</div>
+                        <div><strong>Soil pH:</strong> ${data.soil.ph}</div>
+                        <div><strong>Soil NPK:</strong> N:${data.soil.N}, P:${data.soil.P}, K:${data.soil.K}</div>
+                        <div><strong>Temperature:</strong> ${data.weather.temperature}°C</div>
+                        <div><strong>Rainfall (Hourly):</strong> ${data.weather.rainfall} mm</div>
+                        <div><strong>Humidity:</strong> ${data.weather.humidity}%</div>
+                        <div><strong>Avg Temp:</strong> ${data.climate.avg_temp}°C</div>
+                        <div><strong>Avg Rainfall:</strong> ${data.climate.avg_rainfall} mm</div>
+                        <div><strong>Preferred Crop:</strong> ${data.user_crop_preferences || 'None'}</div>
+                        <div><strong>Recommended Crop:</strong> ${_capitalize(data.recommended_crop)}</div>
+                        <div><strong>Coordinates:</strong> Lat: ${selectedLat.toFixed(6)}, Lon: ${selectedLon.toFixed(6)}</div>
                     </div>
-                `);
-                
+                `).openPopup();
                 farmMarkers.push(farmMarker);
-                
-                showNotification("Farm saved successfully!");
+                showNotification(data.message || "Farm added successfully!");
                 document.getElementById('farmModal').style.display = 'none';
                 this.reset();
-                
+            })
+            .catch(error => {
+                showNotification("Error adding farm: " + error.message, "error");
+                console.error('Error:', error);
+            })
+            .finally(() => {
                 submitBtn.innerHTML = originalText;
                 submitBtn.disabled = false;
-            }, 1500);
+            });
         });
 
-        // View all farms
         document.getElementById('viewAllFarms').addEventListener('click', function() {
-            if (farmMarkers.length === 0) {
-                showNotification("No farms to display. Add a farm first.", "warning");
-                return;
-            }
-            
+            if (farmMarkers.length === 0) { showNotification("No farms to display!", "warning"); return; }
             const bounds = L.latLngBounds(farmMarkers.map(marker => marker.getLatLng()));
             map.fitBounds(bounds, { padding: [50, 50] });
         });
 
-        // Load existing farm data
         function loadFarmData() {
             fetch('/maps/farm-data/')
             .then(response => response.json())
             .then(data => {
+                farmMarkers = [];
                 data.features.forEach(farm => {
                     const latlng = [farm.geometry.coordinates[1], farm.geometry.coordinates[0]];
-                    const farmMarker = L.marker(latlng, {
-                        icon: statusIcons[farm.properties.status]
-                    }).addTo(map);
-                    
+                    const farmMarker = L.marker(latlng, {icon: statusIcons[farm.properties.status]}).addTo(map);
                     farmMarker.bindPopup(`
-                        <div class="popup-title">${farm.properties.name}</div>
+                        <div class="popup-title">${farm.properties.farmer_name}'s Farm</div>
                         <div class="popup-content">
-                            <div><span class="status-indicator status-${farm.properties.status}"></span> Status: ${farm.properties.status}</div>
-                            <div>Size: ${farm.properties.size} acres</div>
-                            <div>Soil: ${farm.properties.soil_type}</div>
-                            <div>Climate: ${farm.properties.climate}</div>
-                            <div>Recommended Crop: ${farm.properties.recommended_crop || 'Not available'}</div>
+                            <div><strong>Farmer:</strong> ${farm.properties.farmer_name}</div>
+                            <div><span class="status-indicator status-${farm.properties.status}"></span> <strong>Status:</strong> ${farm.properties.status === 'green' ? 'Good Condition' : farm.properties.status === 'orange' ? 'Moderate Risk' : 'High Risk'}</div>
+                            <div><strong>Size:</strong> ${farm.properties.area ? farm.properties.area + ' acres/hectares' : 'Not set'}</div>
+                            <div><strong>Soil Type:</strong> ${_capitalize(farm.properties.soil_type)}</div>
+                            <div><strong>Climate:</strong> ${_capitalize(farm.properties.climate)}</div>
+                            <div><strong>Preferred Crop:</strong> ${farm.properties.user_crop_preferences || 'None'}</div>
+                            <div><strong>Recommended Crop:</strong> ${_capitalize(farm.properties.recommended_crop) || 'Not Set'}</div>
+                            <div><strong>Oversupply Risk:</strong> ${farm.properties.oversupply_risk ? 'Yes' : 'No'}</div>
+                            <div><strong>Coordinates:</strong> Lat: ${farm.geometry.coordinates[1].toFixed(6)}, Lon: ${farm.geometry.coordinates[0].toFixed(6)}</div>
                         </div>
                     `);
-                    
                     farmMarkers.push(farmMarker);
                 });
             })
-            .catch(error => {
-                console.error("Error fetching farm data:", error);
-                showNotification("Failed to load farm data", "error");
-            });
+            .catch(error => { showNotification("Error loading farm data!", "error"); console.error('Error:', error); });
         }
 
-        // Initialize the application
+        function _capitalize(str) {
+            if (!str) return 'Not Set';
+            return str.charAt(0).toUpperCase() + str.slice(1);
+        }
+
         document.addEventListener('DOMContentLoaded', function() {
             loadFarmData();
-            
-            // Handle window resize
-            window.addEventListener('resize', function() {
-                map.invalidateSize();
-            });
+            window.addEventListener('resize', function() { map.invalidateSize(); });
         });
     </script>
 {% endblock %}
