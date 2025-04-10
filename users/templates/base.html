@@ -4,30 +4,31 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}My Project{% endblock %}</title>
+    <title>{% block title %}AgiChain{% endblock %}</title>
     
-    <!-- Favicon -->
-    <link rel="icon" href="/api/placeholder/32/32" type="image/png">
+    <!-- Favicon (Farm-themed) -->
+    <link rel="icon" href="https://cdn-icons-png.flaticon.com/32/3075/3075977.png" type="image/png">
 
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     
-    <!-- Google Fonts -->
+    <!-- Google Fonts & Font Awesome -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
     <style>
         :root {
-            --primary-color: #3498db;
-            --secondary-color: #2c3e50;
-            --accent-color: #e74c3c;
-            --light-color: #ecf0f1;
-            --dark-color: #2c3e50;
-            --success-color: #2ecc71;
-            --warning-color: #f39c12;
-            --danger-color: #e74c3c;
-            --text-color: #333;
-            --text-light: #777;
-            --font-main: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            --primary-color: #4CAF50;    /* Earthy green for agriculture */
+            --secondary-color: #3E2723;  /* Rich brown for soil */
+            --accent-color: #FF9800;     /* Orange for harvest/sun */
+            --light-color: #F5F5F5;      /* Light gray for softness */
+            --dark-color: #2E7D32;       /* Darker green for depth */
+            --success-color: #66BB6A;    /* Lighter green for growth */
+            --warning-color: #FFB300;    /* Amber for caution */
+            --danger-color: #D32F2F;     /* Red for alerts */
+            --text-color: #424242;       /* Dark gray for readability */
+            --text-light: #757575;       /* Lighter gray for secondary text */
+            --font-main: 'Poppins', sans-serif;
         }
         
         * {
@@ -40,7 +41,7 @@
             font-family: var(--font-main);
             line-height: 1.6;
             color: var(--text-color);
-            background-color: #f9f9f9;
+            background: linear-gradient(to bottom, #E8F5E9, #FFFFFF); /* Subtle green-to-white gradient */
             min-height: 100vh;
             display: flex;
             flex-direction: column;
@@ -48,10 +49,10 @@
         
         /* Header Styles */
         .header1 {
-            background-color: var(--primary-color);
+            background: linear-gradient(135deg, var(--primary-color), var(--dark-color));
             color: white;
-            padding: 1rem 0;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            padding: 1.2rem 0;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
             position: sticky;
             top: 0;
             z-index: 1000;
@@ -61,23 +62,29 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            max-width: 1200px;
+            max-width: 1300px;
             margin: 0 auto;
             padding: 0 2rem;
         }
         
         .logo {
-            font-size: 1.5rem;
-            font-weight: bold;
+            font-size: 1.8rem;
+            font-weight: 700;
             text-decoration: none;
             color: white;
             display: flex;
             align-items: center;
+            transition: transform 0.3s;
+        }
+        
+        .logo:hover {
+            transform: scale(1.05);
         }
         
         .logo i {
-            margin-right: 0.5rem;
-            font-size: 1.8rem;
+            margin-right: 0.6rem;
+            font-size: 2rem;
+            color: var(--accent-color);
         }
         
         .nav-links {
@@ -89,21 +96,23 @@
         }
         
         .nav-links li {
-            margin-left: 1.5rem;
+            margin-left: 2rem;
         }
         
         .nav-links a {
             color: white;
             text-decoration: none;
+            font-weight: 600;
             transition: color 0.3s, transform 0.2s;
-            display: inline-block;
-            padding: 0.2rem 0;
+            padding: 0.4rem 0.8rem;
             position: relative;
+            border-radius: 20px;
         }
         
         .nav-links a:hover {
-            color: var(--light-color);
+            color: var(--accent-color);
             transform: translateY(-2px);
+            background: rgba(255, 255, 255, 0.1);
         }
         
         .nav-links a::after {
@@ -112,37 +121,40 @@
             width: 0;
             height: 2px;
             bottom: 0;
-            left: 0;
-            background-color: var(--light-color);
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: var(--accent-color);
             transition: width 0.3s;
         }
         
         .nav-links a:hover::after {
-            width: 100%;
+            width: 60%;
         }
         
         .nav-actions {
             display: flex;
             align-items: center;
-            gap: 1rem;
+            gap: 1.2rem;
         }
         
         .login-btn, .signup-btn {
             background-color: var(--secondary-color);
-            padding: 0.5rem 1rem;
-            border-radius: 4px;
+            padding: 0.6rem 1.2rem;
+            border-radius: 25px;
             display: flex;
             align-items: center;
             gap: 0.5rem;
             transition: all 0.3s;
             text-decoration: none;
             color: white;
+            font-weight: 600;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.2);
         }
         
         .login-btn:hover, .signup-btn:hover {
-            background-color: #1a252f;
-            transform: translateY(-2px);
-            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            background-color: var(--accent-color);
+            transform: translateY(-3px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.25);
             color: white;
         }
         
@@ -151,29 +163,34 @@
         }
         
         .signup-btn:hover {
-            background-color: #c0392b;
+            background-color: #F57C00;
         }
         
         .hamburger {
             display: none;
             cursor: pointer;
-            font-size: 1.5rem;
+            font-size: 1.8rem;
             color: white;
             border: none;
             background: transparent;
+            transition: transform 0.3s;
         }
         
-        /* Improved Language Selector */
+        .hamburger:hover {
+            transform: rotate(90deg);
+        }
+        
+        /* Language Selector */
         .language-selector {
             position: relative;
             margin-left: 1.5rem;
         }
         
         .language-btn {
-            background-color: rgba(255, 255, 255, 0.2);
+            background-color: rgba(255, 255, 255, 0.15);
             color: white;
-            border: none;
-            border-radius: 4px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 20px;
             padding: 0.5rem 1rem;
             display: flex;
             align-items: center;
@@ -184,7 +201,8 @@
         }
         
         .language-btn:hover {
-            background-color: rgba(255, 255, 255, 0.3);
+            background-color: rgba(255, 255, 255, 0.25);
+            border-color: var(--accent-color);
         }
         
         .language-btn i {
@@ -195,10 +213,10 @@
             position: absolute;
             top: 100%;
             right: 0;
-            background-color: white;
-            border-radius: 8px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-            min-width: 180px;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+            min-width: 200px;
             z-index: 1000;
             overflow: hidden;
             opacity: 0;
@@ -214,13 +232,9 @@
             transform: translateY(0);
         }
         
-        .language-dropdown form {
-            width: 100%;
-        }
-        
         .language-dropdown button {
             width: 100%;
-            padding: 0.75rem 1rem;
+            padding: 0.8rem 1rem;
             text-align: left;
             background: none;
             border: none;
@@ -233,109 +247,124 @@
         }
         
         .language-dropdown button:hover {
-            background-color: #f5f5f5;
+            background-color: var(--light-color);
         }
         
         .language-dropdown button.active {
             font-weight: bold;
-            background-color: #f0f0f0;
-            color: var(--primary-color);
+            background-color: var(--success-color);
+            color: white;
         }
         
         .language-flag {
-            width: 20px;
-            height: 15px;
+            width: 24px;
+            height: 16px;
             margin-right: 10px;
-            border-radius: 2px;
-            display: inline-block;
+            border-radius: 3px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
         }
         
         /* Main Content */
         main {
             flex: 1;
-            max-width: 1200px;
-            margin: 2rem auto;
+            max-width: 1300px;
+            margin: 3rem auto;
             padding: 0 2rem;
         }
         
         .content-section {
-            background-color: white;
-            border-radius: 12px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.05);
-            padding: 2.5rem;
-            margin-bottom: 2rem;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 6px 25px rgba(0,0,0,0.08);
+            padding: 3rem;
+            margin-bottom: 2.5rem;
+            position: relative;
+            overflow: hidden;
             transition: transform 0.3s, box-shadow 0.3s;
         }
         
+        .content-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: linear-gradient(to right, var(--primary-color), var(--accent-color));
+        }
+        
         .content-section:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 8px 30px rgba(0,0,0,0.1);
+            transform: translateY(-8px);
+            box-shadow: 0 12px 35px rgba(0,0,0,0.12);
         }
         
         h1, h2, h3 {
-            margin-bottom: 1rem;
+            margin-bottom: 1.2rem;
             color: var(--secondary-color);
+            position: relative;
+        }
+        
+        h1::after, h2::after, h3::after {
+            content: '';
+            position: absolute;
+            width: 60px;
+            height: 3px;
+            background: var(--accent-color);
+            bottom: -5px;
+            left: 0;
+            border-radius: 2px;
         }
         
         h1 {
-            font-size: 2.5rem;
+            font-size: 2.8rem;
             font-weight: 700;
         }
         
         h2 {
-            font-size: 2rem;
+            font-size: 2.2rem;
             font-weight: 600;
         }
         
         h3 {
-            font-size: 1.5rem;
+            font-size: 1.6rem;
             font-weight: 600;
         }
         
         p {
             margin-bottom: 1.5rem;
-            line-height: 1.8;
+            line-height: 1.9;
+            color: var(--text-light);
         }
         
         /* Footer */
         footer {
-            background-color: var(--secondary-color);
+            background: linear-gradient(to top, var(--secondary-color), var(--dark-color));
             color: white;
-            padding: 3rem 0 1.5rem;
+            padding: 4rem 0 2rem;
             margin-top: auto;
+            position: relative;
         }
         
         .footer-content {
-            max-width: 1200px;
+            max-width: 1300px;
             margin: 0 auto;
             padding: 0 2rem;
             display: flex;
             justify-content: space-between;
             flex-wrap: wrap;
-            gap: 2rem;
+            gap: 2.5rem;
         }
         
         .footer-section {
             flex: 1;
-            min-width: 250px;
+            min-width: 280px;
         }
         
         .footer-section h3 {
             color: white;
-            margin-bottom: 1.2rem;
-            position: relative;
-            display: inline-block;
-        }
-        
-        .footer-section h3::after {
-            content: '';
-            position: absolute;
-            width: 50px;
-            height: 3px;
-            background-color: var(--accent-color);
-            bottom: -10px;
-            left: 0;
-            border-radius: 2px;
+            margin-bottom: 1.5rem;
+            font-size: 1.4rem;
+            font-weight: 600;
         }
         
         .footer-links {
@@ -344,12 +373,12 @@
         }
         
         .footer-links li {
-            margin-bottom: 0.8rem;
+            margin-bottom: 1rem;
             transition: transform 0.2s;
         }
         
         .footer-links li:hover {
-            transform: translateX(5px);
+            transform: translateX(8px);
         }
         
         .footer-links a {
@@ -358,113 +387,94 @@
             transition: color 0.3s;
             display: inline-flex;
             align-items: center;
+            font-size: 1rem;
         }
         
         .footer-links a:hover {
-            color: white;
+            color: var(--accent-color);
         }
         
         .footer-links i {
-            margin-right: 8px;
-            color: var(--accent-color);
+            margin-right: 10px;
+            color: var(--success-color);
+            font-size: 1.1rem;
         }
         
         .social-icons {
             display: flex;
-            gap: 1rem;
-            margin-top: 1.5rem;
+            gap: 1.2rem;
+            margin-top: 2rem;
         }
         
         .social-icons a {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            width: 40px;
-            height: 40px;
+            width: 45px;
+            height: 45px;
             border-radius: 50%;
-            background-color: rgba(255,255,255,0.1);
-            color: var(--light-color);
-            font-size: 1.2rem;
+            background: rgba(255,255,255,0.15);
+            color: white;
+            font-size: 1.4rem;
             transition: all 0.3s;
         }
         
         .social-icons a:hover {
-            color: white;
-            background-color: var(--primary-color);
-            transform: translateY(-5px);
+            background: var(--accent-color);
+            transform: translateY(-6px);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
         }
         
         .footer-bottom {
-            max-width: 1200px;
-            margin: 2rem auto 0;
+            max-width: 1300px;
+            margin: 2.5rem auto 0;
             padding: 1.5rem 2rem 0;
             text-align: center;
-            border-top: 1px solid rgba(255,255,255,0.1);
-            font-size: 0.9rem;
+            border-top: 1px solid rgba(255,255,255,0.15);
+            font-size: 0.95rem;
             color: var(--light-color);
         }
         
         /* Buttons */
         .btn {
-            display: inline-block;
-            padding: 0.8rem 1.5rem;
+            padding: 0.9rem 1.8rem;
             font-weight: 600;
-            background-color: var(--primary-color);
+            background: var(--primary-color);
             color: white;
             border: none;
-            border-radius: 6px;
-            cursor: pointer;
+            border-radius: 30px;
             text-decoration: none;
             transition: all 0.3s;
-            position: relative;
-            overflow: hidden;
-            z-index: 1;
-            box-shadow: 0 4px 10px rgba(52, 152, 219, 0.3);
-        }
-        
-        .btn::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 0;
-            height: 100%;
-            background-color: rgba(0,0,0,0.1);
-            transition: width 0.3s ease;
-            z-index: -1;
+            box-shadow: 0 4px 12px rgba(76, 175, 80, 0.3);
         }
         
         .btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 6px 15px rgba(52, 152, 219, 0.4);
+            transform: translateY(-4px);
+            box-shadow: 0 6px 18px rgba(76, 175, 80, 0.5);
+            background: var(--dark-color);
             color: white;
         }
         
-        .btn:hover::before {
-            width: 100%;
-        }
-        
         .btn-secondary {
-            background-color: var(--secondary-color);
-            box-shadow: 0 4px 10px rgba(44, 62, 80, 0.3);
+            background: var(--secondary-color);
+            box-shadow: 0 4px 12px rgba(62, 39, 35, 0.3);
         }
         
         .btn-secondary:hover {
-            box-shadow: 0 6px 15px rgba(44, 62, 80, 0.4);
+            background: var(--accent-color);
+            box-shadow: 0 6px 18px rgba(255, 152, 0, 0.5);
         }
         
         .btn-accent {
-            background-color: var(--accent-color);
-            box-shadow: 0 4px 10px rgba(231, 76, 60, 0.3);
+            background: var(--accent-color);
+            box-shadow: 0 4px 12px rgba(255, 152, 0, 0.3);
         }
         
         .btn-accent:hover {
-            box-shadow: 0 6px 15px rgba(231, 76, 60, 0.4);
+            background: #F57C00;
+            box-shadow: 0 6px 18px rgba(245, 124, 0, 0.5);
         }
         
         .btn-lg {
-            padding: 1rem 2rem;
-            font-size: 1.1rem;
+            padding: 1.2rem 2.5rem;
+            font-size: 1.2rem;
         }
         
         /* Responsive Design */
@@ -472,11 +482,9 @@
             .navbar {
                 padding: 0 1.5rem;
             }
-            
             .nav-links li {
-                margin-left: 1rem;
+                margin-left: 1.5rem;
             }
-            
             main {
                 padding: 0 1.5rem;
             }
@@ -486,82 +494,63 @@
             .hamburger {
                 display: block;
             }
-            
             .nav-links {
                 position: fixed;
-                top: 70px;
+                top: 80px;
                 left: -100%;
                 width: 100%;
-                height: calc(100vh - 70px);
-                background-color: var(--primary-color);
+                height: calc(100vh - 80px);
+                background: var(--primary-color);
                 flex-direction: column;
-                padding: 2rem 0;
+                padding: 2.5rem 0;
                 transition: left 0.3s ease;
                 z-index: 100;
                 overflow-y: auto;
             }
-            
             .nav-links.active {
                 left: 0;
             }
-            
             .nav-links li {
-                margin: 1rem 0;
+                margin: 1.5rem 0;
                 text-align: center;
                 width: 100%;
             }
-            
             .nav-links a {
-                display: block;
-                padding: 0.8rem 0;
-                font-size: 1.1rem;
+                padding: 1rem;
+                font-size: 1.2rem;
             }
-            
             .nav-actions {
                 flex-direction: column;
                 width: 100%;
-                gap: 1rem;
-                margin-top: 1rem;
+                gap: 1.5rem;
+                margin-top: 2rem;
             }
-            
             .login-btn, .signup-btn, .language-btn {
-                justify-content: center;
-                width: 80%;
+                width: 85%;
                 margin: 0 auto;
             }
-            
             .language-selector {
                 width: 100%;
                 display: flex;
                 justify-content: center;
                 margin-left: 0;
-                margin-top: 1rem;
+                margin-top: 1.5rem;
             }
-            
             .language-dropdown {
-                position: absolute;
-                top: 100%;
                 left: 50%;
                 transform: translateX(-50%) translateY(10px);
-                width: 80%;
-                max-width: 300px;
+                width: 85%;
+                max-width: 320px;
             }
-            
             .language-selector:hover .language-dropdown {
                 transform: translateX(-50%) translateY(5px);
             }
-            
             .content-section {
-                padding: 1.5rem;
+                padding: 2rem;
             }
-            
             .footer-section {
                 flex: 100%;
-                margin-bottom: 2rem;
-            }
-            
-            .footer-content {
-                gap: 1rem;
+                margin-bottom: 2.5rem;
             }
         }
     </style>
@@ -572,7 +561,7 @@
     <header class="header1">
         <nav class="navbar">
             <a href="/" class="logo">
-                <i class="fas fa-link"></i>
+                <i class="fas fa-tractor"></i>
                 AgiChain
             </a>
             <button class="hamburger" id="hamburger" aria-label="Toggle menu">
@@ -580,9 +569,9 @@
             </button>
             <ul class="nav-links" id="nav-links">
                 <li><a href="/"><i class="fas fa-home"></i> Home</a></li>
-                <li><a href="{% url 'farm-map' %}"><i class="fas fa-info-circle"></i> About</a></li>
-                <li><a href="/services"><i class="fas fa-cogs"></i> Services</a></li>
-                <li><a href="/blog"><i class="fas fa-blog"></i> Blog</a></li>
+                <li><a href="{% url 'farm-map' %}"><i class="fas fa-map-marked-alt"></i> Farm Map</a></li>
+                <li><a href="/services"><i class="fas fa-seedling"></i> Services</a></li>
+                <li><a href="/blog"><i class="fas fa-leaf"></i> Blog</a></li>
                 
                 <div class="nav-actions">
                     {% if user.is_authenticated %}
@@ -620,9 +609,9 @@
                                     <input name="language" type="hidden" value="{{ language.code }}">
                                     <button type="submit" class="{% if language.code == CURRENT_LANGUAGE %}active{% endif %}">
                                         {% if language.code == 'en' %}
-                                            <span class="language-flag" style="background-color: #012169;"></span>
+                                            <span class="language-flag" style="background: linear-gradient(to right, #012169, #FFFFFF, #C8102E);"></span>
                                         {% elif language.code == 'ml' %}
-                                            <span class="language-flag" style="background-color: #FF9933;"></span>
+                                            <span class="language-flag" style="background: linear-gradient(to bottom, #FF9933, #FFFFFF, #138808);"></span>
                                         {% else %}
                                             <span class="language-flag" style="background-color: #ddd;"></span>
                                         {% endif %}
@@ -637,21 +626,21 @@
         </nav>
     </header>
     
-  
+    <main>
         {% block content %}
         <section class="content-section">
             <h1>Welcome to AgiChain</h1>
-            <p>Revolutionizing the way businesses interact with blockchain technology. Our platform simplifies complex processes and enables seamless integration.</p>
-            <a href="#" class="btn btn-lg">Get Started <i class="fas fa-arrow-right"></i></a>
+            <p>Empowering farmers with smart tools for sustainable agriculture. Explore farm mapping, crop recommendations, and more.</p>
+            <a href="{% url 'farm-map' %}" class="btn btn-lg">Explore Now <i class="fas fa-arrow-right"></i></a>
         </section>
         {% endblock %}
-  
+    </main>
     
     <footer>
         <div class="footer-content">
             <div class="footer-section">
-                <h3>About Us</h3>
-                <p>AgiChain is a cutting-edge platform that combines agile methodologies with blockchain technology to deliver secure, scalable solutions for modern businesses.</p>
+                <h3>About AgiChain</h3>
+                <p>AgiChain connects farmers with technology to optimize yields, manage resources, and build a sustainable future.</p>
                 <div class="social-icons">
                     <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
                     <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
@@ -664,7 +653,7 @@
                 <h3>Quick Links</h3>
                 <ul class="footer-links">
                     <li><a href="/"><i class="fas fa-chevron-right"></i> Home</a></li>
-                    <li><a href="/about"><i class="fas fa-chevron-right"></i> About</a></li>
+                    <li><a href="{% url 'farm-map' %}"><i class="fas fa-chevron-right"></i> Farm Map</a></li>
                     <li><a href="/services"><i class="fas fa-chevron-right"></i> Services</a></li>
                     <li><a href="/blog"><i class="fas fa-chevron-right"></i> Blog</a></li>
                     <li><a href="/contact"><i class="fas fa-chevron-right"></i> Contact</a></li>
@@ -674,16 +663,16 @@
             <div class="footer-section">
                 <h3>Contact Us</h3>
                 <ul class="footer-links">
-                    <li><a href="#"><i class="fas fa-map-marker-alt"></i> 123 Blockchain Ave, Tech City</a></li>
-                    <li><a href="tel:+12345678901"><i class="fas fa-phone"></i> +1 234 567 8901</a></li>
-                    <li><a href="mailto:info@agichain.com"><i class="fas fa-envelope"></i> info@agichain.com</a></li>
-                    <li><a href="#"><i class="fas fa-clock"></i> Mon-Fri: 9AM-6PM</a></li>
+                    <li><a href="#"><i class="fas fa-map-marker-alt"></i> AgiChain HQ, Green Valley</a></li>
+                    <li><a href="tel:+919876543210"><i class="fas fa-phone"></i> +91 98765 43210</a></li>
+                    <li><a href="mailto:support@agichain.com"><i class="fas fa-envelope"></i> support@agichain.com</a></li>
+                    <li><a href="#"><i class="fas fa-clock"></i> Mon-Sat: 8AM-5PM</a></li>
                 </ul>
             </div>
         </div>
         
         <div class="footer-bottom">
-            <p>&copy; 2025 AgiChain. All rights reserved. | Designed with <i class="fas fa-heart" style="color: var(--accent-color);"></i> by AgiChain Team</p>
+            <p>© 2025 AgiChain. All rights reserved. | Grown with <i class="fas fa-seedling" style="color: var(--success-color);"></i> by the AgiChain Team</p>
         </div>
     </footer>
     
@@ -694,11 +683,9 @@
             this.querySelector('i').classList.toggle('fa-times');
         });
         
-        // Close mobile menu when clicking outside
         document.addEventListener('click', function(event) {
             const navLinks = document.getElementById('nav-links');
             const hamburger = document.getElementById('hamburger');
-            
             if (!navLinks.contains(event.target) && !hamburger.contains(event.target) && navLinks.classList.contains('active')) {
                 navLinks.classList.remove('active');
                 hamburger.querySelector('i').classList.add('fa-bars');
@@ -708,8 +695,6 @@
     </script>
     
     {% block extra_js %}{% endblock %}
-
-    <!-- Bootstrap JavaScript Bundle with Popper -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
