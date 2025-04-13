@@ -6,6 +6,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.decorators import login_required
 from django.db.models import Q
 from .models import Farm
+from .models import PricePrediction
 import joblib
 import logging
 import numpy as np
@@ -396,3 +397,60 @@ def get_farm_by_coords(request):
             logger.error(f"Invalid data: {e}")
             return JsonResponse({"error": f"Invalid data: {str(e)}"}, status=400)
     return JsonResponse({"error": "Invalid request method"}, status=405)
+
+
+
+@login_required
+def my_farms(request):
+    return render(request, 'maps/my_farms.html')
+
+@csrf_exempt
+@login_required
+def delete_farm(request, farm_id):
+    if request.method == "DELETE":
+        try:
+            farm = Farm.objects.get(id=farm_id, farmer=request.user)
+            lat, lon = farm.latitude, farm.longitude
+            farm.delete()
+            return JsonResponse({"message": "Farm deleted successfully", "latitude": float(lat), "longitude": float(lon)}, status=200)
+        except Farm.DoesNotExist:
+            return JsonResponse({"error": "Farm not found or you don't have permission"}, status=404)
+        except Exception as e:
+            logger.error(f"Error deleting farm: {e}")
+            return JsonResponse({"error": f"Unexpected error: {str(e)}"}, status=500)
+    return JsonResponse({"error": "Invalid request method"}, status=405)
+
+
+@csrf_exempt
+def get_price_prediction(request):
+    if request.method == 'POST':
+        try:
+            data = json.loads(request.body)
+            crop = data.get('crop', 'coconut_Kochi')
+            
+            # Try database first
+            prediction = PricePrediction.objects.filter(crop=crop).order_by('-date').first()
+            if prediction:
+                return JsonResponse({
+                    'crop': crop,
+                    'predicted_price': round(prediction.predicted_price, 2),
+                    'date': prediction.date.strftime('%Y-%m-%d')
+                })
+            
+            # Fallback to CSV
+            try:
+                df = pd.read_csv('data/price_predictions.csv')
+                df['date'] = pd.to_datetime(df['date'])
+                pred = df[df['crop'] == crop].sort_values('date', ascending=False).iloc[0]
+                return JsonResponse({
+                    'crop': crop,
+                    'predicted_price': round(float(pred['predicted_price']), 2),
+                    'date': pred['date'].strftime('%Y-%m-%d')
+                })
+            except (FileNotFoundError, IndexError):
+                return JsonResponse({'error': f'No prediction available for {crop}'}, status=404)
+                
+        except Exception as e:
+            logger.error(f"Error in get_price_prediction: {e}")
+            return JsonResponse({'error': str(e)}, status=500)
+    return JsonResponse({'error': 'Invalid request method'}, status=400)

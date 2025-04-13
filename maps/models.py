@@ -68,3 +68,13 @@ class Farm(models.Model):
 
     def __str__(self):
         return f"{self.farmer.username}'s Farm at ({self.latitude}, {self.longitude})"
+    
+
+class PricePrediction(models.Model):
+    crop = models.CharField(max_length=100)
+    date = models.DateField()
+    predicted_price = models.FloatField()
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.crop} - {self.date}: ₹{self.predicted_price:.2f}"
