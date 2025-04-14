@@ -75,7 +75,7 @@
         <div class="header">
             <div class="container">
                 <h2>{% trans "Smart Farm Mapping System" %}</h2>
-                <div class="subtitle">{% trans "Optimize your farming with location-based crop suggestions and price predictions" %}</div>
+                <div class="subtitle">{% trans "Optimize your farming with crop yield and price predictions" %}</div>
             </div>
         </div>
 
@@ -83,11 +83,9 @@
             <div class="crop-selector-container">
                 <select id="cropPreference">
                     <option value="">{% trans "Select Crop" %}</option>
-                    <option value="coconut_Kochi">{% trans "Coconut (Kochi)" %}</option>
-                    <option value="pepper_Kochi">{% trans "Pepper (Kochi)" %}</option>
-                    <option value="rubber_Kochi">{% trans "Rubber (Kochi)" %}</option>
-                    <option value="tapioca_Kochi">{% trans "Tapioca (Kochi)" %}</option>
-                    <option value="turmeric_Kochi">{% trans "Turmeric (Kochi)" %}</option>
+                    {% for value, label in crop_choices %}
+                        <option value="{{ value }}">{{ label }}</option>
+                    {% endfor %}
                 </select>
             </div>
 
@@ -102,7 +100,7 @@
                 <button id="resetMap" class="warning"><i class="fas fa-sync-alt"></i> {% trans "Reset Map" %}</button>
                 <button id="addFarm"><i class="fas fa-plus"></i> {% trans "Add Farm" %}</button>
                 <button id="viewAllFarms"><i class="fas fa-eye"></i> {% trans "View All Farms" %}</button>
-                <a href="{% url 'my_farms' %}" class="btn btn-primary"><i class="fas fa-tractor"></i> {% trans "My Farms" %}</a>
+                <a href="{% url 'maps:my_farms' %}" class="btn btn-primary"><i class="fas fa-tractor"></i> {% trans "My Farms" %}</a>
             </div>
             
             <div class="map-container">
@@ -126,7 +124,7 @@
                     </div>
                     <form id="farmForm">
                         <div class="form-group">
-                            <label for="farmSize">{% trans "Farm Size (acres/hectares)" %}</label>
+                            <label for="farmSize">{% trans "Farm Size (acres)" %}</label>
                             <input type="number" id="farmSize" name="farmSize" min="0" step="0.1" value="1.0" required>
                         </div>
                         <div class="form-group">
@@ -157,13 +155,21 @@
                             </select>
                         </div>
                         <div class="form-group">
-                            <label for="userCropPreferences">{% trans "Preferred Crop" %}</label>
-                            <select id="userCropPreferences" name="userCropPreferences">
-                                <option value="">{% trans "None" %}</option>
-                                {% for value, label in Farm.CROP_CHOICES %}
+                            <label for="userCropPreferences">{% trans "Crop Planted" %}</label>
+                            <select id="userCropPreferences" name="userCropPreferences" required>
+                                <option value="">{% trans "Select Crop" %}</option>
+                                {% for value, label in crop_choices %}
                                     <option value="{{ value }}">{{ label }}</option>
                                 {% endfor %}
                             </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="plantingDate">{% trans "Planting Date" %}</label>
+                            <input type="date" id="plantingDate" name="plantingDate" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="yieldPerAcre">{% trans "Expected Yield (quintals/acre)" %}</label>
+                            <input type="number" id="yieldPerAcre" name="yieldPerAcre" min="0" step="0.1" value="10.0" required>
                         </div>
                         <div class="form-group">
                             <label>{% trans "Farm Location" %}</label>
@@ -184,8 +190,8 @@
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script>
         const mapConfig = {
-            defaultView: [20.5937, 78.9629],
-            defaultZoom: 5,
+            defaultView: [10.8505, 76.2711], // Kerala-centric
+            defaultZoom: 7,
             maxZoom: 18
         };
         const map = L.map('map').setView(mapConfig.defaultView, mapConfig.defaultZoom);
@@ -229,6 +235,51 @@
             })
         };
 
+        const cropHarvestDays = {
+            'wheat': 120,
+            'rice': 120,
+            'corn': 100,
+            'barley': 120,
+            'oats': 120,
+            'sorghum': 110,
+            'millet': 100,
+            'soybean': 120,
+            'peanut': 120,
+            'bean': 100,
+            'pea': 90,
+            'lentil': 100,
+            'chickpea': 100,
+            'mungbean': 90,
+            'cotton': 180,
+            'sugarcane': 365,
+            'sunflower': 100,
+            'mustard': 120,
+            'sesame': 90,
+            'potato': 100,
+            'tomato': 90,
+            'onion': 100,
+            'carrot': 100,
+            'cabbage': 90,
+            'cauliflower': 90,
+            'brinjal': 90,
+            'okra': 90,
+            'spinach': 60,
+            'chilli': 150,
+            'bittergourd': 90,
+            'ridgegourd': 90,
+            'banana': 270,
+            'banana_robusta': 270,
+            'banana_rasthali': 270,
+            'banana_poovan': 270,
+            'banana_nendran': 270,
+            'mango': 365,
+            'guava': 365,
+            'papaya': 270,
+            'pomegranate': 365,
+            'jackfruit': 365,
+            'coconut': 365
+        };
+
         function showNotification(message, type = "success") {
             const notification = document.createElement('div');
             notification.className = `notification ${type}`;
@@ -260,22 +311,40 @@
             }
         }
 
-        async function fetchPricePrediction(crop) {
+        async function fetchPricePrediction(crop, plantingDate, farmId = null) {
+            if (!crop || !plantingDate) {
+                console.error(`Invalid crop: ${crop}, plantingDate: ${plantingDate}`);
+                showNotification('{% trans "Please select a crop and planting date" %}', 'error');
+                return null;
+            }
             const spinner = document.getElementById('loadingSpinner');
             spinner.classList.add('active');
             try {
-                const response = await fetch('{% url "get-price-prediction" %}', {
+                const daysToHarvest = cropHarvestDays[crop] || 120;
+                const planting = new Date(plantingDate);
+                const harvestDate = new Date(planting.getTime() + daysToHarvest * 24 * 60 * 60 * 1000);
+                const harvestDateStr = harvestDate.toISOString().split('T')[0];
+                console.log(`Fetching price for ${crop} on ${harvestDateStr}`);
+                const payload = { crop, harvest_date: harvestDateStr };
+                if (farmId) payload.farm_id = farmId;
+                const response = await fetch('{% url "maps:get_price_prediction" %}', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
                         'X-CSRFToken': '{{ csrf_token }}'
                     },
-                    body: JSON.stringify({ crop: crop || 'coconut_Kochi' })
+                    body: JSON.stringify(payload)
                 });
                 if (!response.ok) throw new Error(`Price fetch error: ${response.status}`);
-                return await response.json();
+                const priceData = await response.json();
+                if (priceData.warning) {
+                    console.warn(`Price warning: ${priceData.warning}`);
+                    showNotification(priceData.warning, 'warning');
+                }
+                return priceData;
             } catch (error) {
-                showNotification(`{% trans "Error fetching price prediction" %}: ${error.message}`, "error");
+                console.error(`Price fetch failed: ${error.message}`);
+                showNotification(`{% trans "Error fetching price prediction" %}: ${error.message}`, 'error');
                 return null;
             } finally {
                 spinner.classList.remove('active');
@@ -284,7 +353,7 @@
 
         async function fetchMoreDetails(lat, lon) {
             try {
-                const response = await fetch('{% url "get_location_details" %}', {
+                const response = await fetch('{% url "maps:get_location_details" %}', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -295,7 +364,7 @@
                 if (!response.ok) throw new Error(`Details fetch error: ${response.status}`);
                 return await response.json();
             } catch (error) {
-                showNotification(`{% trans "Error fetching more details" %}: ${error.message}`, "error");
+                showNotification(`{% trans "Error fetching more details" %}: ${error.message}`, 'error');
                 return null;
             }
         }
@@ -311,12 +380,12 @@
             const data = await fetchMoreDetails(lat, lon);
             if (data) {
                 section.innerHTML = `
-                    <div><strong>{% trans "Soil Moisture" %}:</strong> ${data.soil.moisture || 'N/A'}%</div>
-                    <div><strong>{% trans "Sunlight Hours" %}:</strong> ${data.climate.sunlight_hours || 'N/A'} hrs</div>
-                    <div><strong>{% trans "Pest Risk" %}:</strong> ${data.pest_risk || 'N/A'}</div>
-                    <div><strong>{% trans "Water Availability" %}:</strong> ${data.water_availability || 'N/A'} L</div>
-                    <div><strong>{% trans "Elevation" %}:</strong> ${data.elevation || 'N/A'} m</div>
-                    <div><strong>{% trans "Wind Speed" %}:</strong> ${data.weather.wind_speed || 'N/A'} m/s</div>
+                    <div><strong>{% trans "Soil Moisture" %}:</strong> ${data.soil.moisture.toFixed(1)}%</div>
+                    <div><strong>{% trans "Sunlight Hours" %}:</strong> ${data.climate.sunlight_hours.toFixed(1)} hrs</div>
+                    <div><strong>{% trans "Pest Risk" %}:</strong> ${data.pest_risk}</div>
+                    <div><strong>{% trans "Water Availability" %}:</strong> ${data.water_availability.toFixed(0)} thousand L/ha</div>
+                    <div><strong>{% trans "Elevation" %}:</strong> ${data.elevation.toFixed(0)} m</div>
+                    <div><strong>{% trans "Wind Speed" %}:</strong> ${data.weather.wind_speed.toFixed(1)} m/s</div>
                 `;
                 section.classList.add('active');
                 button.textContent = '{% trans "Hide Details" %}';
@@ -337,8 +406,9 @@
 
             try {
                 const cropPreference = document.getElementById('cropPreference').value;
-                const [farmResponse, locationResponse, priceData] = await Promise.all([
-                    fetch('{% url "get_farm_by_coords" %}', {
+                const today = new Date().toISOString().split('T')[0];
+                const [farmResponse, locationResponse] = await Promise.all([
+                    fetch('{% url "maps:get_farm_by_coords" %}', {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json',
@@ -346,15 +416,14 @@
                         },
                         body: JSON.stringify({ latitude: selectedLat, longitude: selectedLon })
                     }),
-                    fetch('{% url "get_location_details" %}', {
+                    fetch('{% url "maps:get_location_details" %}', {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json',
                             'X-CSRFToken': '{{ csrf_token }}'
                         },
                         body: JSON.stringify({ latitude: selectedLat, longitude: selectedLon })
-                    }),
-                    cropPreference ? fetchPricePrediction(cropPreference) : Promise.resolve(null)
+                    })
                 ]);
 
                 let farmData = null;
@@ -366,43 +435,64 @@
                 if (!locationResponse.ok) throw new Error(`Location fetch error: ${locationResponse.status}`);
                 const locationData = await locationResponse.json();
 
-                if (farmData) {
+                if (farmData && farmData.user_crop_preferences) {
+                    let priceHtml = '<div class="prediction-error">{% trans "No price prediction available" %}</div>';
+                    if (farmData.planting_date) {
+                        const priceData = await fetchPricePrediction(farmData.user_crop_preferences, farmData.planting_date, farmData.id);
+                        if (priceData && priceData.predicted_price && farmData.yield_per_acre && farmData.area) {
+                            priceHtml = `
+                                <div class="prediction">
+                                    <strong>{% trans "Predicted Price" %} (${priceData.crop}):</strong> ₹${priceData.predicted_price.toFixed(2)}/quintal<br>
+                                    <strong>{% trans "Total Yield" %}:</strong> ${priceData.total_yield.toFixed(2)} quintals<br>
+                                    <strong>{% trans "Est. Revenue" %}:</strong> ₹${priceData.estimated_revenue.toFixed(2)} (as of ${priceData.date})
+                                </div>`;
+                        }
+                    }
                     marker = L.marker([selectedLat, selectedLon], { icon: statusIcons[farmData.status] })
                         .addTo(map)
                         .bindPopup(`
-                            <div class="popup-title">${farmData.farmer_name}'s Farm</div>
+                            <div class="popup-title">${farmData.farmer}'s Farm</div>
                             <div class="popup-content">
-                                <div><strong>{% trans "Farmer" %}:</strong> ${farmData.farmer_name}</div>
+                                <div><strong>{% trans "Farmer" %}:</strong> ${farmData.farmer}</div>
                                 <div><span class="status-indicator status-${farmData.status}"></span> <strong>{% trans "Status" %}:</strong> ${farmData.status.charAt(0).toUpperCase() + farmData.status.slice(1)}</div>
-                                <div><strong>{% trans "Size" %}:</strong> ${farmData.area || '{% trans "Not set" %}'} acres/hectares</div>
+                                <div><strong>{% trans "Size" %}:</strong> ${farmData.area || '{% trans "Not set" %}'} acres</div>
                                 <div><strong>{% trans "Soil Type" %}:</strong> ${farmData.soil_type.charAt(0).toUpperCase() + farmData.soil_type.slice(1)}</div>
                                 <div><strong>{% trans "Climate" %}:</strong> ${farmData.climate.charAt(0).toUpperCase() + farmData.climate.slice(1)}</div>
-                                <div><strong>{% trans "Preferred Crop" %}:</strong> ${farmData.user_crop_preferences || '{% trans "None" %}'}</div>
-                                <div><strong>{% trans "Recommended Crop" %}:</strong> ${farmData.recommended_crop ? farmData.recommended_crop.charAt(0).toUpperCase() + farmData.recommended_crop.slice(1) : '{% trans "Not Set" %}'}</div>
+                                <div><strong>{% trans "Crop Planted" %}:</strong> ${farmData.user_crop_preferences || '{% trans "None" %}'}</div>
+                                <div><strong>{% trans "Planting Date" %}:</strong> ${farmData.planting_date || '{% trans "Not set" %}'}</div>
+                                <div><strong>{% trans "Yield/Acre" %}:</strong> ${farmData.yield_per_acre || '{% trans "Not set" %}'} quintals</div>
+                                <div><strong>{% trans "Recommended Crop" %}:</strong> ${farmData.recommended_crop || '{% trans "Not Set" %}'}</div>
                                 <div><strong>{% trans "Oversupply Risk" %}:</strong> ${farmData.oversupply_risk ? '{% trans "Yes" %}' : '{% trans "No" %}'}</div>
                                 <div><strong>{% trans "Coordinates" %}:</strong> Lat: ${selectedLat.toFixed(6)}, Lon: ${selectedLon.toFixed(6)}</div>
+                                ${priceHtml}
                             </div>
                         `)
                         .openPopup();
                 } else {
-                    const priceHtml = priceData
-                        ? `<div class="prediction"><strong>{% trans "Predicted Price" %} (${priceData.crop.replace('_Kochi', '')}):</strong> ₹${priceData.predicted_price.toFixed(2)} (as of ${priceData.date})</div>`
-                        : `<div class="prediction-error">{% trans "Select a crop for price prediction" %}</div>`;
-
+                    let priceHtml = '<div class="prediction-error">{% trans "Select a crop for price prediction" %}</div>';
+                    if (cropPreference) {
+                        const priceData = await fetchPricePrediction(cropPreference, today);
+                        if (priceData && priceData.predicted_price) {
+                            priceHtml = `
+                                <div class="prediction">
+                                    <strong>{% trans "Predicted Price" %} (${priceData.crop}):</strong> ₹${priceData.predicted_price.toFixed(2)}/quintal (as of ${priceData.date})
+                                </div>`;
+                        }
+                    }
                     marker = L.marker([selectedLat, selectedLon], { icon: customIcon })
                         .addTo(map)
                         .bindPopup(`
                             <div class="popup-title">{% trans "Location Insights" %}</div>
                             <div class="popup-content">
-                                <div><strong>{% trans "Temperature" %}:</strong> ${locationData.weather.temperature}°C</div>
-                                <div><strong>{% trans "Humidity" %}:</strong> ${locationData.weather.humidity}%</div>
-                                <div><strong>{% trans "Rainfall" %}:</strong> ${locationData.weather.rainfall} mm</div>
+                                <div><strong>{% trans "Temperature" %}:</strong> ${locationData.weather.temperature.toFixed(1)}°C</div>
+                                <div><strong>{% trans "Humidity" %}:</strong> ${locationData.weather.humidity.toFixed(0)}%</div>
+                                <div><strong>{% trans "Rainfall" %}:</strong> ${locationData.weather.rainfall.toFixed(1)} mm</div>
                                 <div><strong>{% trans "Soil Type" %}:</strong> ${locationData.soil.soil_type.charAt(0).toUpperCase() + locationData.soil.soil_type.slice(1)}</div>
-                                <div><strong>{% trans "Soil pH" %}:</strong> ${locationData.soil.ph}</div>
-                                <div><strong>{% trans "Soil NPK" %}:</strong> N:${locationData.soil.N}, P:${locationData.soil.P}, K:${locationData.soil.K}</div>
-                                <div><strong>{% trans "Avg Temp" %}:</strong> ${locationData.climate.avg_temp}°C</div>
-                                <div><strong>{% trans "Avg Rainfall" %}:</strong> ${locationData.climate.avg_rainfall} mm</div>
-                                <div><strong>{% trans "Recommended Crops" %}:</strong><br>${locationData.recommended_crops.slice(0, 7).map(crop => `${crop.crop.charAt(0).toUpperCase() + crop.crop.slice(1)} (${crop.suitability.toFixed(1)}%)`).join('<br>')}</div>
+                                <div><strong>{% trans "Soil pH" %}:</strong> ${locationData.soil.ph.toFixed(1)}</div>
+                                <div><strong>{% trans "Soil NPK" %}:</strong> N:${locationData.soil.N.toFixed(1)}, P:${locationData.soil.P.toFixed(0)}, K:${locationData.soil.K.toFixed(0)}</div>
+                                <div><strong>{% trans "Avg Temp" %}:</strong> ${locationData.climate.avg_temp.toFixed(1)}°C</div>
+                                <div><strong>{% trans "Avg Rainfall" %}:</strong> ${locationData.climate.avg_rainfall.toFixed(0)} mm</div>
+                                <div><strong>{% trans "Recommended Crops" %}:</strong><br>${locationData.recommended_crops.slice(0, 5).map(crop => `${crop.crop.charAt(0).toUpperCase() + crop.crop.slice(1)} (${crop.suitability.toFixed(1)}%)`).join('<br>')}</div>
                                 <div><strong>{% trans "Coordinates" %}:</strong> Lat: ${selectedLat.toFixed(6)}, Lon: ${selectedLon.toFixed(6)}</div>
                                 ${priceHtml}
                                 <div>{% trans "Click 'Add Farm' to register this location." %}</div>
@@ -417,7 +507,8 @@
                 map.setView([selectedLat, selectedLon], 14);
                 updateCoordinatesDisplay();
             } catch (error) {
-                showNotification(`{% trans "Error" %}: ${error.message}`, "error");
+                console.error(`Map click error: ${error.message}`);
+                showNotification(`{% trans "Error" %}: ${error.message}`, 'error');
                 marker = L.marker([selectedLat, selectedLon], { icon: customIcon })
                     .addTo(map)
                     .bindPopup(`
@@ -444,7 +535,7 @@
             btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> {% trans "Saving..." %}';
             btn.disabled = true;
             try {
-                const response = await fetch('{% url "save_location" %}', {
+                const response = await fetch('{% url "maps:save_location" %}', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -453,7 +544,11 @@
                     body: JSON.stringify({ latitude: selectedLat, longitude: selectedLon })
                 });
                 const data = await response.json();
-                showNotification(data.message, 'success');
+                if (response.ok) {
+                    showNotification(data.message, 'success');
+                } else {
+                    showNotification(data.error || '{% trans "Error saving location" %}', 'error');
+                }
             } catch (error) {
                 showNotification(`{% trans "Error saving location" %}: ${error.message}`, 'error');
             } finally {
@@ -481,7 +576,7 @@
                         .openPopup();
                     map.setView([selectedLat, selectedLon], 14);
                     updateCoordinatesDisplay();
-                    showNotification('{% trans "Location updated" %}');
+                    showNotification('{% trans "Location updated" %}', 'success');
                 } catch (error) {
                     showNotification(`{% trans "Error getting location" %}: ${error.message}`, 'error');
                 }
@@ -498,6 +593,7 @@
             selectedLon = null;
             map.setView(mapConfig.defaultView, mapConfig.defaultZoom);
             updateCoordinatesDisplay();
+            showNotification('{% trans "Map reset" %}', 'success');
         });
 
         document.getElementById('addFarm').addEventListener('click', async () => {
@@ -506,7 +602,7 @@
                 return;
             }
             try {
-                const response = await fetch('{% url "get_farm_by_coords" %}', {
+                const response = await fetch('{% url "maps:get_farm_by_coords" %}', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -522,6 +618,8 @@
                     const cropSelect = document.getElementById('userCropPreferences');
                     const cropPreference = document.getElementById('cropPreference').value;
                     if (cropPreference) cropSelect.value = cropPreference;
+                    const today = new Date().toISOString().split('T')[0];
+                    document.getElementById('plantingDate').value = today;
                     modal.style.display = 'block';
                 }
             } catch (error) {
@@ -530,194 +628,194 @@
         });
 
         document.getElementById('viewAllFarms').addEventListener('click', async () => {
+            const spinner = document.getElementById('loadingSpinner');
+            spinner.classList.add('active');
             try {
-                const response = await fetch('{% url "get_farm_data" %}');
+                const response = await fetch('{% url "maps:get_farm_data" %}');
+                if (!response.ok) throw new Error(`Farm data fetch error: ${response.status}`);
                 const data = await response.json();
                 farmMarkers.forEach(m => map.removeLayer(m));
                 farmPolygons.forEach(p => map.removeLayer(p));
                 farmMarkers = [];
                 farmPolygons = [];
-                data.features.forEach(farm => {
-                    const latlng = [farm.geometry.coordinates[1], farm.geometry.coordinates[0]];
-                    const marker = L.marker(latlng, { icon: statusIcons[farm.properties.status] })
+
+                const bounds = [];
+                for (const feature of data.features) {
+                    const { coordinates } = feature.geometry;
+                    const props = feature.properties;
+                    const [lon, lat] = coordinates;
+                    bounds.push([lat, lon]);
+
+                    const farmMarker = L.marker([lat, lon], { icon: statusIcons[props.status] })
                         .addTo(map)
                         .bindPopup(`
-                            <div class="popup-title">${farm.properties.farmer_name}'s Farm</div>
+                            <div class="popup-title">${props.farmer}'s Farm</div>
                             <div class="popup-content">
-                                <div><strong>{% trans "Farmer" %}:</strong> ${farm.properties.farmer_name}</div>
-                                <div><span class="status-indicator status-${farm.properties.status}"></span> <strong>{% trans "Status" %}:</strong> ${farm.properties.status.charAt(0).toUpperCase() + farm.properties.status.slice(1)}</div>
-                                <div><strong>{% trans "Size" %}:</strong> ${farm.properties.area || '{% trans "Not set" %}'} acres/hectares</div>
-                                <div><strong>{% trans "Soil Type" %}:</strong> ${farm.properties.soil_type.charAt(0).toUpperCase() + farm.properties.soil_type.slice(1)}</div>
-                                <div><strong>{% trans "Climate" %}:</strong> ${farm.properties.climate.charAt(0).toUpperCase() + farm.properties.climate.slice(1)}</div>
-                                <div><strong>{% trans "Preferred Crop" %}:</strong> ${farm.properties.user_crop_preferences || '{% trans "None" %}'}</div>
-                                <div><strong>{% trans "Recommended Crop" %}:</strong> ${farm.properties.recommended_crop ? farm.properties.recommended_crop.charAt(0).toUpperCase() + farm.properties.recommended_crop.slice(1) : '{% trans "Not Set" %}'}</div>
-                                <div><strong>{% trans "Oversupply Risk" %}:</strong> ${farm.properties.oversupply_risk ? '{% trans "Yes" %}' : '{% trans "No" %}'}</div>
-                                <div><strong>{% trans "Coordinates" %}:</strong> Lat: ${latlng[0].toFixed(6)}, Lon: ${latlng[1].toFixed(6)}</div>
+                                <div><strong>{% trans "Farmer" %}:</strong> ${props.farmer}</div>
+                                <div><span class="status-indicator status-${props.status}"></span> <strong>{% trans "Status" %}:</strong> ${props.status.charAt(0).toUpperCase() + props.status.slice(1)}</div>
+                                <div><strong>{% trans "Size" %}:</strong> ${props.area || '{% trans "Not set" %}'} acres</div>
+                                <div><strong>{% trans "Soil Type" %}:</strong> ${props.soil_type.charAt(0).toUpperCase() + props.soil_type.slice(1)}</div>
+                                <div><strong>{% trans "Climate" %}:</strong> ${props.climate.charAt(0).toUpperCase() + props.climate.slice(1)}</div>
+                                <div><strong>{% trans "Crop Planted" %}:</strong> ${props.user_crop_preferences || '{% trans "None" %}'}</div>
+                                <div><strong>{% trans "Planting Date" %}:</strong> ${props.planting_date || '{% trans "Not set" %}'}</div>
+                                <div><strong>{% trans "Yield/Acre" %}:</strong> ${props.yield_per_acre || '{% trans "Not set" %}'} quintals</div>
+                                <div><strong>{% trans "Recommended Crop" %}:</strong> ${props.recommended_crop || '{% trans "Not Set" %}'}</div>
+                                <div><strong>{% trans "Oversupply Risk" %}:</strong> ${props.oversupply_risk ? '{% trans "Yes" %}' : '{% trans "No" %}'}</div>
+                                <div><strong>{% trans "Coordinates" %}:</strong> Lat: ${lat.toFixed(6)}, Lon: ${lon.toFixed(6)}</div>
                             </div>
                         `);
-                    farmMarkers.push(marker);
+                    farmMarkers.push(farmMarker);
+
                     const polygon = L.polygon([
-                        [latlng[0] - 0.001, latlng[1] - 0.001],
-                        [latlng[0] + 0.001, latlng[1] - 0.001],
-                        [latlng[0] + 0.001, latlng[1] + 0.001],
-                        [latlng[0] - 0.001, latlng[1] + 0.001]
+                        [lat - 0.001, lon - 0.001],
+                        [lat - 0.001, lon + 0.001],
+                        [lat + 0.001, lon + 0.001],
+                        [lat + 0.001, lon - 0.001]
                     ], {
-                        color: farm.properties.status === 'green' ? '#2ecc71' : farm.properties.status === 'orange' ? '#f39c12' : '#e74c3c',
-                        fillOpacity: 0.2
+                        color: props.status === 'green' ? '#2ecc71' : props.status === 'orange' ? '#f39c12' : '#e74c3c',
+                        weight: 2,
+                        opacity: 0.7,
+                        fillOpacity: 0.3
                     }).addTo(map);
                     farmPolygons.push(polygon);
-                });
-                if (farmMarkers.length > 0) {
-                    const bounds = L.latLngBounds(farmMarkers.map(m => m.getLatLng()));
-                    map.fitBounds(bounds, { padding: [50, 50] });
-                    showNotification('{% trans "Loaded all farms" %}', 'success');
-                } else {
-                    showNotification('{% trans "No farms to display" %}', 'warning');
                 }
+
+                if (bounds.length > 0) {
+                    map.fitBounds(bounds, { padding: [50, 50] });
+                }
+                showNotification('{% trans "Displayed all farms" %}', 'success');
             } catch (error) {
-                showNotification(`{% trans "Error loading farms" %}: ${error.message}`, 'error');
+                showNotification(`{% trans "Error fetching farms" %}: ${error.message}`, 'error');
+            } finally {
+                spinner.classList.remove('active');
             }
         });
 
-        const farmModal = document.getElementById('farmModal');
-        const closeFarmModal = document.getElementById('closeFarmModal');
+        const modal = document.getElementById('farmModal');
+        const closeModal = document.getElementById('closeFarmModal');
         const cancelFarm = document.getElementById('cancelFarm');
+        const farmForm = document.getElementById('farmForm');
 
-        closeFarmModal.addEventListener('click', () => {
-            farmModal.style.display = 'none';
+        closeModal.addEventListener('click', () => {
+            modal.style.display = 'none';
         });
 
         cancelFarm.addEventListener('click', () => {
-            farmModal.style.display = 'none';
+            modal.style.display = 'none';
         });
 
-        window.onclick = (event) => {
-            if (event.target === farmModal) {
-                farmModal.style.display = 'none';
+        window.addEventListener('click', (event) => {
+            if (event.target === modal) {
+                modal.style.display = 'none';
             }
-        };
+        });
 
-        document.getElementById('farmForm').addEventListener('submit', async (e) => {
+        farmForm.addEventListener('submit', async (e) => {
             e.preventDefault();
-            const farmSize = document.getElementById('farmSize').value;
-            const farmStatus = document.getElementById('farmStatus').value;
-            const soilType = document.getElementById('soilType').value;
-            const climate = document.getElementById('climate').value;
-            const userCropPreferences = document.getElementById('userCropPreferences').value;
+            const spinner = document.getElementById('loadingSpinner');
+            spinner.classList.add('active');
+            const submitBtn = document.getElementById('submitFarm');
+            const originalText = submitBtn.textContent;
+            submitBtn.textContent = '{% trans "Saving..." %}';
+            submitBtn.disabled = true;
 
-            if (farmSize <= 0) {
-                showNotification('{% trans "Farm size must be positive" %}', 'error');
-                return;
-            }
-
-            const btn = document.getElementById('submitFarm');
-            const originalText = btn.innerHTML;
-            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> {% trans "Saving..." %}';
-            btn.disabled = true;
+            const formData = {
+                latitude: selectedLat,
+                longitude: selectedLon,
+                farmSize: parseFloat(document.getElementById('farmSize').value),
+                farmStatus: document.getElementById('farmStatus').value,
+                soilType: document.getElementById('soilType').value,
+                climate: document.getElementById('climate').value,
+                user_crop_preferences: document.getElementById('userCropPreferences').value,
+                planting_date: document.getElementById('plantingDate').value,
+                yield_per_acre: parseFloat(document.getElementById('yieldPerAcre').value)
+            };
 
             try {
-                const response = await fetch('{% url "add_farm" %}', {
+                const response = await fetch('{% url "maps:add_farm" %}', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
                         'X-CSRFToken': '{{ csrf_token }}'
                     },
-                    body: JSON.stringify({
-                        farmSize,
-                        farmStatus,
-                        soilType,
-                        climate,
-                        latitude: selectedLat,
-                        longitude: selectedLon,
-                        user_crop_preferences: userCropPreferences || null
-                    })
+                    body: JSON.stringify(formData)
                 });
-                if (!response.ok) throw new Error(`HTTP ${response.status}`);
                 const data = await response.json();
-                showNotification(data.message, 'success');
-                farmModal.style.display = 'none';
-
-                const marker = L.marker([selectedLat, selectedLon], { icon: statusIcons[farmStatus] })
-                    .addTo(map)
-                    .bindPopup(`
-                        <div class="popup-title">{% trans "New Farm" %}</div>
-                        <div class="popup-content">
-                            <div><strong>{% trans "Farmer" %}:</strong> {{ user.username|default:"Anonymous" }}</div>
-                            <div><span class="status-indicator status-${farmStatus}"></span> <strong>{% trans "Status" %}:</strong> ${farmStatus.charAt(0).toUpperCase() + farmStatus.slice(1)}</div>
-                            <div><strong>{% trans "Size" %}:</strong> ${farmSize} acres/hectares</div>
-                            <div><strong>{% trans "Soil Type" %}:</strong> ${soilType.charAt(0).toUpperCase() + soilType.slice(1)}</div>
-                            <div><strong>{% trans "Climate" %}:</strong> ${climate.charAt(0).toUpperCase() + climate.slice(1)}</div>
-                            <div><strong>{% trans "Preferred Crop" %}:</strong> ${userCropPreferences || '{% trans "None" %}'}</div>
-                            <div><strong>{% trans "Recommended Crops" %}:</strong><br>${data.recommended_crops.slice(0, 7).map(crop => `${crop.crop.charAt(0).toUpperCase() + crop.crop.slice(1)} (${crop.suitability.toFixed(1)}%)`).join('<br>')}</div>
-                            <div><strong>{% trans "Coordinates" %}:</strong> Lat: ${selectedLat.toFixed(6)}, Lon: ${selectedLon.toFixed(6)}</div>
-                        </div>
-                    `);
-                farmMarkers.push(marker);
-
-                const polygon = L.polygon([
-                    [selectedLat - 0.001, selectedLon - 0.001],
-                    [selectedLat + 0.001, selectedLon - 0.001],
-                    [selectedLat + 0.001, selectedLon + 0.001],
-                    [selectedLat - 0.001, selectedLon + 0.001]
-                ], {
-                    color: farmStatus === 'green' ? '#2ecc71' : farmStatus === 'orange' ? '#f39c12' : '#e74c3c',
-                    fillOpacity: 0.2
-                }).addTo(map);
-                farmPolygons.push(polygon);
+                if (response.ok) {
+                    modal.style.display = 'none';
+                    farmForm.reset();
+                    showNotification(data.message, 'success');
+                    if (marker) map.removeLayer(marker);
+                    marker = L.marker([selectedLat, selectedLon], { icon: statusIcons[formData.farmStatus] })
+                        .addTo(map)
+                        .bindPopup(`
+                            <div class="popup-title">{% trans "New Farm" %}</div>
+                            <div class="popup-content">
+                                <div><strong>{% trans "Size" %}:</strong> ${formData.farmSize} acres</div>
+                                <div><strong>{% trans "Status" %}:</strong> ${formData.farmStatus.charAt(0).toUpperCase() + formData.farmStatus.slice(1)}</div>
+                                <div><strong>{% trans "Crop" %}:</strong> ${formData.user_crop_preferences}</div>
+                                <div><strong>{% trans "Coordinates" %}:</strong> Lat: ${selectedLat.toFixed(6)}, Lon: ${selectedLon.toFixed(6)}</div>
+                            </div>
+                        `)
+                        .openPopup();
+                } else {
+                    showNotification(data.error || '{% trans "Error adding farm" %}', 'error');
+                }
             } catch (error) {
                 showNotification(`{% trans "Error adding farm" %}: ${error.message}`, 'error');
             } finally {
-                btn.innerHTML = originalText;
-                btn.disabled = false;
+                spinner.classList.remove('active');
+                submitBtn.textContent = originalText;
+                submitBtn.disabled = false;
             }
         });
 
-        async function loadFarmData() {
+        async function loadInitialFarms() {
             try {
-                const response = await fetch('{% url "get_farm_data" %}');
+                const response = await fetch('{% url "maps:get_farm_data" %}');
+                if (!response.ok) throw new Error(`Initial farm fetch error: ${response.status}`);
                 const data = await response.json();
-                farmMarkers.forEach(m => map.removeLayer(m));
-                farmPolygons.forEach(p => map.removeLayer(p));
-                farmMarkers = [];
-                farmPolygons = [];
-                data.features.forEach(farm => {
-                    const latlng = [farm.geometry.coordinates[1], farm.geometry.coordinates[0]];
-                    const marker = L.marker(latlng, { icon: statusIcons[farm.properties.status] })
+                for (const feature of data.features) {
+                    const { coordinates } = feature.geometry;
+                    const props = feature.properties;
+                    const [lon, lat] = coordinates;
+                    const farmMarker = L.marker([lat, lon], { icon: statusIcons[props.status] })
                         .addTo(map)
                         .bindPopup(`
-                            <div class="popup-title">${farm.properties.farmer_name}'s Farm</div>
+                            <div class="popup-title">${props.farmer}'s Farm</div>
                             <div class="popup-content">
-                                <div><strong>{% trans "Farmer" %}:</strong> ${farm.properties.farmer_name}</div>
-                                <div><span class="status-indicator status-${farm.properties.status}"></span> <strong>{% trans "Status" %}:</strong> ${farm.properties.status.charAt(0).toUpperCase() + farm.properties.status.slice(1)}</div>
-                                <div><strong>{% trans "Size" %}:</strong> ${farm.properties.area || '{% trans "Not set" %}'} acres/hectares</div>
-                                <div><strong>{% trans "Soil Type" %}:</strong> ${farm.properties.soil_type.charAt(0).toUpperCase() + farm.properties.soil_type.slice(1)}</div>
-                                <div><strong>{% trans "Climate" %}:</strong> ${farm.properties.climate.charAt(0).toUpperCase() + farm.properties.climate.slice(1)}</div>
-                                <div><strong>{% trans "Preferred Crop" %}:</strong> ${farm.properties.user_crop_preferences || '{% trans "None" %}'}</div>
-                                <div><strong>{% trans "Recommended Crop" %}:</strong> ${farm.properties.recommended_crop ? farm.properties.recommended_crop.charAt(0).toUpperCase() + farm.properties.recommended_crop.slice(1) : '{% trans "Not Set" %}'}</div>
-                                <div><strong>{% trans "Oversupply Risk" %}:</strong> ${farm.properties.oversupply_risk ? '{% trans "Yes" %}' : '{% trans "No" %}'}</div>
-                                <div><strong>{% trans "Coordinates" %}:</strong> Lat: ${latlng[0].toFixed(6)}, Lon: ${latlng[1].toFixed(6)}</div>
+                                <div><strong>{% trans "Farmer" %}:</strong> ${props.farmer}</div>
+                                <div><span class="status-indicator status-${props.status}"></span> <strong>{% trans "Status" %}:</strong> ${props.status.charAt(0).toUpperCase() + props.status.slice(1)}</div>
+                                <div><strong>{% trans "Size" %}:</strong> ${props.area || '{% trans "Not set" %}'} acres</div>
+                                <div><strong>{% trans "Soil Type" %}:</strong> ${props.soil_type.charAt(0).toUpperCase() + props.soil_type.slice(1)}</div>
+                                <div><strong>{% trans "Climate" %}:</strong> ${props.climate.charAt(0).toUpperCase() + props.climate.slice(1)}</div>
+                                <div><strong>{% trans "Crop Planted" %}:</strong> ${props.user_crop_preferences || '{% trans "None" %}'}</div>
+                                <div><strong>{% trans "Planting Date" %}:</strong> ${props.planting_date || '{% trans "Not set" %}'}</div>
+                                <div><strong>{% trans "Yield/Acre" %}:</strong> ${props.yield_per_acre || '{% trans "Not set" %}'} quintals</div>
+                                <div><strong>{% trans "Recommended Crop" %}:</strong> ${props.recommended_crop || '{% trans "Not Set" %}'}</div>
+                                <div><strong>{% trans "Oversupply Risk" %}:</strong> ${props.oversupply_risk ? '{% trans "Yes" %}' : '{% trans "No" %}'}</div>
+                                <div><strong>{% trans "Coordinates" %}:</strong> Lat: ${lat.toFixed(6)}, Lon: ${lon.toFixed(6)}</div>
                             </div>
                         `);
-                    farmMarkers.push(marker);
+                    farmMarkers.push(farmMarker);
                     const polygon = L.polygon([
-                        [latlng[0] - 0.001, latlng[1] - 0.001],
-                        [latlng[0] + 0.001, latlng[1] - 0.001],
-                        [latlng[0] + 0.001, latlng[1] + 0.001],
-                        [latlng[0] - 0.001, latlng[1] + 0.001]
+                        [lat - 0.001, lon - 0.001],
+                        [lat - 0.001, lon + 0.001],
+                        [lat + 0.001, lon + 0.001],
+                        [lat + 0.001, lon - 0.001]
                     ], {
-                        color: farm.properties.status === 'green' ? '#2ecc71' : farm.properties.status === 'orange' ? '#f39c12' : '#e74c3c',
-                        fillOpacity: 0.2
+                        color: props.status === 'green' ? '#2ecc71' : props.status === 'orange' ? '#f39c12' : '#e74c3c',
+                        weight: 2,
+                        opacity: 0.7,
+                        fillOpacity: 0.3
                     }).addTo(map);
                     farmPolygons.push(polygon);
-                });
+                }
             } catch (error) {
-                showNotification(`{% trans "Error loading farms" %}: ${error.message}`, 'error');
+                console.error(`Error loading initial farms: ${error.message}`);
             }
         }
 
-        document.addEventListener('DOMContentLoaded', () => {
-            loadFarmData();
-            updateCoordinatesDisplay();
-        });
+        loadInitialFarms();
     </script>
 {% endblock %}

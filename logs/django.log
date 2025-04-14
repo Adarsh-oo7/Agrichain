@@ -1,0 +1,16 @@
+Watching for file changes with StatReloader
+ML model loaded successfully
+C:\Users\adars\Desktop\ust\AgiChain\agrichain\maps\views.py changed, reloading.
+Watching for file changes with StatReloader
+ML model loaded successfully
+C:\Users\adars\Desktop\ust\AgiChain\agrichain\maps\urls.py changed, reloading.
+Watching for file changes with StatReloader
+ML model loaded successfully
+Test logging from maps.views
+"GET /maps/test-logging/ HTTP/1.1" 200 21
+Not Found: /favicon.ico
+"GET /favicon.ico HTTP/1.1" 404 3143
+C:\Users\adars\Desktop\ust\AgiChain\agrichain\agrichain\settings.py changed, reloading.
+Watching for file changes with StatReloader
+ML model loaded successfully
+C:\Users\adars\Desktop\ust\AgiChain\agrichain\agrichain\settings.py changed, reloading.

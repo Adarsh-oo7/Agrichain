@@ -1,0 +1,14 @@
+from sklearn.ensemble import RandomForestClassifier
+import numpy as np
+import pickle
+from pathlib import Path
+import os
+
+BASE_DIR = Path(__file__).resolve().parent.parent if '__file__' in globals() else Path.cwd()
+X_dummy = np.array([[25, 60, 0, 6.5, 20, 0.1]] * 10)
+y_dummy = [0, 0, 0, 1, 1, 1, 2, 2, 2, 0]  # 0=Low, 1=Medium, 2=High
+model = RandomForestClassifier()
+model.fit(X_dummy, y_dummy)
+with open(os.path.join(BASE_DIR, 'data', 'pest_risk_model.pkl'), 'wb') as f:
+    pickle.dump(model, f)
+exit()

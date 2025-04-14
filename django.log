@@ -1,0 +1,795 @@
+Watching for file changes with StatReloader
+ML model loaded successfully
+"GET / HTTP/1.1" 200 40123
+"GET /static/img/program_subsidy.jpg HTTP/1.1" 404 1883
+"GET /static/img/program_training.jpg HTTP/1.1" 404 1886
+"GET /static/img/program_marketplace.jpg HTTP/1.1" 404 1895
+"GET /static/img/farmer1.jpg HTTP/1.1" 404 1859
+"GET /static/img/farmer2.jpg HTTP/1.1" 404 1859
+"GET /static/img/farmer3.jpg HTTP/1.1" 404 1859
+"GET /static/img/farm_landscape.jpg HTTP/1.1" 404 1880
+"GET /static/img/leaf-pattern.png HTTP/1.1" 404 1874
+Crop choices: [('wheat', 'Wheat'), ('rice', 'Rice'), ('corn', 'Corn'), ('barley', 'Barley'), ('oats', 'Oats'), ('sorghum', 'Sorghum'), ('millet', 'Millet'), ('soybean', 'Soybean'), ('peanut', 'Peanut'), ('bean', 'Bean'), ('pea', 'Pea'), ('lentil', 'Lentil'), ('chickpea', 'Chickpea'), ('mungbean', 'Mungbean'), ('cotton', 'Cotton'), ('sugarcane', 'Sugarcane'), ('sunflower', 'Sunflower'), ('mustard', 'Mustard'), ('sesame', 'Sesame'), ('potato', 'Potato'), ('tomato', 'Tomato'), ('onion', 'Onion'), ('carrot', 'Carrot'), ('cabbage', 'Cabbage'), ('cauliflower', 'Cauliflower'), ('brinjal', 'Brinjal'), ('okra', 'Okra'), ('spinach', 'Spinach'), ('chilli', 'Chilli'), ('bittergourd', 'Bittergourd'), ('ridgegourd', 'Ridgegourd'), ('banana', 'Banana'), ('banana_robusta', 'Banana Robusta'), ('banana_rasthali', 'Banana Rasthali'), ('banana_poovan', 'Banana Poovan'), ('banana_nendran', 'Banana Nendran'), ('mango', 'Mango'), ('guava', 'Guava'), ('papaya', 'Papaya'), ('pomegranate', 'Pomegranate'), ('jackfruit', 'Jackfruit'), ('coconut', 'Coconut')]
+"GET /maps/farm-map/ HTTP/1.1" 200 82254
+"GET /maps/farm-data/ HTTP/1.1" 200 8658
+Not Found: /maps/get-farm-by-coords/
+"POST /maps/get-farm-by-coords/ HTTP/1.1" 404 2
+Starting new HTTPS connection (1): api.open-meteo.com:443
+https://api.open-meteo.com:443 "GET /v1/forecast?latitude=12.20473780185326&longitude=78.07786360156295&hourly=temperature_2m,relative_humidity_2m,precipitation&forecast_days=1 HTTP/1.1" 200 None
+Starting new HTTPS connection (1): rest.isric.org:443
+https://rest.isric.org:443 "GET /soilgrids/v2.0/properties/query?lat=12.20473780185326&lon=78.07786360156295&property=nitrogen&property=phh2o&property=clay&property=sand&property=silt&property=cec&depth=0-5cm&value=mean HTTP/1.1" 200 1502
+Starting new HTTPS connection (1): api.open-meteo.com:443
+https://api.open-meteo.com:443 "GET /v1/forecast?latitude=12.20473780185326&longitude=78.07786360156295&daily=temperature_2m_mean,precipitation_sum&past_days=30 HTTP/1.1" 200 None
+"POST /maps/get-location-details/ HTTP/1.1" 200 455
+Fetching price prediction for crop: corn, date: 2025-07-23
+Error in get_price_prediction: name 'os' is not defined
+Internal Server Error: /maps/maps/get-price-prediction/
+"POST /maps/maps/get-price-prediction/ HTTP/1.1" 500 37
+C:\Users\adars\Desktop\ust\AgiChain\agrichain\maps\views.py changed, reloading.
+Watching for file changes with StatReloader
+ML model loaded successfully
+Crop choices: [('wheat', 'Wheat'), ('rice', 'Rice'), ('corn', 'Corn'), ('barley', 'Barley'), ('oats', 'Oats'), ('sorghum', 'Sorghum'), ('millet', 'Millet'), ('soybean', 'Soybean'), ('peanut', 'Peanut'), ('bean', 'Bean'), ('pea', 'Pea'), ('lentil', 'Lentil'), ('chickpea', 'Chickpea'), ('mungbean', 'Mungbean'), ('cotton', 'Cotton'), ('sugarcane', 'Sugarcane'), ('sunflower', 'Sunflower'), ('mustard', 'Mustard'), ('sesame', 'Sesame'), ('potato', 'Potato'), ('tomato', 'Tomato'), ('onion', 'Onion'), ('carrot', 'Carrot'), ('cabbage', 'Cabbage'), ('cauliflower', 'Cauliflower'), ('brinjal', 'Brinjal'), ('okra', 'Okra'), ('spinach', 'Spinach'), ('chilli', 'Chilli'), ('bittergourd', 'Bittergourd'), ('ridgegourd', 'Ridgegourd'), ('banana', 'Banana'), ('banana_robusta', 'Banana Robusta'), ('banana_rasthali', 'Banana Rasthali'), ('banana_poovan', 'Banana Poovan'), ('banana_nendran', 'Banana Nendran'), ('mango', 'Mango'), ('guava', 'Guava'), ('papaya', 'Papaya'), ('pomegranate', 'Pomegranate'), ('jackfruit', 'Jackfruit'), ('coconut', 'Coconut')]
+"GET /maps/farm-map/ HTTP/1.1" 200 82254
+"GET /maps/farm-data/ HTTP/1.1" 200 8658
+Not Found: /maps/get-farm-by-coords/
+"POST /maps/get-farm-by-coords/ HTTP/1.1" 404 2
+Starting new HTTPS connection (1): api.open-meteo.com:443
+https://api.open-meteo.com:443 "GET /v1/forecast?latitude=11.548922441312248&longitude=77.90213138078501&hourly=temperature_2m,relative_humidity_2m,precipitation&forecast_days=1 HTTP/1.1" 200 None
+Starting new HTTPS connection (1): rest.isric.org:443
+https://rest.isric.org:443 "GET /soilgrids/v2.0/properties/query?lat=11.548922441312248&lon=77.90213138078501&property=nitrogen&property=phh2o&property=clay&property=sand&property=silt&property=cec&depth=0-5cm&value=mean HTTP/1.1" 200 1503
+Starting new HTTPS connection (1): api.open-meteo.com:443
+https://api.open-meteo.com:443 "GET /v1/forecast?latitude=11.548922441312248&longitude=77.90213138078501&daily=temperature_2m_mean,precipitation_sum&past_days=30 HTTP/1.1" 200 None
+"POST /maps/get-location-details/ HTTP/1.1" 200 463
+Fetching price prediction for crop: barley, date: 2025-08-12
+No prediction for barley on or before 2025-08-12
+"POST /maps/maps/get-price-prediction/ HTTP/1.1" 200 130
+Not Found: /maps/get-farm-by-coords/
+Starting new HTTPS connection (1): api.open-meteo.com:443
+"POST /maps/get-farm-by-coords/ HTTP/1.1" 404 2
+https://api.open-meteo.com:443 "GET /v1/forecast?latitude=11.561518900993386&longitude=77.92034404638751&hourly=temperature_2m,relative_humidity_2m,precipitation&forecast_days=1 HTTP/1.1" 200 None
+Starting new HTTPS connection (1): rest.isric.org:443
+https://rest.isric.org:443 "GET /soilgrids/v2.0/properties/query?lat=11.561518900993386&lon=77.92034404638751&property=nitrogen&property=phh2o&property=clay&property=sand&property=silt&property=cec&depth=0-5cm&value=mean HTTP/1.1" 200 1502
+Starting new HTTPS connection (1): api.open-meteo.com:443
+https://api.open-meteo.com:443 "GET /v1/forecast?latitude=11.561518900993386&longitude=77.92034404638751&daily=temperature_2m_mean,precipitation_sum&past_days=30 HTTP/1.1" 200 None
+"POST /maps/get-location-details/ HTTP/1.1" 200 475
+Fetching price prediction for crop: wheat, date: 2025-08-12
+Price prediction response: {'crop': 'wheat', 'date': '2025-08-12', 'predicted_price': 2200.0}
+"POST /maps/maps/get-price-prediction/ HTTP/1.1" 200 66
+Not Found: /maps/get-farm-by-coords/
+"POST /maps/get-farm-by-coords/ HTTP/1.1" 404 2
+Starting new HTTPS connection (1): api.open-meteo.com:443
+https://api.open-meteo.com:443 "GET /v1/forecast?latitude=11.463874425731149&longitude=76.8383114858324&hourly=temperature_2m,relative_humidity_2m,precipitation&forecast_days=1 HTTP/1.1" 200 None
+Starting new HTTPS connection (1): rest.isric.org:443
+https://rest.isric.org:443 "GET /soilgrids/v2.0/properties/query?lat=11.463874425731149&lon=76.8383114858324&property=nitrogen&property=phh2o&property=clay&property=sand&property=silt&property=cec&depth=0-5cm&value=mean HTTP/1.1" 200 1502
+Starting new HTTPS connection (1): api.open-meteo.com:443
+https://api.open-meteo.com:443 "GET /v1/forecast?latitude=11.463874425731149&longitude=76.8383114858324&daily=temperature_2m_mean,precipitation_sum&past_days=30 HTTP/1.1" 200 None
+"POST /maps/get-location-details/ HTTP/1.1" 200 494
+Fetching price prediction for crop: coconut, date: 2026-04-14
+Price prediction response: {'crop': 'coconut', 'date': '2026-04-14', 'predicted_price': 3200.0}
+"POST /maps/maps/get-price-prediction/ HTTP/1.1" 200 68
+Not Found: /maps/get-farm-by-coords/
+"POST /maps/get-farm-by-coords/ HTTP/1.1" 404 2
+Starting new HTTPS connection (1): api.open-meteo.com:443
+https://api.open-meteo.com:443 "GET /v1/forecast?latitude=11.463201433997053&longitude=76.84025518726784&hourly=temperature_2m,relative_humidity_2m,precipitation&forecast_days=1 HTTP/1.1" 200 None
+Starting new HTTPS connection (1): rest.isric.org:443
+https://rest.isric.org:443 "GET /soilgrids/v2.0/properties/query?lat=11.463201433997053&lon=76.84025518726784&property=nitrogen&property=phh2o&property=clay&property=sand&property=silt&property=cec&depth=0-5cm&value=mean HTTP/1.1" 200 1503
+Starting new HTTPS connection (1): api.open-meteo.com:443
+https://api.open-meteo.com:443 "GET /v1/forecast?latitude=11.463201433997053&longitude=76.84025518726784&daily=temperature_2m_mean,precipitation_sum&past_days=30 HTTP/1.1" 200 None
+"POST /maps/get-location-details/ HTTP/1.1" 200 506
+Fetching price prediction for crop: rice, date: 2025-08-12
+Price prediction response: {'crop': 'rice', 'date': '2025-08-12', 'predicted_price': 2600.0}
+"POST /maps/maps/get-price-prediction/ HTTP/1.1" 200 65
+Starting new HTTPS connection (1): api.open-meteo.com:443
+https://api.open-meteo.com:443 "GET /v1/forecast?latitude=11.463201433997053&longitude=76.84025518726784&hourly=temperature_2m,relative_humidity_2m,precipitation&forecast_days=1 HTTP/1.1" 200 None
+Starting new HTTPS connection (1): rest.isric.org:443
+https://rest.isric.org:443 "GET /soilgrids/v2.0/properties/query?lat=11.463201433997053&lon=76.84025518726784&property=nitrogen&property=phh2o&property=clay&property=sand&property=silt&property=cec&depth=0-5cm&value=mean HTTP/1.1" 200 1503
+Starting new HTTPS connection (1): api.open-meteo.com:443
+https://api.open-meteo.com:443 "GET /v1/forecast?latitude=11.463201433997053&longitude=76.84025518726784&daily=temperature_2m_mean,precipitation_sum&past_days=30 HTTP/1.1" 200 None
+"POST /maps/get-location-details/ HTTP/1.1" 200 630
+Not Found: /maps/get-farm-by-coords/
+Starting new HTTPS connection (1): api.open-meteo.com:443
+"POST /maps/get-farm-by-coords/ HTTP/1.1" 404 2
+https://api.open-meteo.com:443 "GET /v1/forecast?latitude=11.548103548898919&longitude=76.7607847076931&hourly=temperature_2m,relative_humidity_2m,precipitation&forecast_days=1 HTTP/1.1" 200 None
+Starting new HTTPS connection (1): rest.isric.org:443
+Crop choices: [('wheat', 'Wheat'), ('rice', 'Rice'), ('corn', 'Corn'), ('barley', 'Barley'), ('oats', 'Oats'), ('sorghum', 'Sorghum'), ('millet', 'Millet'), ('soybean', 'Soybean'), ('peanut', 'Peanut'), ('bean', 'Bean'), ('pea', 'Pea'), ('lentil', 'Lentil'), ('chickpea', 'Chickpea'), ('mungbean', 'Mungbean'), ('cotton', 'Cotton'), ('sugarcane', 'Sugarcane'), ('sunflower', 'Sunflower'), ('mustard', 'Mustard'), ('sesame', 'Sesame'), ('potato', 'Potato'), ('tomato', 'Tomato'), ('onion', 'Onion'), ('carrot', 'Carrot'), ('cabbage', 'Cabbage'), ('cauliflower', 'Cauliflower'), ('brinjal', 'Brinjal'), ('okra', 'Okra'), ('spinach', 'Spinach'), ('chilli', 'Chilli'), ('bittergourd', 'Bittergourd'), ('ridgegourd', 'Ridgegourd'), ('banana', 'Banana'), ('banana_robusta', 'Banana Robusta'), ('banana_rasthali', 'Banana Rasthali'), ('banana_poovan', 'Banana Poovan'), ('banana_nendran', 'Banana Nendran'), ('mango', 'Mango'), ('guava', 'Guava'), ('papaya', 'Papaya'), ('pomegranate', 'Pomegranate'), ('jackfruit', 'Jackfruit'), ('coconut', 'Coconut')]
+"GET /maps/farm-map/ HTTP/1.1" 200 82254
+"GET /maps/farm-data/ HTTP/1.1" 200 8658
+https://rest.isric.org:443 "GET /soilgrids/v2.0/properties/query?lat=11.548103548898919&lon=76.7607847076931&property=nitrogen&property=phh2o&property=clay&property=sand&property=silt&property=cec&depth=0-5cm&value=mean HTTP/1.1" 200 1502
+Starting new HTTPS connection (1): api.open-meteo.com:443
+Not Found: /maps/get-farm-by-coords/
+"POST /maps/get-farm-by-coords/ HTTP/1.1" 404 2
+Starting new HTTPS connection (1): api.open-meteo.com:443
+https://api.open-meteo.com:443 "GET /v1/forecast?latitude=11.548103548898919&longitude=76.7607847076931&daily=temperature_2m_mean,precipitation_sum&past_days=30 HTTP/1.1" 200 None
+- Broken pipe from ('127.0.0.1', 62647)
+https://api.open-meteo.com:443 "GET /v1/forecast?latitude=9.787016908046335&longitude=78.45129457071594&hourly=temperature_2m,relative_humidity_2m,precipitation&forecast_days=1 HTTP/1.1" 200 None
+Starting new HTTPS connection (1): rest.isric.org:443
+https://rest.isric.org:443 "GET /soilgrids/v2.0/properties/query?lat=9.787016908046335&lon=78.45129457071594&property=nitrogen&property=phh2o&property=clay&property=sand&property=silt&property=cec&depth=0-5cm&value=mean HTTP/1.1" 200 1502
+Starting new HTTPS connection (1): api.open-meteo.com:443
+https://api.open-meteo.com:443 "GET /v1/forecast?latitude=9.787016908046335&longitude=78.45129457071594&daily=temperature_2m_mean,precipitation_sum&past_days=30 HTTP/1.1" 200 None
+"POST /maps/get-location-details/ HTTP/1.1" 200 527
+Starting new HTTPS connection (1): api.open-meteo.com:443
+https://api.open-meteo.com:443 "GET /v1/forecast?latitude=9.787016908046335&longitude=78.45129457071594&hourly=temperature_2m,relative_humidity_2m,precipitation&forecast_days=1 HTTP/1.1" 200 None
+Starting new HTTPS connection (1): rest.isric.org:443
+https://rest.isric.org:443 "GET /soilgrids/v2.0/properties/query?lat=9.787016908046335&lon=78.45129457071594&property=nitrogen&property=phh2o&property=clay&property=sand&property=silt&property=cec&depth=0-5cm&value=mean HTTP/1.1" 200 1502
+Starting new HTTPS connection (1): api.open-meteo.com:443
+https://api.open-meteo.com:443 "GET /v1/forecast?latitude=9.787016908046335&longitude=78.45129457071594&daily=temperature_2m_mean,precipitation_sum&past_days=30 HTTP/1.1" 200 None
+"POST /maps/get-location-details/ HTTP/1.1" 200 651
+Crop choices: [('wheat', 'Wheat'), ('rice', 'Rice'), ('corn', 'Corn'), ('barley', 'Barley'), ('oats', 'Oats'), ('sorghum', 'Sorghum'), ('millet', 'Millet'), ('soybean', 'Soybean'), ('peanut', 'Peanut'), ('bean', 'Bean'), ('pea', 'Pea'), ('lentil', 'Lentil'), ('chickpea', 'Chickpea'), ('mungbean', 'Mungbean'), ('cotton', 'Cotton'), ('sugarcane', 'Sugarcane'), ('sunflower', 'Sunflower'), ('mustard', 'Mustard'), ('sesame', 'Sesame'), ('potato', 'Potato'), ('tomato', 'Tomato'), ('onion', 'Onion'), ('carrot', 'Carrot'), ('cabbage', 'Cabbage'), ('cauliflower', 'Cauliflower'), ('brinjal', 'Brinjal'), ('okra', 'Okra'), ('spinach', 'Spinach'), ('chilli', 'Chilli'), ('bittergourd', 'Bittergourd'), ('ridgegourd', 'Ridgegourd'), ('banana', 'Banana'), ('banana_robusta', 'Banana Robusta'), ('banana_rasthali', 'Banana Rasthali'), ('banana_poovan', 'Banana Poovan'), ('banana_nendran', 'Banana Nendran'), ('mango', 'Mango'), ('guava', 'Guava'), ('papaya', 'Papaya'), ('pomegranate', 'Pomegranate'), ('jackfruit', 'Jackfruit'), ('coconut', 'Coconut')]
+"GET /maps/farm-map/ HTTP/1.1" 200 82254
+"GET /maps/farm-data/ HTTP/1.1" 200 8658
+Not Found: /maps/get-farm-by-coords/
+Starting new HTTPS connection (1): api.open-meteo.com:443
+"POST /maps/get-farm-by-coords/ HTTP/1.1" 404 2
+https://api.open-meteo.com:443 "GET /v1/forecast?latitude=12.285618250614936&longitude=79.22241210937501&hourly=temperature_2m,relative_humidity_2m,precipitation&forecast_days=1 HTTP/1.1" 200 None
+Starting new HTTPS connection (1): rest.isric.org:443
+https://rest.isric.org:443 "GET /soilgrids/v2.0/properties/query?lat=12.285618250614936&lon=79.22241210937501&property=nitrogen&property=phh2o&property=clay&property=sand&property=silt&property=cec&depth=0-5cm&value=mean HTTP/1.1" 200 1503
+Starting new HTTPS connection (1): api.open-meteo.com:443
+https://api.open-meteo.com:443 "GET /v1/forecast?latitude=12.285618250614936&longitude=79.22241210937501&daily=temperature_2m_mean,precipitation_sum&past_days=30 HTTP/1.1" 200 None
+"POST /maps/get-location-details/ HTTP/1.1" 200 466
+Not Found: /maps/get-farm-by-coords/
+"POST /maps/get-farm-by-coords/ HTTP/1.1" 404 2
+Starting new HTTPS connection (1): api.open-meteo.com:443
+https://api.open-meteo.com:443 "GET /v1/forecast?latitude=12.284432869377339&longitude=79.19649124145508&hourly=temperature_2m,relative_humidity_2m,precipitation&forecast_days=1 HTTP/1.1" 200 None
+Starting new HTTPS connection (1): rest.isric.org:443
+https://rest.isric.org:443 "GET /soilgrids/v2.0/properties/query?lat=12.284432869377339&lon=79.19649124145508&property=nitrogen&property=phh2o&property=clay&property=sand&property=silt&property=cec&depth=0-5cm&value=mean HTTP/1.1" 200 1502
+Starting new HTTPS connection (1): api.open-meteo.com:443
+https://api.open-meteo.com:443 "GET /v1/forecast?latitude=12.284432869377339&longitude=79.19649124145508&daily=temperature_2m_mean,precipitation_sum&past_days=30 HTTP/1.1" 200 None
+"POST /maps/get-location-details/ HTTP/1.1" 200 460
+Fetching price prediction for crop: sorghum, date: 2025-08-02
+No prediction for sorghum on or before 2025-08-02
+"POST /maps/maps/get-price-prediction/ HTTP/1.1" 200 132
+Starting new HTTPS connection (1): api.open-meteo.com:443
+https://api.open-meteo.com:443 "GET /v1/forecast?latitude=12.284432869377339&longitude=79.19649124145508&hourly=temperature_2m,relative_humidity_2m,precipitation&forecast_days=1 HTTP/1.1" 200 None
+Starting new HTTPS connection (1): rest.isric.org:443
+https://rest.isric.org:443 "GET /soilgrids/v2.0/properties/query?lat=12.284432869377339&lon=79.19649124145508&property=nitrogen&property=phh2o&property=clay&property=sand&property=silt&property=cec&depth=0-5cm&value=mean HTTP/1.1" 200 1504
+Starting new HTTPS connection (1): api.open-meteo.com:443
+https://api.open-meteo.com:443 "GET /v1/forecast?latitude=12.284432869377339&longitude=79.19649124145508&daily=temperature_2m_mean,precipitation_sum&past_days=30 HTTP/1.1" 200 None
+"POST /maps/get-location-details/ HTTP/1.1" 200 584
+Not Found: /maps/get-farm-by-coords/
+"POST /maps/get-farm-by-coords/ HTTP/1.1" 404 2
+Starting new HTTPS connection (1): api.open-meteo.com:443
+https://api.open-meteo.com:443 "GET /v1/forecast?latitude=12.53356223467851&longitude=78.53851318359376&hourly=temperature_2m,relative_humidity_2m,precipitation&forecast_days=1 HTTP/1.1" 200 None
+Starting new HTTPS connection (1): rest.isric.org:443
+https://rest.isric.org:443 "GET /soilgrids/v2.0/properties/query?lat=12.53356223467851&lon=78.53851318359376&property=nitrogen&property=phh2o&property=clay&property=sand&property=silt&property=cec&depth=0-5cm&value=mean HTTP/1.1" 200 1502
+Starting new HTTPS connection (1): api.open-meteo.com:443
+https://api.open-meteo.com:443 "GET /v1/forecast?latitude=12.53356223467851&longitude=78.53851318359376&daily=temperature_2m_mean,precipitation_sum&past_days=30 HTTP/1.1" 200 None
+"POST /maps/get-location-details/ HTTP/1.1" 200 460
+Fetching price prediction for crop: sorghum, date: 2025-08-02
+No prediction for sorghum on or before 2025-08-02
+"POST /maps/maps/get-price-prediction/ HTTP/1.1" 200 132
+Starting new HTTPS connection (1): api.open-meteo.com:443
+https://api.open-meteo.com:443 "GET /v1/forecast?latitude=12.53356223467851&longitude=78.53851318359376&hourly=temperature_2m,relative_humidity_2m,precipitation&forecast_days=1 HTTP/1.1" 200 None
+Starting new HTTPS connection (1): rest.isric.org:443
+https://rest.isric.org:443 "GET /soilgrids/v2.0/properties/query?lat=12.53356223467851&lon=78.53851318359376&property=nitrogen&property=phh2o&property=clay&property=sand&property=silt&property=cec&depth=0-5cm&value=mean HTTP/1.1" 200 1501
+Starting new HTTPS connection (1): api.open-meteo.com:443
+https://api.open-meteo.com:443 "GET /v1/forecast?latitude=12.53356223467851&longitude=78.53851318359376&daily=temperature_2m_mean,precipitation_sum&past_days=30 HTTP/1.1" 200 None
+"POST /maps/get-location-details/ HTTP/1.1" 200 584
+C:\Users\adars\Desktop\ust\AgiChain\agrichain\maps\views.py changed, reloading.
+Watching for file changes with StatReloader
+C:\Users\adars\Desktop\ust\AgiChain\agrichain\maps\views.py changed, reloading.
+Watching for file changes with StatReloader
+C:\Users\adars\Desktop\ust\AgiChain\agrichain\maps\views.py changed, reloading.
+Watching for file changes with StatReloader
+C:\Users\adars\Desktop\ust\AgiChain\agrichain\maps\views.py changed, reloading.
+Watching for file changes with StatReloader
+C:\Users\adars\Desktop\ust\AgiChain\agrichain\maps\views.py changed, reloading.
+Watching for file changes with StatReloader
+C:\Users\adars\Desktop\ust\AgiChain\agrichain\maps\views.py changed, reloading.
+Watching for file changes with StatReloader
+ML model loaded successfully
+Crop choices: [('wheat', 'Wheat'), ('rice', 'Rice'), ('corn', 'Corn'), ('barley', 'Barley'), ('oats', 'Oats'), ('sorghum', 'Sorghum'), ('millet', 'Millet'), ('soybean', 'Soybean'), ('peanut', 'Peanut'), ('bean', 'Bean'), ('pea', 'Pea'), ('lentil', 'Lentil'), ('chickpea', 'Chickpea'), ('mungbean', 'Mungbean'), ('cotton', 'Cotton'), ('sugarcane', 'Sugarcane'), ('sunflower', 'Sunflower'), ('mustard', 'Mustard'), ('sesame', 'Sesame'), ('potato', 'Potato'), ('tomato', 'Tomato'), ('onion', 'Onion'), ('carrot', 'Carrot'), ('cabbage', 'Cabbage'), ('cauliflower', 'Cauliflower'), ('brinjal', 'Brinjal'), ('okra', 'Okra'), ('spinach', 'Spinach'), ('chilli', 'Chilli'), ('bittergourd', 'Bittergourd'), ('ridgegourd', 'Ridgegourd'), ('banana', 'Banana'), ('banana_robusta', 'Banana Robusta'), ('banana_rasthali', 'Banana Rasthali'), ('banana_poovan', 'Banana Poovan'), ('banana_nendran', 'Banana Nendran'), ('mango', 'Mango'), ('guava', 'Guava'), ('papaya', 'Papaya'), ('pomegranate', 'Pomegranate'), ('jackfruit', 'Jackfruit'), ('coconut', 'Coconut')]
+"GET /maps/farm-map/ HTTP/1.1" 200 82254
+"GET /maps/farm-data/ HTTP/1.1" 200 8658
+Fetching location details for lat: 13.11300710039125, lon: 76.47430708696459
+Not Found: /maps/get-farm-by-coords/
+"POST /maps/get-farm-by-coords/ HTTP/1.1" 404 2
+Starting new HTTPS connection (1): api.open-meteo.com:443
+https://api.open-meteo.com:443 "GET /v1/forecast?latitude=13.11300710039125&longitude=76.47430708696459&hourly=temperature_2m,relative_humidity_2m,precipitation,wind_speed_10m&forecast_days=1 HTTP/1.1" 200 None
+Starting new HTTPS connection (1): api.open-meteo.com:443
+https://api.open-meteo.com:443 "GET /v1/forecast?latitude=13.11300710039125&longitude=76.47430708696459&daily=temperature_2m_mean,precipitation_sum,sunshine_duration&past_days=30 HTTP/1.1" 200 None
+Starting new HTTPS connection (1): rest.isric.org:443
+https://rest.isric.org:443 "GET /soilgrids/v2.0/properties/query?lat=13.11300710039125&lon=76.47430708696459&property=nitrogen&property=phh2o&property=clay&property=sand&property=silt&property=cec&depth=0-5cm&value=mean HTTP/1.1" 200 1502
+Error in get_location_details: 0
+Internal Server Error: /maps/get-location-details/
+"POST /maps/get-location-details/ HTTP/1.1" 500 14
+Fetching location details for lat: 13.717862731661318, lon: 78.20966276714634
+Starting new HTTPS connection (1): api.open-meteo.com:443
+Not Found: /maps/get-farm-by-coords/
+"POST /maps/get-farm-by-coords/ HTTP/1.1" 404 2
+https://api.open-meteo.com:443 "GET /v1/forecast?latitude=13.717862731661318&longitude=78.20966276714634&hourly=temperature_2m,relative_humidity_2m,precipitation,wind_speed_10m&forecast_days=1 HTTP/1.1" 200 None
+Starting new HTTPS connection (1): api.open-meteo.com:443
+https://api.open-meteo.com:443 "GET /v1/forecast?latitude=13.717862731661318&longitude=78.20966276714634&daily=temperature_2m_mean,precipitation_sum,sunshine_duration&past_days=30 HTTP/1.1" 200 None
+Starting new HTTPS connection (1): rest.isric.org:443
+https://rest.isric.org:443 "GET /soilgrids/v2.0/properties/query?lat=13.717862731661318&lon=78.20966276714634&property=nitrogen&property=phh2o&property=clay&property=sand&property=silt&property=cec&depth=0-5cm&value=mean HTTP/1.1" 200 1502
+Error in get_location_details: 0
+Internal Server Error: /maps/get-location-details/
+"POST /maps/get-location-details/ HTTP/1.1" 500 14
+Fetching location details for lat: 13.852302975886804, lon: 76.959228515625
+Starting new HTTPS connection (1): api.open-meteo.com:443
+Not Found: /maps/get-farm-by-coords/
+"POST /maps/get-farm-by-coords/ HTTP/1.1" 404 2
+https://api.open-meteo.com:443 "GET /v1/forecast?latitude=13.852302975886804&longitude=76.959228515625&hourly=temperature_2m,relative_humidity_2m,precipitation,wind_speed_10m&forecast_days=1 HTTP/1.1" 200 None
+Starting new HTTPS connection (1): api.open-meteo.com:443
+https://api.open-meteo.com:443 "GET /v1/forecast?latitude=13.852302975886804&longitude=76.959228515625&daily=temperature_2m_mean,precipitation_sum,sunshine_duration&past_days=30 HTTP/1.1" 200 None
+Starting new HTTPS connection (1): rest.isric.org:443
+https://rest.isric.org:443 "GET /soilgrids/v2.0/properties/query?lat=13.852302975886804&lon=76.959228515625&property=nitrogen&property=phh2o&property=clay&property=sand&property=silt&property=cec&depth=0-5cm&value=mean HTTP/1.1" 200 1500
+Error in get_location_details: 0
+Internal Server Error: /maps/get-location-details/
+"POST /maps/get-location-details/ HTTP/1.1" 500 14
+Fetching location details for lat: 13.87790215900028, lon: 74.80485098957455
+Starting new HTTPS connection (1): api.open-meteo.com:443
+Not Found: /maps/get-farm-by-coords/
+"POST /maps/get-farm-by-coords/ HTTP/1.1" 404 2
+https://api.open-meteo.com:443 "GET /v1/forecast?latitude=13.87790215900028&longitude=74.80485098957455&hourly=temperature_2m,relative_humidity_2m,precipitation,wind_speed_10m&forecast_days=1 HTTP/1.1" 200 None
+Starting new HTTPS connection (1): api.open-meteo.com:443
+https://api.open-meteo.com:443 "GET /v1/forecast?latitude=13.87790215900028&longitude=74.80485098957455&daily=temperature_2m_mean,precipitation_sum,sunshine_duration&past_days=30 HTTP/1.1" 200 None
+Starting new HTTPS connection (1): rest.isric.org:443
+https://rest.isric.org:443 "GET /soilgrids/v2.0/properties/query?lat=13.87790215900028&lon=74.80485098957455&property=nitrogen&property=phh2o&property=clay&property=sand&property=silt&property=cec&depth=0-5cm&value=mean HTTP/1.1" 200 1502
+Error in get_location_details: 0
+Internal Server Error: /maps/get-location-details/
+"POST /maps/get-location-details/ HTTP/1.1" 500 14
+C:\Users\adars\Desktop\ust\AgiChain\agrichain\maps\views.py changed, reloading.
+Watching for file changes with StatReloader
+C:\Users\adars\Desktop\ust\AgiChain\agrichain\maps\views.py changed, reloading.
+Watching for file changes with StatReloader
+ML model loaded successfully
+C:\Users\adars\Desktop\ust\AgiChain\agrichain\maps\views.py changed, reloading.
+Watching for file changes with StatReloader
+ML model loaded successfully
+C:\Users\adars\Desktop\ust\AgiChain\agrichain\maps\views.py changed, reloading.
+Watching for file changes with StatReloader
+ML model loaded successfully
+C:\Users\adars\Desktop\ust\AgiChain\agrichain\maps\views.py changed, reloading.
+Watching for file changes with StatReloader
+C:\Users\adars\Desktop\ust\AgiChain\agrichain\maps\views.py changed, reloading.
+Watching for file changes with StatReloader
+ML model loaded successfully
+Crop choices: [('wheat', 'Wheat'), ('rice', 'Rice'), ('corn', 'Corn'), ('barley', 'Barley'), ('oats', 'Oats'), ('sorghum', 'Sorghum'), ('millet', 'Millet'), ('soybean', 'Soybean'), ('peanut', 'Peanut'), ('bean', 'Bean'), ('pea', 'Pea'), ('lentil', 'Lentil'), ('chickpea', 'Chickpea'), ('mungbean', 'Mungbean'), ('cotton', 'Cotton'), ('sugarcane', 'Sugarcane'), ('sunflower', 'Sunflower'), ('mustard', 'Mustard'), ('sesame', 'Sesame'), ('potato', 'Potato'), ('tomato', 'Tomato'), ('onion', 'Onion'), ('carrot', 'Carrot'), ('cabbage', 'Cabbage'), ('cauliflower', 'Cauliflower'), ('brinjal', 'Brinjal'), ('okra', 'Okra'), ('spinach', 'Spinach'), ('chilli', 'Chilli'), ('bittergourd', 'Bittergourd'), ('ridgegourd', 'Ridgegourd'), ('banana', 'Banana'), ('banana_robusta', 'Banana Robusta'), ('banana_rasthali', 'Banana Rasthali'), ('banana_poovan', 'Banana Poovan'), ('banana_nendran', 'Banana Nendran'), ('mango', 'Mango'), ('guava', 'Guava'), ('papaya', 'Papaya'), ('pomegranate', 'Pomegranate'), ('jackfruit', 'Jackfruit'), ('coconut', 'Coconut')]
+"GET /maps/farm-map/ HTTP/1.1" 200 82254
+"GET /maps/farm-data/ HTTP/1.1" 200 8658
+Not Found: /maps/get-farm-by-coords/
+"POST /maps/get-farm-by-coords/ HTTP/1.1" 404 2
+Starting new HTTPS connection (1): api.open-meteo.com:443
+https://api.open-meteo.com:443 "GET /v1/forecast?latitude=12.19113600567264&longitude=76.33152465758256&hourly=temperature_2m,relative_humidity_2m,precipitation&forecast_days=1 HTTP/1.1" 200 None
+Starting new HTTPS connection (1): rest.isric.org:443
+https://rest.isric.org:443 "GET /soilgrids/v2.0/properties/query?lat=12.19113600567264&lon=76.33152465758256&property=nitrogen&property=phh2o&property=clay&property=sand&property=silt&property=cec&depth=0-5cm&value=mean HTTP/1.1" 200 1502
+Starting new HTTPS connection (1): api.open-meteo.com:443
+https://api.open-meteo.com:443 "GET /v1/forecast?latitude=12.19113600567264&longitude=76.33152465758256&daily=temperature_2m_mean,precipitation_sum&past_days=30 HTTP/1.1" 200 None
+"POST /maps/get-location-details/ HTTP/1.1" 200 464
+Not Found: /maps/get-farm-by-coords/
+"POST /maps/get-farm-by-coords/ HTTP/1.1" 404 2
+Starting new HTTPS connection (1): api.open-meteo.com:443
+https://api.open-meteo.com:443 "GET /v1/forecast?latitude=12.190772075897351&longitude=76.31815139453386&hourly=temperature_2m,relative_humidity_2m,precipitation&forecast_days=1 HTTP/1.1" 200 None
+Starting new HTTPS connection (1): rest.isric.org:443
+https://rest.isric.org:443 "GET /soilgrids/v2.0/properties/query?lat=12.190772075897351&lon=76.31815139453386&property=nitrogen&property=phh2o&property=clay&property=sand&property=silt&property=cec&depth=0-5cm&value=mean HTTP/1.1" 200 1503
+Starting new HTTPS connection (1): api.open-meteo.com:443
+https://api.open-meteo.com:443 "GET /v1/forecast?latitude=12.190772075897351&longitude=76.31815139453386&daily=temperature_2m_mean,precipitation_sum&past_days=30 HTTP/1.1" 200 None
+"POST /maps/get-location-details/ HTTP/1.1" 200 463
+Fetching price prediction for crop: sorghum, date: 2025-08-02
+No prediction for sorghum on or before 2025-08-02
+"POST /maps/maps/get-price-prediction/ HTTP/1.1" 200 132
+Starting new HTTPS connection (1): api.open-meteo.com:443
+https://api.open-meteo.com:443 "GET /v1/forecast?latitude=12.190772075897351&longitude=76.31815139453386&hourly=temperature_2m,relative_humidity_2m,precipitation&forecast_days=1 HTTP/1.1" 200 None
+Starting new HTTPS connection (1): rest.isric.org:443
+https://rest.isric.org:443 "GET /soilgrids/v2.0/properties/query?lat=12.190772075897351&lon=76.31815139453386&property=nitrogen&property=phh2o&property=clay&property=sand&property=silt&property=cec&depth=0-5cm&value=mean HTTP/1.1" 200 1503
+Starting new HTTPS connection (1): api.open-meteo.com:443
+https://api.open-meteo.com:443 "GET /v1/forecast?latitude=12.190772075897351&longitude=76.31815139453386&daily=temperature_2m_mean,precipitation_sum&past_days=30 HTTP/1.1" 200 None
+"POST /maps/get-location-details/ HTTP/1.1" 200 587
+C:\Users\adars\Desktop\ust\AgiChain\agrichain\maps\views.py changed, reloading.
+Watching for file changes with StatReloader
+ML model loaded successfully
+C:\Users\adars\Desktop\ust\AgiChain\agrichain\maps\views.py changed, reloading.
+Watching for file changes with StatReloader
+C:\Users\adars\Desktop\ust\AgiChain\agrichain\maps\views.py changed, reloading.
+Watching for file changes with StatReloader
+ML model loaded successfully
+Not Found: /maps/get_price_prediction/
+"GET /maps/get_price_prediction/ HTTP/1.1" 404 5803
+Not Found: /favicon.ico
+"GET /favicon.ico HTTP/1.1" 404 3143
+Not Found: /maps/maps/get_price_prediction/
+"GET /maps/maps/get_price_prediction/ HTTP/1.1" 404 5818
+Not Found: /maps/ maps/get-price-prediction/
+"GET /maps/%20maps/get-price-prediction/ HTTP/1.1" 404 5823
+Not Found: /maps
+"GET /maps HTTP/1.1" 404 3122
+Not Found: /maps/maps
+"GET /maps/maps HTTP/1.1" 404 5752
+"GET / HTTP/1.1" 200 40123
+"GET /static/img/program_training.jpg HTTP/1.1" 404 1886
+"GET /static/img/program_subsidy.jpg HTTP/1.1" 404 1883
+"GET /static/img/program_marketplace.jpg HTTP/1.1" 404 1895
+"GET /static/img/farmer1.jpg HTTP/1.1" 404 1859
+"GET /static/img/farmer3.jpg HTTP/1.1" 404 1859
+"GET /static/img/farmer2.jpg HTTP/1.1" 404 1859
+"GET /static/img/farm_landscape.jpg HTTP/1.1" 404 1880
+"GET /static/img/leaf-pattern.png HTTP/1.1" 404 1874
+Crop choices: [('wheat', 'Wheat'), ('rice', 'Rice'), ('corn', 'Corn'), ('barley', 'Barley'), ('oats', 'Oats'), ('sorghum', 'Sorghum'), ('millet', 'Millet'), ('soybean', 'Soybean'), ('peanut', 'Peanut'), ('bean', 'Bean'), ('pea', 'Pea'), ('lentil', 'Lentil'), ('chickpea', 'Chickpea'), ('mungbean', 'Mungbean'), ('cotton', 'Cotton'), ('sugarcane', 'Sugarcane'), ('sunflower', 'Sunflower'), ('mustard', 'Mustard'), ('sesame', 'Sesame'), ('potato', 'Potato'), ('tomato', 'Tomato'), ('onion', 'Onion'), ('carrot', 'Carrot'), ('cabbage', 'Cabbage'), ('cauliflower', 'Cauliflower'), ('brinjal', 'Brinjal'), ('okra', 'Okra'), ('spinach', 'Spinach'), ('chilli', 'Chilli'), ('bittergourd', 'Bittergourd'), ('ridgegourd', 'Ridgegourd'), ('banana', 'Banana'), ('banana_robusta', 'Banana Robusta'), ('banana_rasthali', 'Banana Rasthali'), ('banana_poovan', 'Banana Poovan'), ('banana_nendran', 'Banana Nendran'), ('mango', 'Mango'), ('guava', 'Guava'), ('papaya', 'Papaya'), ('pomegranate', 'Pomegranate'), ('jackfruit', 'Jackfruit'), ('coconut', 'Coconut')]
+"GET /maps/farm-map/ HTTP/1.1" 200 82254
+"GET /maps/farm-data/ HTTP/1.1" 200 8658
+Not Found: /maps/get-farm-by-coords/
+"POST /maps/get-farm-by-coords/ HTTP/1.1" 404 2
+Starting new HTTPS connection (1): api.open-meteo.com:443
+https://api.open-meteo.com:443 "GET /v1/forecast?latitude=12.082296254387577&longitude=76.61865234375&hourly=temperature_2m,relative_humidity_2m,precipitation&forecast_days=1 HTTP/1.1" 200 None
+Starting new HTTPS connection (1): rest.isric.org:443
+https://rest.isric.org:443 "GET /soilgrids/v2.0/properties/query?lat=12.082296254387577&lon=76.61865234375&property=nitrogen&property=phh2o&property=clay&property=sand&property=silt&property=cec&depth=0-5cm&value=mean HTTP/1.1" 200 1499
+Starting new HTTPS connection (1): api.open-meteo.com:443
+https://api.open-meteo.com:443 "GET /v1/forecast?latitude=12.082296254387577&longitude=76.61865234375&daily=temperature_2m_mean,precipitation_sum&past_days=30 HTTP/1.1" 200 None
+"POST /maps/get-location-details/ HTTP/1.1" 200 451
+Fetching price prediction for crop: oats, date: 2025-08-12
+Price prediction response: {'crop': 'oats', 'date': '2025-08-12', 'predicted_price': 2800.0}
+"POST /maps/maps/get-price-prediction/ HTTP/1.1" 200 65
+Starting new HTTPS connection (1): api.open-meteo.com:443
+https://api.open-meteo.com:443 "GET /v1/forecast?latitude=12.082296254387577&longitude=76.61865234375&hourly=temperature_2m,relative_humidity_2m,precipitation&forecast_days=1 HTTP/1.1" 200 None
+Starting new HTTPS connection (1): rest.isric.org:443
+https://rest.isric.org:443 "GET /soilgrids/v2.0/properties/query?lat=12.082296254387577&lon=76.61865234375&property=nitrogen&property=phh2o&property=clay&property=sand&property=silt&property=cec&depth=0-5cm&value=mean HTTP/1.1" 200 1500
+Starting new HTTPS connection (1): api.open-meteo.com:443
+https://api.open-meteo.com:443 "GET /v1/forecast?latitude=12.082296254387577&longitude=76.61865234375&daily=temperature_2m_mean,precipitation_sum&past_days=30 HTTP/1.1" 200 None
+"POST /maps/get-location-details/ HTTP/1.1" 200 575
+Not Found: /maps/get-farm-by-coords/
+"POST /maps/get-farm-by-coords/ HTTP/1.1" 404 2
+Starting new HTTPS connection (1): api.open-meteo.com:443
+https://api.open-meteo.com:443 "GET /v1/forecast?latitude=12.085031924823657&longitude=76.6183090209961&hourly=temperature_2m,relative_humidity_2m,precipitation&forecast_days=1 HTTP/1.1" 200 None
+Starting new HTTPS connection (1): rest.isric.org:443
+https://rest.isric.org:443 "GET /soilgrids/v2.0/properties/query?lat=12.085031924823657&lon=76.6183090209961&property=nitrogen&property=phh2o&property=clay&property=sand&property=silt&property=cec&depth=0-5cm&value=mean HTTP/1.1" 200 1502
+Starting new HTTPS connection (1): api.open-meteo.com:443
+https://api.open-meteo.com:443 "GET /v1/forecast?latitude=12.085031924823657&longitude=76.6183090209961&daily=temperature_2m_mean,precipitation_sum&past_days=30 HTTP/1.1" 200 None
+"POST /maps/get-location-details/ HTTP/1.1" 200 465
+Fetching price prediction for crop: oats, date: 2025-08-12
+Price prediction response: {'crop': 'oats', 'date': '2025-08-12', 'predicted_price': 2800.0}
+"POST /maps/maps/get-price-prediction/ HTTP/1.1" 200 65
+Starting new HTTPS connection (1): api.open-meteo.com:443
+https://api.open-meteo.com:443 "GET /v1/forecast?latitude=12.085031924823657&longitude=76.6183090209961&hourly=temperature_2m,relative_humidity_2m,precipitation&forecast_days=1 HTTP/1.1" 200 None
+Starting new HTTPS connection (1): rest.isric.org:443
+https://rest.isric.org:443 "GET /soilgrids/v2.0/properties/query?lat=12.085031924823657&lon=76.6183090209961&property=nitrogen&property=phh2o&property=clay&property=sand&property=silt&property=cec&depth=0-5cm&value=mean HTTP/1.1" 200 1501
+Starting new HTTPS connection (1): api.open-meteo.com:443
+https://api.open-meteo.com:443 "GET /v1/forecast?latitude=12.085031924823657&longitude=76.6183090209961&daily=temperature_2m_mean,precipitation_sum&past_days=30 HTTP/1.1" 200 None
+"POST /maps/get-location-details/ HTTP/1.1" 200 589
+"POST /i18n/setlang/ HTTP/1.1" 302 0
+Crop choices: [('wheat', 'Wheat'), ('rice', 'Rice'), ('corn', 'Corn'), ('barley', 'Barley'), ('oats', 'Oats'), ('sorghum', 'Sorghum'), ('millet', 'Millet'), ('soybean', 'Soybean'), ('peanut', 'Peanut'), ('bean', 'Bean'), ('pea', 'Pea'), ('lentil', 'Lentil'), ('chickpea', 'Chickpea'), ('mungbean', 'Mungbean'), ('cotton', 'Cotton'), ('sugarcane', 'Sugarcane'), ('sunflower', 'Sunflower'), ('mustard', 'Mustard'), ('sesame', 'Sesame'), ('potato', 'Potato'), ('tomato', 'Tomato'), ('onion', 'Onion'), ('carrot', 'Carrot'), ('cabbage', 'Cabbage'), ('cauliflower', 'Cauliflower'), ('brinjal', 'Brinjal'), ('okra', 'Okra'), ('spinach', 'Spinach'), ('chilli', 'Chilli'), ('bittergourd', 'Bittergourd'), ('ridgegourd', 'Ridgegourd'), ('banana', 'Banana'), ('banana_robusta', 'Banana Robusta'), ('banana_rasthali', 'Banana Rasthali'), ('banana_poovan', 'Banana Poovan'), ('banana_nendran', 'Banana Nendran'), ('mango', 'Mango'), ('guava', 'Guava'), ('papaya', 'Papaya'), ('pomegranate', 'Pomegranate'), ('jackfruit', 'Jackfruit'), ('coconut', 'Coconut')]
+"GET /maps/farm-map/ HTTP/1.1" 200 82254
+"GET /maps/farm-data/ HTTP/1.1" 200 8658
+C:\Users\adars\Desktop\ust\AgiChain\agrichain\maps\views.py changed, reloading.
+Watching for file changes with StatReloader
+ML model loaded successfully
+Crop choices: [('wheat', 'Wheat'), ('rice', 'Rice'), ('corn', 'Corn'), ('barley', 'Barley'), ('oats', 'Oats'), ('sorghum', 'Sorghum'), ('millet', 'Millet'), ('soybean', 'Soybean'), ('peanut', 'Peanut'), ('bean', 'Bean'), ('pea', 'Pea'), ('lentil', 'Lentil'), ('chickpea', 'Chickpea'), ('mungbean', 'Mungbean'), ('cotton', 'Cotton'), ('sugarcane', 'Sugarcane'), ('sunflower', 'Sunflower'), ('mustard', 'Mustard'), ('sesame', 'Sesame'), ('potato', 'Potato'), ('tomato', 'Tomato'), ('onion', 'Onion'), ('carrot', 'Carrot'), ('cabbage', 'Cabbage'), ('cauliflower', 'Cauliflower'), ('brinjal', 'Brinjal'), ('okra', 'Okra'), ('spinach', 'Spinach'), ('chilli', 'Chilli'), ('bittergourd', 'Bittergourd'), ('ridgegourd', 'Ridgegourd'), ('banana', 'Banana'), ('banana_robusta', 'Banana Robusta'), ('banana_rasthali', 'Banana Rasthali'), ('banana_poovan', 'Banana Poovan'), ('banana_nendran', 'Banana Nendran'), ('mango', 'Mango'), ('guava', 'Guava'), ('papaya', 'Papaya'), ('pomegranate', 'Pomegranate'), ('jackfruit', 'Jackfruit'), ('coconut', 'Coconut')]
+"GET /maps/farm-map/ HTTP/1.1" 200 77261
+"GET /maps/farm-data/ HTTP/1.1" 200 8658
+Not Found: /maps/get-farm-by-coords/
+"POST /maps/get-farm-by-coords/ HTTP/1.1" 404 2
+Starting new HTTPS connection (1): api.open-meteo.com:443
+https://api.open-meteo.com:443 "GET /v1/forecast?latitude=12.458033113147797&longitude=78.55224609375001&hourly=temperature_2m,relative_humidity_2m,precipitation,windspeed_10m&forecast_days=1 HTTP/1.1" 200 None
+Starting new HTTPS connection (1): rest.isric.org:443
+https://rest.isric.org:443 "GET /soilgrids/v2.0/properties/query?lat=12.458033113147797&lon=78.55224609375001&property=nitrogen&property=phh2o&property=clay&property=sand&property=silt&property=cec&depth=0-5cm&value=mean HTTP/1.1" 200 1503
+Starting new HTTPS connection (1): api.open-meteo.com:443
+https://api.open-meteo.com:443 "GET /v1/forecast?latitude=12.458033113147797&longitude=78.55224609375001&daily=temperature_2m_mean,precipitation_sum&past_days=30 HTTP/1.1" 200 None
+"POST /maps/get-location-details/ HTTP/1.1" 200 454
+Not Found: /maps/get-farm-by-coords/
+Starting new HTTPS connection (1): api.open-meteo.com:443
+"POST /maps/get-farm-by-coords/ HTTP/1.1" 404 2
+https://api.open-meteo.com:443 "GET /v1/forecast?latitude=12.466547653546812&longitude=78.51868629455568&hourly=temperature_2m,relative_humidity_2m,precipitation,windspeed_10m&forecast_days=1 HTTP/1.1" 200 None
+Starting new HTTPS connection (1): rest.isric.org:443
+https://rest.isric.org:443 "GET /soilgrids/v2.0/properties/query?lat=12.466547653546812&lon=78.51868629455568&property=nitrogen&property=phh2o&property=clay&property=sand&property=silt&property=cec&depth=0-5cm&value=mean HTTP/1.1" 200 1504
+Starting new HTTPS connection (1): api.open-meteo.com:443
+https://api.open-meteo.com:443 "GET /v1/forecast?latitude=12.466547653546812&longitude=78.51868629455568&daily=temperature_2m_mean,precipitation_sum&past_days=30 HTTP/1.1" 200 None
+"POST /maps/get-location-details/ HTTP/1.1" 200 455
+Fetching price prediction for crop: oats, date: 2025-08-12
+Price prediction response: {'crop': 'oats', 'date': '2025-08-12', 'predicted_price': 2800.0}
+"POST /maps/maps/get-price-prediction/ HTTP/1.1" 200 65
+Starting new HTTPS connection (1): api.open-meteo.com:443
+https://api.open-meteo.com:443 "GET /v1/forecast?latitude=12.466547653546812&longitude=78.51868629455568&hourly=temperature_2m,relative_humidity_2m,precipitation,windspeed_10m&forecast_days=1 HTTP/1.1" 200 None
+Starting new HTTPS connection (1): rest.isric.org:443
+https://rest.isric.org:443 "GET /soilgrids/v2.0/properties/query?lat=12.466547653546812&lon=78.51868629455568&property=nitrogen&property=phh2o&property=clay&property=sand&property=silt&property=cec&depth=0-5cm&value=mean HTTP/1.1" 200 1502
+Starting new HTTPS connection (1): api.open-meteo.com:443
+https://api.open-meteo.com:443 "GET /v1/forecast?latitude=12.466547653546812&longitude=78.51868629455568&daily=temperature_2m_mean,precipitation_sum&past_days=30 HTTP/1.1" 200 None
+Starting new HTTPS connection (1): api.open-meteo.com:443
+https://api.open-meteo.com:443 "GET /v1/forecast?latitude=12.466547653546812&longitude=78.51868629455568&hourly=soil_moisture_0_1cm&forecast_days=1 HTTP/1.1" 200 None
+Starting new HTTPS connection (1): api.sunrise-sunset.org:443
+https://api.sunrise-sunset.org:443 "GET /json?lat=12.466547653546812&lng=78.51868629455568&formatted=0 HTTP/1.1" 200 None
+Starting new HTTPS connection (1): api.open-elevation.com:443
+https://api.open-elevation.com:443 "GET /api/v1/lookup?locations=12.466547653546812,78.51868629455568 HTTP/1.1" 200 None
+"POST /maps/get-location-details/ HTTP/1.1" 200 572
+Not Found: /maps/get-farm-by-coords/
+"POST /maps/get-farm-by-coords/ HTTP/1.1" 404 2
+Starting new HTTPS connection (1): api.open-meteo.com:443
+https://api.open-meteo.com:443 "GET /v1/forecast?latitude=13.094459771070495&longitude=79.64263916015626&hourly=temperature_2m,relative_humidity_2m,precipitation,windspeed_10m&forecast_days=1 HTTP/1.1" 200 None
+Starting new HTTPS connection (1): rest.isric.org:443
+https://rest.isric.org:443 "GET /soilgrids/v2.0/properties/query?lat=13.094459771070495&lon=79.64263916015626&property=nitrogen&property=phh2o&property=clay&property=sand&property=silt&property=cec&depth=0-5cm&value=mean HTTP/1.1" 200 1503
+Starting new HTTPS connection (1): api.open-meteo.com:443
+https://api.open-meteo.com:443 "GET /v1/forecast?latitude=13.094459771070495&longitude=79.64263916015626&daily=temperature_2m_mean,precipitation_sum&past_days=30 HTTP/1.1" 200 None
+"POST /maps/get-location-details/ HTTP/1.1" 200 479
+Fetching price prediction for crop: oats, date: 2025-08-12
+Price prediction response: {'crop': 'oats', 'date': '2025-08-12', 'predicted_price': 2800.0}
+"POST /maps/maps/get-price-prediction/ HTTP/1.1" 200 65
+Starting new HTTPS connection (1): api.open-meteo.com:443
+https://api.open-meteo.com:443 "GET /v1/forecast?latitude=13.094459771070495&longitude=79.64263916015626&hourly=temperature_2m,relative_humidity_2m,precipitation,windspeed_10m&forecast_days=1 HTTP/1.1" 200 None
+Starting new HTTPS connection (1): rest.isric.org:443
+https://rest.isric.org:443 "GET /soilgrids/v2.0/properties/query?lat=13.094459771070495&lon=79.64263916015626&property=nitrogen&property=phh2o&property=clay&property=sand&property=silt&property=cec&depth=0-5cm&value=mean HTTP/1.1" 200 1503
+Starting new HTTPS connection (1): api.open-meteo.com:443
+https://api.open-meteo.com:443 "GET /v1/forecast?latitude=13.094459771070495&longitude=79.64263916015626&daily=temperature_2m_mean,precipitation_sum&past_days=30 HTTP/1.1" 200 None
+Starting new HTTPS connection (1): api.open-meteo.com:443
+https://api.open-meteo.com:443 "GET /v1/forecast?latitude=13.094459771070495&longitude=79.64263916015626&hourly=soil_moisture_0_1cm&forecast_days=1 HTTP/1.1" 200 None
+Starting new HTTPS connection (1): api.sunrise-sunset.org:443
+https://api.sunrise-sunset.org:443 "GET /json?lat=13.094459771070495&lng=79.64263916015626&formatted=0 HTTP/1.1" 200 None
+Starting new HTTPS connection (1): api.open-elevation.com:443
+https://api.open-elevation.com:443 "GET /api/v1/lookup?locations=13.094459771070495,79.64263916015626 HTTP/1.1" 200 None
+"POST /maps/get-location-details/ HTTP/1.1" 200 591
+Not Found: /maps/get-farm-by-coords/
+"POST /maps/get-farm-by-coords/ HTTP/1.1" 404 2
+Starting new HTTPS connection (1): api.open-meteo.com:443
+https://api.open-meteo.com:443 "GET /v1/forecast?latitude=9.141148067367737&longitude=76.54174804687501&hourly=temperature_2m,relative_humidity_2m,precipitation,windspeed_10m&forecast_days=1 HTTP/1.1" 200 None
+Starting new HTTPS connection (1): rest.isric.org:443
+https://rest.isric.org:443 "GET /soilgrids/v2.0/properties/query?lat=9.141148067367737&lon=76.54174804687501&property=nitrogen&property=phh2o&property=clay&property=sand&property=silt&property=cec&depth=0-5cm&value=mean HTTP/1.1" 200 1502
+Starting new HTTPS connection (1): api.open-meteo.com:443
+https://api.open-meteo.com:443 "GET /v1/forecast?latitude=9.141148067367737&longitude=76.54174804687501&daily=temperature_2m_mean,precipitation_sum&past_days=30 HTTP/1.1" 200 None
+"POST /maps/get-location-details/ HTTP/1.1" 200 472
+Fetching price prediction for crop: oats, date: 2025-08-12
+Price prediction response: {'crop': 'oats', 'date': '2025-08-12', 'predicted_price': 2800.0}
+"POST /maps/maps/get-price-prediction/ HTTP/1.1" 200 65
+Starting new HTTPS connection (1): api.open-meteo.com:443
+https://api.open-meteo.com:443 "GET /v1/forecast?latitude=9.141148067367737&longitude=76.54174804687501&hourly=temperature_2m,relative_humidity_2m,precipitation,windspeed_10m&forecast_days=1 HTTP/1.1" 200 None
+Starting new HTTPS connection (1): rest.isric.org:443
+https://rest.isric.org:443 "GET /soilgrids/v2.0/properties/query?lat=9.141148067367737&lon=76.54174804687501&property=nitrogen&property=phh2o&property=clay&property=sand&property=silt&property=cec&depth=0-5cm&value=mean HTTP/1.1" 200 1503
+Starting new HTTPS connection (1): api.open-meteo.com:443
+https://api.open-meteo.com:443 "GET /v1/forecast?latitude=9.141148067367737&longitude=76.54174804687501&daily=temperature_2m_mean,precipitation_sum&past_days=30 HTTP/1.1" 200 None
+Starting new HTTPS connection (1): api.open-meteo.com:443
+https://api.open-meteo.com:443 "GET /v1/forecast?latitude=9.141148067367737&longitude=76.54174804687501&hourly=soil_moisture_0_1cm&forecast_days=1 HTTP/1.1" 200 None
+Starting new HTTPS connection (1): api.sunrise-sunset.org:443
+https://api.sunrise-sunset.org:443 "GET /json?lat=9.141148067367737&lng=76.54174804687501&formatted=0 HTTP/1.1" 200 None
+Starting new HTTPS connection (1): api.open-elevation.com:443
+https://api.open-elevation.com:443 "GET /api/v1/lookup?locations=9.141148067367737,76.54174804687501 HTTP/1.1" 200 None
+"POST /maps/get-location-details/ HTTP/1.1" 200 599
+Not Found: /maps/get-farm-by-coords/
+"POST /maps/get-farm-by-coords/ HTTP/1.1" 404 2
+Starting new HTTPS connection (1): api.open-meteo.com:443
+https://api.open-meteo.com:443 "GET /v1/forecast?latitude=9.31885469368277&longitude=76.82533264160158&hourly=temperature_2m,relative_humidity_2m,precipitation,windspeed_10m&forecast_days=1 HTTP/1.1" 200 None
+Starting new HTTPS connection (1): rest.isric.org:443
+https://rest.isric.org:443 "GET /soilgrids/v2.0/properties/query?lat=9.31885469368277&lon=76.82533264160158&property=nitrogen&property=phh2o&property=clay&property=sand&property=silt&property=cec&depth=0-5cm&value=mean HTTP/1.1" 200 1501
+Starting new HTTPS connection (1): api.open-meteo.com:443
+https://api.open-meteo.com:443 "GET /v1/forecast?latitude=9.31885469368277&longitude=76.82533264160158&daily=temperature_2m_mean,precipitation_sum&past_days=30 HTTP/1.1" 200 None
+"POST /maps/get-location-details/ HTTP/1.1" 200 469
+Fetching price prediction for crop: oats, date: 2025-08-12
+Price prediction response: {'crop': 'oats', 'date': '2025-08-12', 'predicted_price': 2800.0}
+"POST /maps/maps/get-price-prediction/ HTTP/1.1" 200 65
+Starting new HTTPS connection (1): api.open-meteo.com:443
+https://api.open-meteo.com:443 "GET /v1/forecast?latitude=9.31885469368277&longitude=76.82533264160158&hourly=temperature_2m,relative_humidity_2m,precipitation,windspeed_10m&forecast_days=1 HTTP/1.1" 200 None
+Starting new HTTPS connection (1): rest.isric.org:443
+https://rest.isric.org:443 "GET /soilgrids/v2.0/properties/query?lat=9.31885469368277&lon=76.82533264160158&property=nitrogen&property=phh2o&property=clay&property=sand&property=silt&property=cec&depth=0-5cm&value=mean HTTP/1.1" 200 1501
+Starting new HTTPS connection (1): api.open-meteo.com:443
+https://api.open-meteo.com:443 "GET /v1/forecast?latitude=9.31885469368277&longitude=76.82533264160158&daily=temperature_2m_mean,precipitation_sum&past_days=30 HTTP/1.1" 200 None
+Starting new HTTPS connection (1): api.open-meteo.com:443
+https://api.open-meteo.com:443 "GET /v1/forecast?latitude=9.31885469368277&longitude=76.82533264160158&hourly=soil_moisture_0_1cm&forecast_days=1 HTTP/1.1" 200 None
+Starting new HTTPS connection (1): api.sunrise-sunset.org:443
+https://api.sunrise-sunset.org:443 "GET /json?lat=9.31885469368277&lng=76.82533264160158&formatted=0 HTTP/1.1" 200 None
+Starting new HTTPS connection (1): api.open-elevation.com:443
+https://api.open-elevation.com:443 "GET /api/v1/lookup?locations=9.31885469368277,76.82533264160158 HTTP/1.1" 200 None
+"POST /maps/get-location-details/ HTTP/1.1" 200 586
+Not Found: /maps/get-farm-by-coords/
+"POST /maps/get-farm-by-coords/ HTTP/1.1" 404 2
+Starting new HTTPS connection (1): api.open-meteo.com:443
+https://api.open-meteo.com:443 "GET /v1/forecast?latitude=32.7244478866057&longitude=79.716796875&hourly=temperature_2m,relative_humidity_2m,precipitation,windspeed_10m&forecast_days=1 HTTP/1.1" 200 None
+Starting new HTTPS connection (1): rest.isric.org:443
+https://rest.isric.org:443 "GET /soilgrids/v2.0/properties/query?lat=32.7244478866057&lon=79.716796875&property=nitrogen&property=phh2o&property=clay&property=sand&property=silt&property=cec&depth=0-5cm&value=mean HTTP/1.1" 200 1496
+Starting new HTTPS connection (1): api.open-meteo.com:443
+https://api.open-meteo.com:443 "GET /v1/forecast?latitude=32.7244478866057&longitude=79.716796875&daily=temperature_2m_mean,precipitation_sum&past_days=30 HTTP/1.1" 200 None
+"POST /maps/get-location-details/ HTTP/1.1" 200 472
+Fetching price prediction for crop: oats, date: 2025-08-12
+Price prediction response: {'crop': 'oats', 'date': '2025-08-12', 'predicted_price': 2800.0}
+"POST /maps/maps/get-price-prediction/ HTTP/1.1" 200 65
+Starting new HTTPS connection (1): api.open-meteo.com:443
+https://api.open-meteo.com:443 "GET /v1/forecast?latitude=32.7244478866057&longitude=79.716796875&hourly=temperature_2m,relative_humidity_2m,precipitation,windspeed_10m&forecast_days=1 HTTP/1.1" 200 None
+Starting new HTTPS connection (1): rest.isric.org:443
+https://rest.isric.org:443 "GET /soilgrids/v2.0/properties/query?lat=32.7244478866057&lon=79.716796875&property=nitrogen&property=phh2o&property=clay&property=sand&property=silt&property=cec&depth=0-5cm&value=mean HTTP/1.1" 200 1496
+Starting new HTTPS connection (1): api.open-meteo.com:443
+https://api.open-meteo.com:443 "GET /v1/forecast?latitude=32.7244478866057&longitude=79.716796875&daily=temperature_2m_mean,precipitation_sum&past_days=30 HTTP/1.1" 200 None
+Starting new HTTPS connection (1): api.open-meteo.com:443
+https://api.open-meteo.com:443 "GET /v1/forecast?latitude=32.7244478866057&longitude=79.716796875&hourly=soil_moisture_0_1cm&forecast_days=1 HTTP/1.1" 200 None
+Starting new HTTPS connection (1): api.sunrise-sunset.org:443
+https://api.sunrise-sunset.org:443 "GET /json?lat=32.7244478866057&lng=79.716796875&formatted=0 HTTP/1.1" 200 None
+Starting new HTTPS connection (1): api.open-elevation.com:443
+https://api.open-elevation.com:443 "GET /api/v1/lookup?locations=32.7244478866057,79.716796875 HTTP/1.1" 200 None
+"POST /maps/get-location-details/ HTTP/1.1" 200 583
+Not Found: /maps/get-farm-by-coords/
+"POST /maps/get-farm-by-coords/ HTTP/1.1" 404 2
+Starting new HTTPS connection (1): api.open-meteo.com:443
+https://api.open-meteo.com:443 "GET /v1/forecast?latitude=54.69416525549626&longitude=-119.88281250000001&hourly=temperature_2m,relative_humidity_2m,precipitation,windspeed_10m&forecast_days=1 HTTP/1.1" 200 None
+Starting new HTTPS connection (1): rest.isric.org:443
+https://rest.isric.org:443 "GET /soilgrids/v2.0/properties/query?lat=54.69416525549626&lon=-119.88281250000001&property=nitrogen&property=phh2o&property=clay&property=sand&property=silt&property=cec&depth=0-5cm&value=mean HTTP/1.1" 200 1504
+Starting new HTTPS connection (1): api.open-meteo.com:443
+https://api.open-meteo.com:443 "GET /v1/forecast?latitude=54.69416525549626&longitude=-119.88281250000001&daily=temperature_2m_mean,precipitation_sum&past_days=30 HTTP/1.1" 200 None
+"POST /maps/get-location-details/ HTTP/1.1" 200 469
+Fetching price prediction for crop: oats, date: 2025-08-12
+Price prediction response: {'crop': 'oats', 'date': '2025-08-12', 'predicted_price': 2800.0}
+"POST /maps/maps/get-price-prediction/ HTTP/1.1" 200 65
+Starting new HTTPS connection (1): api.open-meteo.com:443
+https://api.open-meteo.com:443 "GET /v1/forecast?latitude=54.69416525549626&longitude=-119.88281250000001&hourly=temperature_2m,relative_humidity_2m,precipitation,windspeed_10m&forecast_days=1 HTTP/1.1" 200 None
+Starting new HTTPS connection (1): rest.isric.org:443
+https://rest.isric.org:443 "GET /soilgrids/v2.0/properties/query?lat=54.69416525549626&lon=-119.88281250000001&property=nitrogen&property=phh2o&property=clay&property=sand&property=silt&property=cec&depth=0-5cm&value=mean HTTP/1.1" 200 1504
+Starting new HTTPS connection (1): api.open-meteo.com:443
+https://api.open-meteo.com:443 "GET /v1/forecast?latitude=54.69416525549626&longitude=-119.88281250000001&daily=temperature_2m_mean,precipitation_sum&past_days=30 HTTP/1.1" 200 None
+Starting new HTTPS connection (1): api.open-meteo.com:443
+https://api.open-meteo.com:443 "GET /v1/forecast?latitude=54.69416525549626&longitude=-119.88281250000001&hourly=soil_moisture_0_1cm&forecast_days=1 HTTP/1.1" 200 None
+Starting new HTTPS connection (1): api.sunrise-sunset.org:443
+https://api.sunrise-sunset.org:443 "GET /json?lat=54.69416525549626&lng=-119.88281250000001&formatted=0 HTTP/1.1" 200 None
+Starting new HTTPS connection (1): api.open-elevation.com:443
+https://api.open-elevation.com:443 "GET /api/v1/lookup?locations=54.69416525549626,-119.88281250000001 HTTP/1.1" 200 None
+"POST /maps/get-location-details/ HTTP/1.1" 200 581
+Not Found: /maps/get-farm-by-coords/
+"POST /maps/get-farm-by-coords/ HTTP/1.1" 404 2
+Starting new HTTPS connection (1): api.open-meteo.com:443
+https://api.open-meteo.com:443 "GET /v1/forecast?latitude=54.698215085382216&longitude=-119.99610900878908&hourly=temperature_2m,relative_humidity_2m,precipitation,windspeed_10m&forecast_days=1 HTTP/1.1" 200 None
+Starting new HTTPS connection (1): rest.isric.org:443
+https://rest.isric.org:443 "GET /soilgrids/v2.0/properties/query?lat=54.698215085382216&lon=-119.99610900878908&property=nitrogen&property=phh2o&property=clay&property=sand&property=silt&property=cec&depth=0-5cm&value=mean HTTP/1.1" 200 1505
+Starting new HTTPS connection (1): api.open-meteo.com:443
+https://api.open-meteo.com:443 "GET /v1/forecast?latitude=54.698215085382216&longitude=-119.99610900878908&daily=temperature_2m_mean,precipitation_sum&past_days=30 HTTP/1.1" 200 None
+"POST /maps/get-location-details/ HTTP/1.1" 200 473
+Fetching price prediction for crop: oats, date: 2025-08-12
+Price prediction response: {'crop': 'oats', 'date': '2025-08-12', 'predicted_price': 2800.0}
+"POST /maps/maps/get-price-prediction/ HTTP/1.1" 200 65
+Starting new HTTPS connection (1): api.open-meteo.com:443
+Not Found: /maps/get-farm-by-coords/
+"POST /maps/get-farm-by-coords/ HTTP/1.1" 404 2
+https://api.open-meteo.com:443 "GET /v1/forecast?latitude=-72.63510159826848&longitude=-68.90625000000001&hourly=temperature_2m,relative_humidity_2m,precipitation,windspeed_10m&forecast_days=1 HTTP/1.1" 200 None
+Starting new HTTPS connection (1): rest.isric.org:443
+https://rest.isric.org:443 "GET /soilgrids/v2.0/properties/query?lat=-72.63510159826848&lon=-68.90625000000001&property=nitrogen&property=phh2o&property=clay&property=sand&property=silt&property=cec&depth=0-5cm&value=mean HTTP/1.1" 200 1511
+Error fetching/parsing SoilGrids data at (-72.63510159826848, -68.90625000000001): unsupported operand type(s) for /: 'NoneType' and 'int'
+Starting new HTTPS connection (1): api.open-meteo.com:443
+https://api.open-meteo.com:443 "GET /v1/forecast?latitude=-72.63510159826848&longitude=-68.90625000000001&daily=temperature_2m_mean,precipitation_sum&past_days=30 HTTP/1.1" 200 None
+"POST /maps/get-location-details/ HTTP/1.1" 200 462
+Fetching price prediction for crop: oats, date: 2025-08-12
+Price prediction response: {'crop': 'oats', 'date': '2025-08-12', 'predicted_price': 2800.0}
+"POST /maps/maps/get-price-prediction/ HTTP/1.1" 200 65
+Starting new HTTPS connection (1): api.open-meteo.com:443
+https://api.open-meteo.com:443 "GET /v1/forecast?latitude=-72.63510159826848&longitude=-68.90625000000001&hourly=temperature_2m,relative_humidity_2m,precipitation,windspeed_10m&forecast_days=1 HTTP/1.1" 200 None
+Starting new HTTPS connection (1): rest.isric.org:443
+https://rest.isric.org:443 "GET /soilgrids/v2.0/properties/query?lat=-72.63510159826848&lon=-68.90625000000001&property=nitrogen&property=phh2o&property=clay&property=sand&property=silt&property=cec&depth=0-5cm&value=mean HTTP/1.1" 200 1511
+Error fetching/parsing SoilGrids data at (-72.63510159826848, -68.90625000000001): unsupported operand type(s) for /: 'NoneType' and 'int'
+Starting new HTTPS connection (1): api.open-meteo.com:443
+https://api.open-meteo.com:443 "GET /v1/forecast?latitude=-72.63510159826848&longitude=-68.90625000000001&daily=temperature_2m_mean,precipitation_sum&past_days=30 HTTP/1.1" 200 None
+Starting new HTTPS connection (1): api.open-meteo.com:443
+https://api.open-meteo.com:443 "GET /v1/forecast?latitude=-72.63510159826848&longitude=-68.90625000000001&hourly=soil_moisture_0_1cm&forecast_days=1 HTTP/1.1" 200 None
+Starting new HTTPS connection (1): api.sunrise-sunset.org:443
+https://api.sunrise-sunset.org:443 "GET /json?lat=-72.63510159826848&lng=-68.90625000000001&formatted=0 HTTP/1.1" 200 None
+Starting new HTTPS connection (1): api.open-elevation.com:443
+https://api.open-elevation.com:443 "GET /api/v1/lookup?locations=-72.63510159826848,-68.90625000000001 HTTP/1.1" 200 None
+"POST /maps/get-location-details/ HTTP/1.1" 200 575
+"GET /maps/farm-data/ HTTP/1.1" 200 8658
+Not Found: /maps/get-farm-by-coords/
+Starting new HTTPS connection (1): api.open-meteo.com:443
+"POST /maps/get-farm-by-coords/ HTTP/1.1" 404 2
+https://api.open-meteo.com:443 "GET /v1/forecast?latitude=8.516480686552006&longitude=76.94935798645021&hourly=temperature_2m,relative_humidity_2m,precipitation,windspeed_10m&forecast_days=1 HTTP/1.1" 200 None
+Starting new HTTPS connection (1): rest.isric.org:443
+https://rest.isric.org:443 "GET /soilgrids/v2.0/properties/query?lat=8.516480686552006&lon=76.94935798645021&property=nitrogen&property=phh2o&property=clay&property=sand&property=silt&property=cec&depth=0-5cm&value=mean HTTP/1.1" 200 1508
+Error fetching/parsing SoilGrids data at (8.516480686552006, 76.94935798645021): unsupported operand type(s) for /: 'NoneType' and 'int'
+Starting new HTTPS connection (1): api.open-meteo.com:443
+https://api.open-meteo.com:443 "GET /v1/forecast?latitude=8.516480686552006&longitude=76.94935798645021&daily=temperature_2m_mean,precipitation_sum&past_days=30 HTTP/1.1" 200 None
+"POST /maps/get-location-details/ HTTP/1.1" 200 449
+Fetching price prediction for crop: oats, date: 2025-08-12
+Price prediction response: {'crop': 'oats', 'date': '2025-08-12', 'predicted_price': 2800.0}
+"POST /maps/maps/get-price-prediction/ HTTP/1.1" 200 65
+Starting new HTTPS connection (1): api.open-meteo.com:443
+https://api.open-meteo.com:443 "GET /v1/forecast?latitude=8.516480686552006&longitude=76.94935798645021&hourly=temperature_2m,relative_humidity_2m,precipitation,windspeed_10m&forecast_days=1 HTTP/1.1" 200 None
+Starting new HTTPS connection (1): rest.isric.org:443
+https://rest.isric.org:443 "GET /soilgrids/v2.0/properties/query?lat=8.516480686552006&lon=76.94935798645021&property=nitrogen&property=phh2o&property=clay&property=sand&property=silt&property=cec&depth=0-5cm&value=mean HTTP/1.1" 200 1509
+Error fetching/parsing SoilGrids data at (8.516480686552006, 76.94935798645021): unsupported operand type(s) for /: 'NoneType' and 'int'
+Starting new HTTPS connection (1): api.open-meteo.com:443
+https://api.open-meteo.com:443 "GET /v1/forecast?latitude=8.516480686552006&longitude=76.94935798645021&daily=temperature_2m_mean,precipitation_sum&past_days=30 HTTP/1.1" 200 None
+Starting new HTTPS connection (1): api.open-meteo.com:443
+https://api.open-meteo.com:443 "GET /v1/forecast?latitude=8.516480686552006&longitude=76.94935798645021&hourly=soil_moisture_0_1cm&forecast_days=1 HTTP/1.1" 200 None
+Starting new HTTPS connection (1): api.sunrise-sunset.org:443
+https://api.sunrise-sunset.org:443 "GET /json?lat=8.516480686552006&lng=76.94935798645021&formatted=0 HTTP/1.1" 200 None
+Starting new HTTPS connection (1): api.open-elevation.com:443
+https://api.open-elevation.com:443 "GET /api/v1/lookup?locations=8.516480686552006,76.94935798645021 HTTP/1.1" 200 None
+"POST /maps/get-location-details/ HTTP/1.1" 200 561
+Not Found: /maps/get-farm-by-coords/
+"POST /maps/get-farm-by-coords/ HTTP/1.1" 404 2
+Starting new HTTPS connection (1): api.open-meteo.com:443
+https://api.open-meteo.com:443 "GET /v1/forecast?latitude=9.580303074522996&longitude=76.43703460693361&hourly=temperature_2m,relative_humidity_2m,precipitation,windspeed_10m&forecast_days=1 HTTP/1.1" 200 None
+Starting new HTTPS connection (1): rest.isric.org:443
+https://rest.isric.org:443 "GET /soilgrids/v2.0/properties/query?lat=9.580303074522996&lon=76.43703460693361&property=nitrogen&property=phh2o&property=clay&property=sand&property=silt&property=cec&depth=0-5cm&value=mean HTTP/1.1" 200 1502
+Starting new HTTPS connection (1): api.open-meteo.com:443
+https://api.open-meteo.com:443 "GET /v1/forecast?latitude=9.580303074522996&longitude=76.43703460693361&daily=temperature_2m_mean,precipitation_sum&past_days=30 HTTP/1.1" 200 None
+"POST /maps/get-location-details/ HTTP/1.1" 200 471
+Fetching price prediction for crop: oats, date: 2025-08-12
+Price prediction response: {'crop': 'oats', 'date': '2025-08-12', 'predicted_price': 2800.0}
+"POST /maps/maps/get-price-prediction/ HTTP/1.1" 200 65
+Starting new HTTPS connection (1): api.open-meteo.com:443
+https://api.open-meteo.com:443 "GET /v1/forecast?latitude=9.580303074522996&longitude=76.43703460693361&hourly=temperature_2m,relative_humidity_2m,precipitation,windspeed_10m&forecast_days=1 HTTP/1.1" 200 None
+Starting new HTTPS connection (1): rest.isric.org:443
+https://rest.isric.org:443 "GET /soilgrids/v2.0/properties/query?lat=9.580303074522996&lon=76.43703460693361&property=nitrogen&property=phh2o&property=clay&property=sand&property=silt&property=cec&depth=0-5cm&value=mean HTTP/1.1" 200 1502
+Starting new HTTPS connection (1): api.open-meteo.com:443
+https://api.open-meteo.com:443 "GET /v1/forecast?latitude=9.580303074522996&longitude=76.43703460693361&daily=temperature_2m_mean,precipitation_sum&past_days=30 HTTP/1.1" 200 None
+Starting new HTTPS connection (1): api.open-meteo.com:443
+https://api.open-meteo.com:443 "GET /v1/forecast?latitude=9.580303074522996&longitude=76.43703460693361&hourly=soil_moisture_0_1cm&forecast_days=1 HTTP/1.1" 200 None
+Starting new HTTPS connection (1): api.sunrise-sunset.org:443
+https://api.sunrise-sunset.org:443 "GET /json?lat=9.580303074522996&lng=76.43703460693361&formatted=0 HTTP/1.1" 200 None
+Starting new HTTPS connection (1): api.open-elevation.com:443
+https://api.open-elevation.com:443 "GET /api/v1/lookup?locations=9.580303074522996,76.43703460693361 HTTP/1.1" 200 None
+"POST /maps/get-location-details/ HTTP/1.1" 200 597
+Not Found: /maps/get-farm-by-coords/
+Starting new HTTPS connection (1): api.open-meteo.com:443
+"POST /maps/get-farm-by-coords/ HTTP/1.1" 404 2
+https://api.open-meteo.com:443 "GET /v1/forecast?latitude=9.581081695291799&longitude=76.45935058593751&hourly=temperature_2m,relative_humidity_2m,precipitation,windspeed_10m&forecast_days=1 HTTP/1.1" 200 None
+Starting new HTTPS connection (1): rest.isric.org:443
+https://rest.isric.org:443 "GET /soilgrids/v2.0/properties/query?lat=9.581081695291799&lon=76.45935058593751&property=nitrogen&property=phh2o&property=clay&property=sand&property=silt&property=cec&depth=0-5cm&value=mean HTTP/1.1" 200 1502
+Starting new HTTPS connection (1): api.open-meteo.com:443
+https://api.open-meteo.com:443 "GET /v1/forecast?latitude=9.581081695291799&longitude=76.45935058593751&daily=temperature_2m_mean,precipitation_sum&past_days=30 HTTP/1.1" 200 None
+"POST /maps/get-location-details/ HTTP/1.1" 200 461
+Fetching price prediction for crop: oats, date: 2025-08-12
+Price prediction response: {'crop': 'oats', 'date': '2025-08-12', 'predicted_price': 2800.0}
+"POST /maps/maps/get-price-prediction/ HTTP/1.1" 200 65
+Starting new HTTPS connection (1): api.open-meteo.com:443
+https://api.open-meteo.com:443 "GET /v1/forecast?latitude=9.581081695291799&longitude=76.45935058593751&hourly=temperature_2m,relative_humidity_2m,precipitation,windspeed_10m&forecast_days=1 HTTP/1.1" 200 None
+Starting new HTTPS connection (1): rest.isric.org:443
+https://rest.isric.org:443 "GET /soilgrids/v2.0/properties/query?lat=9.581081695291799&lon=76.45935058593751&property=nitrogen&property=phh2o&property=clay&property=sand&property=silt&property=cec&depth=0-5cm&value=mean HTTP/1.1" 200 1502
+Starting new HTTPS connection (1): api.open-meteo.com:443
+https://api.open-meteo.com:443 "GET /v1/forecast?latitude=9.581081695291799&longitude=76.45935058593751&daily=temperature_2m_mean,precipitation_sum&past_days=30 HTTP/1.1" 200 None
+Starting new HTTPS connection (1): api.open-meteo.com:443
+https://api.open-meteo.com:443 "GET /v1/forecast?latitude=9.581081695291799&longitude=76.45935058593751&hourly=soil_moisture_0_1cm&forecast_days=1 HTTP/1.1" 200 None
+Starting new HTTPS connection (1): api.sunrise-sunset.org:443
+https://api.sunrise-sunset.org:443 "GET /json?lat=9.581081695291799&lng=76.45935058593751&formatted=0 HTTP/1.1" 200 None
+Starting new HTTPS connection (1): api.open-elevation.com:443
+https://api.open-elevation.com:443 "GET /api/v1/lookup?locations=9.581081695291799,76.45935058593751 HTTP/1.1" 200 None
+"POST /maps/get-location-details/ HTTP/1.1" 200 573
+Not Found: /maps/get-farm-by-coords/
+Starting new HTTPS connection (1): api.open-meteo.com:443
+"POST /maps/get-farm-by-coords/ HTTP/1.1" 404 2
+https://api.open-meteo.com:443 "GET /v1/forecast?latitude=9.607994059796154&longitude=76.4363479614258&hourly=temperature_2m,relative_humidity_2m,precipitation,windspeed_10m&forecast_days=1 HTTP/1.1" 200 None
+Starting new HTTPS connection (1): rest.isric.org:443
+https://rest.isric.org:443 "GET /soilgrids/v2.0/properties/query?lat=9.607994059796154&lon=76.4363479614258&property=nitrogen&property=phh2o&property=clay&property=sand&property=silt&property=cec&depth=0-5cm&value=mean HTTP/1.1" 200 1501
+Starting new HTTPS connection (1): api.open-meteo.com:443
+https://api.open-meteo.com:443 "GET /v1/forecast?latitude=9.607994059796154&longitude=76.4363479614258&daily=temperature_2m_mean,precipitation_sum&past_days=30 HTTP/1.1" 200 None
+"POST /maps/get-location-details/ HTTP/1.1" 200 471
+Fetching price prediction for crop: oats, date: 2025-08-12
+Price prediction response: {'crop': 'oats', 'date': '2025-08-12', 'predicted_price': 2800.0}
+"POST /maps/maps/get-price-prediction/ HTTP/1.1" 200 65
+Starting new HTTPS connection (1): api.open-meteo.com:443
+https://api.open-meteo.com:443 "GET /v1/forecast?latitude=9.607994059796154&longitude=76.4363479614258&hourly=temperature_2m,relative_humidity_2m,precipitation,windspeed_10m&forecast_days=1 HTTP/1.1" 200 None
+Starting new HTTPS connection (1): rest.isric.org:443
+https://rest.isric.org:443 "GET /soilgrids/v2.0/properties/query?lat=9.607994059796154&lon=76.4363479614258&property=nitrogen&property=phh2o&property=clay&property=sand&property=silt&property=cec&depth=0-5cm&value=mean HTTP/1.1" 200 1501
+Starting new HTTPS connection (1): api.open-meteo.com:443
+https://api.open-meteo.com:443 "GET /v1/forecast?latitude=9.607994059796154&longitude=76.4363479614258&daily=temperature_2m_mean,precipitation_sum&past_days=30 HTTP/1.1" 200 None
+Starting new HTTPS connection (1): api.open-meteo.com:443
+https://api.open-meteo.com:443 "GET /v1/forecast?latitude=9.607994059796154&longitude=76.4363479614258&hourly=soil_moisture_0_1cm&forecast_days=1 HTTP/1.1" 200 None
+Starting new HTTPS connection (1): api.sunrise-sunset.org:443
+https://api.sunrise-sunset.org:443 "GET /json?lat=9.607994059796154&lng=76.4363479614258&formatted=0 HTTP/1.1" 200 None
+Starting new HTTPS connection (1): api.open-elevation.com:443
+https://api.open-elevation.com:443 "GET /api/v1/lookup?locations=9.607994059796154,76.4363479614258 HTTP/1.1" 200 None
+"POST /maps/get-location-details/ HTTP/1.1" 200 597
+Not Found: /maps/get-farm-by-coords/
+"POST /maps/get-farm-by-coords/ HTTP/1.1" 404 2
+Starting new HTTPS connection (1): api.open-meteo.com:443
+https://api.open-meteo.com:443 "GET /v1/forecast?latitude=9.730443633168441&longitude=76.63169860839845&hourly=temperature_2m,relative_humidity_2m,precipitation,windspeed_10m&forecast_days=1 HTTP/1.1" 200 None
+Starting new HTTPS connection (1): rest.isric.org:443
+https://rest.isric.org:443 "GET /soilgrids/v2.0/properties/query?lat=9.730443633168441&lon=76.63169860839845&property=nitrogen&property=phh2o&property=clay&property=sand&property=silt&property=cec&depth=0-5cm&value=mean HTTP/1.1" 200 1501
+Starting new HTTPS connection (1): api.open-meteo.com:443
+https://api.open-meteo.com:443 "GET /v1/forecast?latitude=9.730443633168441&longitude=76.63169860839845&daily=temperature_2m_mean,precipitation_sum&past_days=30 HTTP/1.1" 200 None
+"POST /maps/get-location-details/ HTTP/1.1" 200 483
+Fetching price prediction for crop: wheat, date: 2025-08-12
+Price prediction response: {'crop': 'wheat', 'date': '2025-08-12', 'predicted_price': 2200.0}
+"POST /maps/maps/get-price-prediction/ HTTP/1.1" 200 66
+Not Found: /maps/get-farm-by-coords/
+"POST /maps/get-farm-by-coords/ HTTP/1.1" 404 2
+Starting new HTTPS connection (1): api.open-meteo.com:443
+https://api.open-meteo.com:443 "GET /v1/forecast?latitude=9.733556718185845&longitude=76.65032386779787&hourly=temperature_2m,relative_humidity_2m,precipitation,windspeed_10m&forecast_days=1 HTTP/1.1" 200 None
+Starting new HTTPS connection (1): rest.isric.org:443
+https://rest.isric.org:443 "GET /soilgrids/v2.0/properties/query?lat=9.733556718185845&lon=76.65032386779787&property=nitrogen&property=phh2o&property=clay&property=sand&property=silt&property=cec&depth=0-5cm&value=mean HTTP/1.1" 200 1502
+Starting new HTTPS connection (1): api.open-meteo.com:443
+https://api.open-meteo.com:443 "GET /v1/forecast?latitude=9.733556718185845&longitude=76.65032386779787&daily=temperature_2m_mean,precipitation_sum&past_days=30 HTTP/1.1" 200 None
+"POST /maps/get-location-details/ HTTP/1.1" 200 471
+Fetching price prediction for crop: jackfruit, date: 2026-04-14
+No prediction for jackfruit on or before 2026-04-14
+"POST /maps/maps/get-price-prediction/ HTTP/1.1" 200 136
+Not Found: /maps/get-farm-by-coords/
+Starting new HTTPS connection (1): api.open-meteo.com:443
+"POST /maps/get-farm-by-coords/ HTTP/1.1" 404 2
+https://api.open-meteo.com:443 "GET /v1/forecast?latitude=9.728311779892916&longitude=76.66216850280763&hourly=temperature_2m,relative_humidity_2m,precipitation,windspeed_10m&forecast_days=1 HTTP/1.1" 200 None
+Starting new HTTPS connection (1): rest.isric.org:443
+https://rest.isric.org:443 "GET /soilgrids/v2.0/properties/query?lat=9.728311779892916&lon=76.66216850280763&property=nitrogen&property=phh2o&property=clay&property=sand&property=silt&property=cec&depth=0-5cm&value=mean HTTP/1.1" 200 1502
+Starting new HTTPS connection (1): api.open-meteo.com:443
+https://api.open-meteo.com:443 "GET /v1/forecast?latitude=9.728311779892916&longitude=76.66216850280763&daily=temperature_2m_mean,precipitation_sum&past_days=30 HTTP/1.1" 200 None
+"POST /maps/get-location-details/ HTTP/1.1" 200 471
+Fetching price prediction for crop: coconut, date: 2026-04-14
+Price prediction response: {'crop': 'coconut', 'date': '2026-04-14', 'predicted_price': 3200.0}
+"POST /maps/maps/get-price-prediction/ HTTP/1.1" 200 68
+Crop choices: [('wheat', 'Wheat'), ('rice', 'Rice'), ('corn', 'Corn'), ('barley', 'Barley'), ('oats', 'Oats'), ('sorghum', 'Sorghum'), ('millet', 'Millet'), ('soybean', 'Soybean'), ('peanut', 'Peanut'), ('bean', 'Bean'), ('pea', 'Pea'), ('lentil', 'Lentil'), ('chickpea', 'Chickpea'), ('mungbean', 'Mungbean'), ('cotton', 'Cotton'), ('sugarcane', 'Sugarcane'), ('sunflower', 'Sunflower'), ('mustard', 'Mustard'), ('sesame', 'Sesame'), ('potato', 'Potato'), ('tomato', 'Tomato'), ('onion', 'Onion'), ('carrot', 'Carrot'), ('cabbage', 'Cabbage'), ('cauliflower', 'Cauliflower'), ('brinjal', 'Brinjal'), ('okra', 'Okra'), ('spinach', 'Spinach'), ('chilli', 'Chilli'), ('bittergourd', 'Bittergourd'), ('ridgegourd', 'Ridgegourd'), ('banana', 'Banana'), ('banana_robusta', 'Banana Robusta'), ('banana_rasthali', 'Banana Rasthali'), ('banana_poovan', 'Banana Poovan'), ('banana_nendran', 'Banana Nendran'), ('mango', 'Mango'), ('guava', 'Guava'), ('papaya', 'Papaya'), ('pomegranate', 'Pomegranate'), ('jackfruit', 'Jackfruit'), ('coconut', 'Coconut')]
+"GET /maps/farm-map/ HTTP/1.1" 200 77261
+"GET /maps/farm-data/ HTTP/1.1" 200 8658
+Internal Server Error: /maps/my-farms/
+Traceback (most recent call last):
+  File "C:\Users\adars\Desktop\ust\AgiChain\agrichain\agrichain_env\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\adars\Desktop\ust\AgiChain\agrichain\agrichain_env\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\adars\Desktop\ust\AgiChain\agrichain\agrichain_env\Lib\site-packages\django\contrib\auth\decorators.py", line 60, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+  File "C:\Users\adars\Desktop\ust\AgiChain\agrichain\maps\views.py", line 440, in my_farms
+    return render(request, "maps/my_farms.html")
+  File "C:\Users\adars\Desktop\ust\AgiChain\agrichain\agrichain_env\Lib\site-packages\django\shortcuts.py", line 25, in render
+    content = loader.render_to_string(template_name, context, request, using=using)
+  File "C:\Users\adars\Desktop\ust\AgiChain\agrichain\agrichain_env\Lib\site-packages\django\template\loader.py", line 62, in render_to_string
+    return template.render(context, request)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^
+  File "C:\Users\adars\Desktop\ust\AgiChain\agrichain\agrichain_env\Lib\site-packages\django\template\backends\django.py", line 107, in render
+    return self.template.render(context)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\adars\Desktop\ust\AgiChain\agrichain\agrichain_env\Lib\site-packages\django\template\base.py", line 171, in render
+    return self._render(context)
+           ~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\adars\Desktop\ust\AgiChain\agrichain\agrichain_env\Lib\site-packages\django\template\base.py", line 163, in _render
+    return self.nodelist.render(context)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\adars\Desktop\ust\AgiChain\agrichain\agrichain_env\Lib\site-packages\django\template\base.py", line 1008, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\adars\Desktop\ust\AgiChain\agrichain\agrichain_env\Lib\site-packages\django\template\base.py", line 969, in render_annotated
+    return self.render(context)
+           ~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\adars\Desktop\ust\AgiChain\agrichain\agrichain_env\Lib\site-packages\django\template\loader_tags.py", line 159, in render
+    return compiled_parent._render(context)
+           ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\adars\Desktop\ust\AgiChain\agrichain\agrichain_env\Lib\site-packages\django\template\base.py", line 163, in _render
+    return self.nodelist.render(context)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\adars\Desktop\ust\AgiChain\agrichain\agrichain_env\Lib\site-packages\django\template\base.py", line 1008, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\adars\Desktop\ust\AgiChain\agrichain\agrichain_env\Lib\site-packages\django\template\base.py", line 969, in render_annotated
+    return self.render(context)
+           ~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\adars\Desktop\ust\AgiChain\agrichain\agrichain_env\Lib\site-packages\django\template\loader_tags.py", line 65, in render
+    result = block.nodelist.render(context)
+  File "C:\Users\adars\Desktop\ust\AgiChain\agrichain\agrichain_env\Lib\site-packages\django\template\base.py", line 1008, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\adars\Desktop\ust\AgiChain\agrichain\agrichain_env\Lib\site-packages\django\template\base.py", line 969, in render_annotated
+    return self.render(context)
+           ~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\adars\Desktop\ust\AgiChain\agrichain\agrichain_env\Lib\site-packages\django\template\defaulttags.py", line 480, in render
+    url = reverse(view_name, args=args, kwargs=kwargs, current_app=current_app)
+  File "C:\Users\adars\Desktop\ust\AgiChain\agrichain\agrichain_env\Lib\site-packages\django\urls\base.py", line 88, in reverse
+    return resolver._reverse_with_prefix(view, prefix, *args, **kwargs)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\adars\Desktop\ust\AgiChain\agrichain\agrichain_env\Lib\site-packages\django\urls\resolvers.py", line 831, in _reverse_with_prefix
+    raise NoReverseMatch(msg)
+django.urls.exceptions.NoReverseMatch: Reverse for 'farm-map' not found. 'farm-map' is not a valid view function or pattern name.
+"GET /maps/my-farms/ HTTP/1.1" 500 166848
+"GET /maps/my-farms/ HTTP/1.1" 200 41116
+"GET /maps/farm-data/ HTTP/1.1" 200 8658
+Crop choices: [('wheat', 'Wheat'), ('rice', 'Rice'), ('corn', 'Corn'), ('barley', 'Barley'), ('oats', 'Oats'), ('sorghum', 'Sorghum'), ('millet', 'Millet'), ('soybean', 'Soybean'), ('peanut', 'Peanut'), ('bean', 'Bean'), ('pea', 'Pea'), ('lentil', 'Lentil'), ('chickpea', 'Chickpea'), ('mungbean', 'Mungbean'), ('cotton', 'Cotton'), ('sugarcane', 'Sugarcane'), ('sunflower', 'Sunflower'), ('mustard', 'Mustard'), ('sesame', 'Sesame'), ('potato', 'Potato'), ('tomato', 'Tomato'), ('onion', 'Onion'), ('carrot', 'Carrot'), ('cabbage', 'Cabbage'), ('cauliflower', 'Cauliflower'), ('brinjal', 'Brinjal'), ('okra', 'Okra'), ('spinach', 'Spinach'), ('chilli', 'Chilli'), ('bittergourd', 'Bittergourd'), ('ridgegourd', 'Ridgegourd'), ('banana', 'Banana'), ('banana_robusta', 'Banana Robusta'), ('banana_rasthali', 'Banana Rasthali'), ('banana_poovan', 'Banana Poovan'), ('banana_nendran', 'Banana Nendran'), ('mango', 'Mango'), ('guava', 'Guava'), ('papaya', 'Papaya'), ('pomegranate', 'Pomegranate'), ('jackfruit', 'Jackfruit'), ('coconut', 'Coconut')]
+"GET /maps/farm-map/ HTTP/1.1" 200 77261
+"GET /maps/farm-data/ HTTP/1.1" 200 8658
+Not Found: /maps/get-farm-by-coords/
+"POST /maps/get-farm-by-coords/ HTTP/1.1" 404 2
+Starting new HTTPS connection (1): api.open-meteo.com:443
+https://api.open-meteo.com:443 "GET /v1/forecast?latitude=10.930405462137221&longitude=77.28881835937501&hourly=temperature_2m,relative_humidity_2m,precipitation,windspeed_10m&forecast_days=1 HTTP/1.1" 200 None
+Starting new HTTPS connection (1): rest.isric.org:443
+https://rest.isric.org:443 "GET /soilgrids/v2.0/properties/query?lat=10.930405462137221&lon=77.28881835937501&property=nitrogen&property=phh2o&property=clay&property=sand&property=silt&property=cec&depth=0-5cm&value=mean HTTP/1.1" 200 1503
+Starting new HTTPS connection (1): api.open-meteo.com:443
+https://api.open-meteo.com:443 "GET /v1/forecast?latitude=10.930405462137221&longitude=77.28881835937501&daily=temperature_2m_mean,precipitation_sum&past_days=30 HTTP/1.1" 200 None
+"POST /maps/get-location-details/ HTTP/1.1" 200 467
+Not Found: /maps/get-farm-by-coords/
+"POST /maps/get-farm-by-coords/ HTTP/1.1" 404 2
+Starting new HTTPS connection (1): api.open-meteo.com:443
+https://api.open-meteo.com:443 "GET /v1/forecast?latitude=10.930405462137221&longitude=77.28881835937501&hourly=temperature_2m,relative_humidity_2m,precipitation,windspeed_10m&forecast_days=1 HTTP/1.1" 200 None
+Starting new HTTPS connection (1): rest.isric.org:443
+https://rest.isric.org:443 "GET /soilgrids/v2.0/properties/query?lat=10.930405462137221&lon=77.28881835937501&property=nitrogen&property=phh2o&property=clay&property=sand&property=silt&property=cec&depth=0-5cm&value=mean HTTP/1.1" 200 1503
+Starting new HTTPS connection (1): api.open-meteo.com:443
+https://api.open-meteo.com:443 "GET /v1/forecast?latitude=10.930405462137221&longitude=77.28881835937501&daily=temperature_2m_mean,precipitation_sum&past_days=30 HTTP/1.1" 200 None
+"POST /maps/add-farm/ HTTP/1.1" 201 108
+"GET /maps/my-farms/ HTTP/1.1" 200 41116
+"GET /maps/farm-data/ HTTP/1.1" 200 9038
+"GET /maps/my-farms/ HTTP/1.1" 200 41116
+"GET /maps/farm-data/ HTTP/1.1" 200 9038
+Crop choices: [('wheat', 'Wheat'), ('rice', 'Rice'), ('corn', 'Corn'), ('barley', 'Barley'), ('oats', 'Oats'), ('sorghum', 'Sorghum'), ('millet', 'Millet'), ('soybean', 'Soybean'), ('peanut', 'Peanut'), ('bean', 'Bean'), ('pea', 'Pea'), ('lentil', 'Lentil'), ('chickpea', 'Chickpea'), ('mungbean', 'Mungbean'), ('cotton', 'Cotton'), ('sugarcane', 'Sugarcane'), ('sunflower', 'Sunflower'), ('mustard', 'Mustard'), ('sesame', 'Sesame'), ('potato', 'Potato'), ('tomato', 'Tomato'), ('onion', 'Onion'), ('carrot', 'Carrot'), ('cabbage', 'Cabbage'), ('cauliflower', 'Cauliflower'), ('brinjal', 'Brinjal'), ('okra', 'Okra'), ('spinach', 'Spinach'), ('chilli', 'Chilli'), ('bittergourd', 'Bittergourd'), ('ridgegourd', 'Ridgegourd'), ('banana', 'Banana'), ('banana_robusta', 'Banana Robusta'), ('banana_rasthali', 'Banana Rasthali'), ('banana_poovan', 'Banana Poovan'), ('banana_nendran', 'Banana Nendran'), ('mango', 'Mango'), ('guava', 'Guava'), ('papaya', 'Papaya'), ('pomegranate', 'Pomegranate'), ('jackfruit', 'Jackfruit'), ('coconut', 'Coconut')]
+"GET /maps/farm-map/ HTTP/1.1" 200 77261
+"GET /maps/farm-data/ HTTP/1.1" 200 9038
+Not Found: /maps/get-farm-by-coords/
+"POST /maps/get-farm-by-coords/ HTTP/1.1" 404 2
+Starting new HTTPS connection (1): api.open-meteo.com:443
+https://api.open-meteo.com:443 "GET /v1/forecast?latitude=13.293411490837933&longitude=76.959228515625&hourly=temperature_2m,relative_humidity_2m,precipitation,windspeed_10m&forecast_days=1 HTTP/1.1" 200 None
+Starting new HTTPS connection (1): rest.isric.org:443
+https://rest.isric.org:443 "GET /soilgrids/v2.0/properties/query?lat=13.293411490837933&lon=76.959228515625&property=nitrogen&property=phh2o&property=clay&property=sand&property=silt&property=cec&depth=0-5cm&value=mean HTTP/1.1" 200 1500
+Starting new HTTPS connection (1): api.open-meteo.com:443
+https://api.open-meteo.com:443 "GET /v1/forecast?latitude=13.293411490837933&longitude=76.959228515625&daily=temperature_2m_mean,precipitation_sum&past_days=30 HTTP/1.1" 200 None
+"POST /maps/get-location-details/ HTTP/1.1" 200 462
