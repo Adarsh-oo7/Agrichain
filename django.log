@@ -793,3 +793,118 @@ https://rest.isric.org:443 "GET /soilgrids/v2.0/properties/query?lat=13.29341149
 Starting new HTTPS connection (1): api.open-meteo.com:443
 https://api.open-meteo.com:443 "GET /v1/forecast?latitude=13.293411490837933&longitude=76.959228515625&daily=temperature_2m_mean,precipitation_sum&past_days=30 HTTP/1.1" 200 None
 "POST /maps/get-location-details/ HTTP/1.1" 200 462
+Crop choices: [('wheat', 'Wheat'), ('rice', 'Rice'), ('corn', 'Corn'), ('barley', 'Barley'), ('oats', 'Oats'), ('sorghum', 'Sorghum'), ('millet', 'Millet'), ('soybean', 'Soybean'), ('peanut', 'Peanut'), ('bean', 'Bean'), ('pea', 'Pea'), ('lentil', 'Lentil'), ('chickpea', 'Chickpea'), ('mungbean', 'Mungbean'), ('cotton', 'Cotton'), ('sugarcane', 'Sugarcane'), ('sunflower', 'Sunflower'), ('mustard', 'Mustard'), ('sesame', 'Sesame'), ('potato', 'Potato'), ('tomato', 'Tomato'), ('onion', 'Onion'), ('carrot', 'Carrot'), ('cabbage', 'Cabbage'), ('cauliflower', 'Cauliflower'), ('brinjal', 'Brinjal'), ('okra', 'Okra'), ('spinach', 'Spinach'), ('chilli', 'Chilli'), ('bittergourd', 'Bittergourd'), ('ridgegourd', 'Ridgegourd'), ('banana', 'Banana'), ('banana_robusta', 'Banana Robusta'), ('banana_rasthali', 'Banana Rasthali'), ('banana_poovan', 'Banana Poovan'), ('banana_nendran', 'Banana Nendran'), ('mango', 'Mango'), ('guava', 'Guava'), ('papaya', 'Papaya'), ('pomegranate', 'Pomegranate'), ('jackfruit', 'Jackfruit'), ('coconut', 'Coconut')]
+"GET /maps/farm-map/ HTTP/1.1" 200 79158
+"GET /maps/farm-data/ HTTP/1.1" 200 9038
+Crop choices: [('wheat', 'Wheat'), ('rice', 'Rice'), ('corn', 'Corn'), ('barley', 'Barley'), ('oats', 'Oats'), ('sorghum', 'Sorghum'), ('millet', 'Millet'), ('soybean', 'Soybean'), ('peanut', 'Peanut'), ('bean', 'Bean'), ('pea', 'Pea'), ('lentil', 'Lentil'), ('chickpea', 'Chickpea'), ('mungbean', 'Mungbean'), ('cotton', 'Cotton'), ('sugarcane', 'Sugarcane'), ('sunflower', 'Sunflower'), ('mustard', 'Mustard'), ('sesame', 'Sesame'), ('potato', 'Potato'), ('tomato', 'Tomato'), ('onion', 'Onion'), ('carrot', 'Carrot'), ('cabbage', 'Cabbage'), ('cauliflower', 'Cauliflower'), ('brinjal', 'Brinjal'), ('okra', 'Okra'), ('spinach', 'Spinach'), ('chilli', 'Chilli'), ('bittergourd', 'Bittergourd'), ('ridgegourd', 'Ridgegourd'), ('banana', 'Banana'), ('banana_robusta', 'Banana Robusta'), ('banana_rasthali', 'Banana Rasthali'), ('banana_poovan', 'Banana Poovan'), ('banana_nendran', 'Banana Nendran'), ('mango', 'Mango'), ('guava', 'Guava'), ('papaya', 'Papaya'), ('pomegranate', 'Pomegranate'), ('jackfruit', 'Jackfruit'), ('coconut', 'Coconut')]
+"GET /maps/farm-map/ HTTP/1.1" 200 79158
+"GET /maps/farm-data/ HTTP/1.1" 200 9038
+Crop choices: [('wheat', 'Wheat'), ('rice', 'Rice'), ('corn', 'Corn'), ('barley', 'Barley'), ('oats', 'Oats'), ('sorghum', 'Sorghum'), ('millet', 'Millet'), ('soybean', 'Soybean'), ('peanut', 'Peanut'), ('bean', 'Bean'), ('pea', 'Pea'), ('lentil', 'Lentil'), ('chickpea', 'Chickpea'), ('mungbean', 'Mungbean'), ('cotton', 'Cotton'), ('sugarcane', 'Sugarcane'), ('sunflower', 'Sunflower'), ('mustard', 'Mustard'), ('sesame', 'Sesame'), ('potato', 'Potato'), ('tomato', 'Tomato'), ('onion', 'Onion'), ('carrot', 'Carrot'), ('cabbage', 'Cabbage'), ('cauliflower', 'Cauliflower'), ('brinjal', 'Brinjal'), ('okra', 'Okra'), ('spinach', 'Spinach'), ('chilli', 'Chilli'), ('bittergourd', 'Bittergourd'), ('ridgegourd', 'Ridgegourd'), ('banana', 'Banana'), ('banana_robusta', 'Banana Robusta'), ('banana_rasthali', 'Banana Rasthali'), ('banana_poovan', 'Banana Poovan'), ('banana_nendran', 'Banana Nendran'), ('mango', 'Mango'), ('guava', 'Guava'), ('papaya', 'Papaya'), ('pomegranate', 'Pomegranate'), ('jackfruit', 'Jackfruit'), ('coconut', 'Coconut')]
+"GET /maps/farm-map/ HTTP/1.1" 200 79158
+"GET /maps/farm-data/ HTTP/1.1" 200 9038
+Not Found: /maps/get-farm-by-coords/
+Starting new HTTPS connection (1): api.open-meteo.com:443
+"POST /maps/get-farm-by-coords/ HTTP/1.1" 404 2
+https://api.open-meteo.com:443 "GET /v1/forecast?latitude=8.516609600116604&longitude=76.94983005523682&hourly=temperature_2m,relative_humidity_2m,precipitation,windspeed_10m&forecast_days=1 HTTP/1.1" 200 None
+Starting new HTTPS connection (1): rest.isric.org:443
+Error fetching/parsing SoilGrids data at (8.516609600116604, 76.94983005523682): HTTPSConnectionPool(host='rest.isric.org', port=443): Read timed out. (read timeout=5)
+Starting new HTTPS connection (1): api.open-meteo.com:443
+https://api.open-meteo.com:443 "GET /v1/forecast?latitude=8.516609600116604&longitude=76.94983005523682&daily=temperature_2m_mean,precipitation_sum&past_days=30 HTTP/1.1" 200 None
+"POST /maps/get-location-details/ HTTP/1.1" 200 449
+Crop choices: [('wheat', 'Wheat'), ('rice', 'Rice'), ('corn', 'Corn'), ('barley', 'Barley'), ('oats', 'Oats'), ('sorghum', 'Sorghum'), ('millet', 'Millet'), ('soybean', 'Soybean'), ('peanut', 'Peanut'), ('bean', 'Bean'), ('pea', 'Pea'), ('lentil', 'Lentil'), ('chickpea', 'Chickpea'), ('mungbean', 'Mungbean'), ('cotton', 'Cotton'), ('sugarcane', 'Sugarcane'), ('sunflower', 'Sunflower'), ('mustard', 'Mustard'), ('sesame', 'Sesame'), ('potato', 'Potato'), ('tomato', 'Tomato'), ('onion', 'Onion'), ('carrot', 'Carrot'), ('cabbage', 'Cabbage'), ('cauliflower', 'Cauliflower'), ('brinjal', 'Brinjal'), ('okra', 'Okra'), ('spinach', 'Spinach'), ('chilli', 'Chilli'), ('bittergourd', 'Bittergourd'), ('ridgegourd', 'Ridgegourd'), ('banana', 'Banana'), ('banana_robusta', 'Banana Robusta'), ('banana_rasthali', 'Banana Rasthali'), ('banana_poovan', 'Banana Poovan'), ('banana_nendran', 'Banana Nendran'), ('mango', 'Mango'), ('guava', 'Guava'), ('papaya', 'Papaya'), ('pomegranate', 'Pomegranate'), ('jackfruit', 'Jackfruit'), ('coconut', 'Coconut')]
+"GET /maps/farm-map/ HTTP/1.1" 200 79158
+"GET /maps/farm-data/ HTTP/1.1" 200 9038
+Crop choices: [('wheat', 'Wheat'), ('rice', 'Rice'), ('corn', 'Corn'), ('barley', 'Barley'), ('oats', 'Oats'), ('sorghum', 'Sorghum'), ('millet', 'Millet'), ('soybean', 'Soybean'), ('peanut', 'Peanut'), ('bean', 'Bean'), ('pea', 'Pea'), ('lentil', 'Lentil'), ('chickpea', 'Chickpea'), ('mungbean', 'Mungbean'), ('cotton', 'Cotton'), ('sugarcane', 'Sugarcane'), ('sunflower', 'Sunflower'), ('mustard', 'Mustard'), ('sesame', 'Sesame'), ('potato', 'Potato'), ('tomato', 'Tomato'), ('onion', 'Onion'), ('carrot', 'Carrot'), ('cabbage', 'Cabbage'), ('cauliflower', 'Cauliflower'), ('brinjal', 'Brinjal'), ('okra', 'Okra'), ('spinach', 'Spinach'), ('chilli', 'Chilli'), ('bittergourd', 'Bittergourd'), ('ridgegourd', 'Ridgegourd'), ('banana', 'Banana'), ('banana_robusta', 'Banana Robusta'), ('banana_rasthali', 'Banana Rasthali'), ('banana_poovan', 'Banana Poovan'), ('banana_nendran', 'Banana Nendran'), ('mango', 'Mango'), ('guava', 'Guava'), ('papaya', 'Papaya'), ('pomegranate', 'Pomegranate'), ('jackfruit', 'Jackfruit'), ('coconut', 'Coconut')]
+"GET /maps/farm-map/ HTTP/1.1" 200 79156
+"GET /maps/farm-data/ HTTP/1.1" 200 9038
+"GET / HTTP/1.1" 200 42018
+"GET /static/img/farmer3.jpg HTTP/1.1" 404 1859
+"GET /static/img/farmer2.jpg HTTP/1.1" 404 1859
+"GET /static/img/program_subsidy.jpg HTTP/1.1" 404 1883
+"GET /static/img/program_marketplace.jpg HTTP/1.1" 404 1895
+"GET /static/img/program_training.jpg HTTP/1.1" 404 1886
+"GET /static/img/farmer1.jpg HTTP/1.1" 404 1859
+"GET /static/img/farm_landscape.jpg HTTP/1.1" 404 1880
+"GET /static/img/leaf-pattern.png HTTP/1.1" 404 1874
+Crop choices: [('wheat', 'Wheat'), ('rice', 'Rice'), ('corn', 'Corn'), ('barley', 'Barley'), ('oats', 'Oats'), ('sorghum', 'Sorghum'), ('millet', 'Millet'), ('soybean', 'Soybean'), ('peanut', 'Peanut'), ('bean', 'Bean'), ('pea', 'Pea'), ('lentil', 'Lentil'), ('chickpea', 'Chickpea'), ('mungbean', 'Mungbean'), ('cotton', 'Cotton'), ('sugarcane', 'Sugarcane'), ('sunflower', 'Sunflower'), ('mustard', 'Mustard'), ('sesame', 'Sesame'), ('potato', 'Potato'), ('tomato', 'Tomato'), ('onion', 'Onion'), ('carrot', 'Carrot'), ('cabbage', 'Cabbage'), ('cauliflower', 'Cauliflower'), ('brinjal', 'Brinjal'), ('okra', 'Okra'), ('spinach', 'Spinach'), ('chilli', 'Chilli'), ('bittergourd', 'Bittergourd'), ('ridgegourd', 'Ridgegourd'), ('banana', 'Banana'), ('banana_robusta', 'Banana Robusta'), ('banana_rasthali', 'Banana Rasthali'), ('banana_poovan', 'Banana Poovan'), ('banana_nendran', 'Banana Nendran'), ('mango', 'Mango'), ('guava', 'Guava'), ('papaya', 'Papaya'), ('pomegranate', 'Pomegranate'), ('jackfruit', 'Jackfruit'), ('coconut', 'Coconut')]
+"GET /maps/farm-map/ HTTP/1.1" 200 79156
+"GET /maps/farm-data/ HTTP/1.1" 200 9038
+Not Found: /maps/get-farm-by-coords/
+Starting new HTTPS connection (1): api.open-meteo.com:443
+"POST /maps/get-farm-by-coords/ HTTP/1.1" 404 2
+https://api.open-meteo.com:443 "GET /v1/forecast?latitude=17.71415419965593&longitude=77.76562459766866&hourly=temperature_2m,relative_humidity_2m,precipitation,windspeed_10m&forecast_days=1 HTTP/1.1" 200 None
+Starting new HTTPS connection (1): rest.isric.org:443
+"GET /maps/my-farms/ HTTP/1.1" 200 43011
+"GET /maps/farm-data/ HTTP/1.1" 200 9038
+Error fetching/parsing SoilGrids data at (17.71415419965593, 77.76562459766866): HTTPSConnectionPool(host='rest.isric.org', port=443): Read timed out. (read timeout=5)
+Starting new HTTPS connection (1): api.open-meteo.com:443
+"GET /users/logout/ HTTP/1.1" 302 0
+"GET /users/login/ HTTP/1.1" 200 31334
+"GET /static/img/farm_background.jpg HTTP/1.1" 404 1883
+https://api.open-meteo.com:443 "GET /v1/forecast?latitude=17.71415419965593&longitude=77.76562459766866&daily=temperature_2m_mean,precipitation_sum&past_days=30 HTTP/1.1" 200 None
+"POST /maps/get-location-details/ HTTP/1.1" 200 447
+"POST /users/login/ HTTP/1.1" 302 0
+"GET / HTTP/1.1" 200 42018
+"GET /static/img/program_training.jpg HTTP/1.1" 404 1886
+"GET /static/img/program_subsidy.jpg HTTP/1.1" 404 1883
+"GET /static/img/program_marketplace.jpg HTTP/1.1" 404 1895
+"GET /static/img/farmer1.jpg HTTP/1.1" 404 1859
+"GET /static/img/farmer2.jpg HTTP/1.1" 404 1859
+"GET /static/img/farmer3.jpg HTTP/1.1" 404 1859
+"GET /static/img/farm_landscape.jpg HTTP/1.1" 404 1880
+"GET /static/img/leaf-pattern.png HTTP/1.1" 404 1874
+"GET /maps/my-farms/ HTTP/1.1" 200 43001
+"GET /maps/farm-data/ HTTP/1.1" 200 9038
+"GET /maps/my-farms/ HTTP/1.1" 200 27642
+C:\Users\adars\Desktop\ust\AgiChain\agrichain\maps\views.py changed, reloading.
+Watching for file changes with StatReloader
+ML model loaded successfully
+C:\Users\adars\Desktop\ust\AgiChain\agrichain\maps\views.py changed, reloading.
+Watching for file changes with StatReloader
+ML model loaded successfully
+C:\Users\adars\Desktop\ust\AgiChain\agrichain\maps\views.py changed, reloading.
+Watching for file changes with StatReloader
+ML model loaded successfully
+"GET /maps/my-farms/ HTTP/1.1" 200 42910
+"GET /maps/farm-data/ HTTP/1.1" 200 9038
+Crop choices: [('wheat', 'Wheat'), ('rice', 'Rice'), ('corn', 'Corn'), ('barley', 'Barley'), ('oats', 'Oats'), ('sorghum', 'Sorghum'), ('millet', 'Millet'), ('soybean', 'Soybean'), ('peanut', 'Peanut'), ('bean', 'Bean'), ('pea', 'Pea'), ('lentil', 'Lentil'), ('chickpea', 'Chickpea'), ('mungbean', 'Mungbean'), ('cotton', 'Cotton'), ('sugarcane', 'Sugarcane'), ('sunflower', 'Sunflower'), ('mustard', 'Mustard'), ('sesame', 'Sesame'), ('potato', 'Potato'), ('tomato', 'Tomato'), ('onion', 'Onion'), ('carrot', 'Carrot'), ('cabbage', 'Cabbage'), ('cauliflower', 'Cauliflower'), ('brinjal', 'Brinjal'), ('okra', 'Okra'), ('spinach', 'Spinach'), ('chilli', 'Chilli'), ('bittergourd', 'Bittergourd'), ('ridgegourd', 'Ridgegourd'), ('banana', 'Banana'), ('banana_robusta', 'Banana Robusta'), ('banana_rasthali', 'Banana Rasthali'), ('banana_poovan', 'Banana Poovan'), ('banana_nendran', 'Banana Nendran'), ('mango', 'Mango'), ('guava', 'Guava'), ('papaya', 'Papaya'), ('pomegranate', 'Pomegranate'), ('jackfruit', 'Jackfruit'), ('coconut', 'Coconut')]
+"GET /maps/farm-map/ HTTP/1.1" 200 79156
+"GET /maps/farm-data/ HTTP/1.1" 200 9038
+Not Found: /maps/get-farm-by-coords/
+"POST /maps/get-farm-by-coords/ HTTP/1.1" 404 2
+Starting new HTTPS connection (1): api.open-meteo.com:443
+https://api.open-meteo.com:443 "GET /v1/forecast?latitude=12.737604341175773&longitude=76.74609364941718&hourly=temperature_2m,relative_humidity_2m,precipitation,windspeed_10m&forecast_days=1 HTTP/1.1" 200 None
+Starting new HTTPS connection (1): rest.isric.org:443
+Error fetching/parsing SoilGrids data at (12.737604341175773, 76.74609364941718): HTTPSConnectionPool(host='rest.isric.org', port=443): Read timed out. (read timeout=5)
+Starting new HTTPS connection (1): api.open-meteo.com:443
+https://api.open-meteo.com:443 "GET /v1/forecast?latitude=12.737604341175773&longitude=76.74609364941718&daily=temperature_2m_mean,precipitation_sum&past_days=30 HTTP/1.1" 200 None
+"POST /maps/get-location-details/ HTTP/1.1" 200 463
+Not Found: /maps/get-farm-by-coords/
+"POST /maps/get-farm-by-coords/ HTTP/1.1" 404 2
+Starting new HTTPS connection (1): api.open-meteo.com:443
+https://api.open-meteo.com:443 "GET /v1/forecast?latitude=12.737604341175773&longitude=76.74609364941718&hourly=temperature_2m,relative_humidity_2m,precipitation,windspeed_10m&forecast_days=1 HTTP/1.1" 200 None
+Starting new HTTPS connection (1): rest.isric.org:443
+Error fetching/parsing SoilGrids data at (12.737604341175773, 76.74609364941718): HTTPSConnectionPool(host='rest.isric.org', port=443): Read timed out. (read timeout=5)
+Starting new HTTPS connection (1): api.open-meteo.com:443
+https://api.open-meteo.com:443 "GET /v1/forecast?latitude=12.737604341175773&longitude=76.74609364941718&daily=temperature_2m_mean,precipitation_sum&past_days=30 HTTP/1.1" 200 None
+"POST /maps/add-farm/ HTTP/1.1" 201 109
+"GET /maps/my-farms/ HTTP/1.1" 200 42910
+"GET /maps/farm-data/ HTTP/1.1" 200 9406
+C:\Users\adars\Desktop\ust\AgiChain\agrichain\maps\views.py changed, reloading.
+Watching for file changes with StatReloader
+ML model loaded successfully
+C:\Users\adars\Desktop\ust\AgiChain\agrichain\maps\views.py changed, reloading.
+Watching for file changes with StatReloader
+ML model loaded successfully
+"GET /maps/my-farms/ HTTP/1.1" 200 42910
+"GET /maps/farm-data/ HTTP/1.1" 200 9406
+"GET /maps/my-farms/ HTTP/1.1" 200 42910
+"GET /maps/farm-data/ HTTP/1.1" 200 9406
+"GET /maps/my-farms/ HTTP/1.1" 200 43759
+"GET /maps/my-farms/ HTTP/1.1" 200 43759
+"GET /maps/my-farms/ HTTP/1.1" 200 43759
+"GET /maps/my-farms/ HTTP/1.1" 200 43759
+"GET /maps/my-farms/ HTTP/1.1" 200 43759
+C:\Users\adars\Desktop\ust\AgiChain\agrichain\maps\views.py changed, reloading.
+Watching for file changes with StatReloader
+ML model loaded successfully

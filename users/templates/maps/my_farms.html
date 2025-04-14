@@ -261,20 +261,20 @@
         <div class="header">
             <div class="container">
                 <h2>My Farms</h2>
-                <div class="subtitle">Manage your registered farms</div>
+                <div class="subtitle">View and manage your registered farms</div>
             </div>
         </div>
 
         <div class="container">
             <div class="button-container">
-                <a href="{% url 'maps:farm-map' %}" class="btn"><i class="fas fa-map"></i> Back to Map</a>
+                <a href="{% url 'maps:farm-map' %}" class="btn"><i class="fas fa-plus"></i> Add a Farm</a>
             </div>
 
             <div id="farmsMap"></div>
 
             <div class="farm-list" id="farmList">
-                <div class="spinner-ring" style="margin: 20px auto;"></div>
-                <span class="spinner-text" style="display: block; text-align: center;">Loading Farms...</span>
+                <div class="spinner-ring" style="margin: 20px auto; display: none;"></div>
+                <span class="spinner-text" style="display: block; text-align: center; display: none;">Loading Farms...</span>
             </div>
 
             <div class="loading-spinner" id="loadingSpinner">
@@ -288,7 +288,16 @@
 {% block extra_js %}
     <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
     <script>
-        const map = L.map('farmsMap').setView([20.5937, 78.9629], 5); // Default view (India)
+        // Parse farm data from Django context
+        let farmData;
+        try {
+            farmData = JSON.parse('{{ farm_data_json|safe }}');
+        } catch (e) {
+            console.error('Error parsing farm data:', e);
+            farmData = { type: 'FeatureCollection', features: [] };
+        }
+
+        const map = L.map('farmsMap').setView([20.5937, 78.9629], 5);
         let farmMarkers = [];
 
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -328,21 +337,29 @@
             }, 3000);
         }
 
-        async function loadMyFarms() {
+        function loadMyFarms() {
             const farmList = document.getElementById('farmList');
+            const spinner = farmList.querySelector('.spinner-ring');
+            const spinnerText = farmList.querySelector('.spinner-text');
+            let userFarms = farmData.features || [];
+
+            // Hide spinner immediately
+            spinner.style.display = 'none';
+            spinnerText.style.display = 'none';
+
+            // Clear existing markers
+            farmMarkers.forEach(marker => map.removeLayer(marker));
+            farmMarkers = [];
+
             try {
-                const response = await fetch('/maps/farm-data/');
-                if (!response.ok) throw new Error(`Fetch error: ${response.status}`);
-                const data = await response.json();
-                const userFarms = data.features.filter(farm => farm.properties.farmer_name === '{{ user.username }}');
-
-                // Clear existing markers
-                farmMarkers.forEach(marker => map.removeLayer(marker));
-                farmMarkers = [];
-
                 if (userFarms.length === 0) {
-                    farmList.innerHTML = '<div style="text-align: center; padding: 20px;">No farms registered yet.</div>';
-                    map.setView([20.5937, 78.9629], 5); // Reset to default view
+                    farmList.innerHTML = `
+                        <div style="text-align: center; padding: 20px; background: #fff; border-radius: 8px; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);">
+                            <h3 style="font-size: 18px; color: var(--secondary-color); margin-bottom: 10px;">No Farms Registered</h3>
+                            <p style="color: var(--text-light); margin-bottom: 15px;">You haven't added any farms yet.</p>
+                            <a href="{% url 'maps:farm-map' %}" class="btn"><i class="fas fa-plus"></i> Add Your First Farm</a>
+                        </div>`;
+                    map.setView([20.5937, 78.9629], 5);
                 } else {
                     farmList.innerHTML = '';
 
@@ -362,7 +379,7 @@
                                 </div>
                                 <div class="detail-item">
                                     <span class="detail-label">Size:</span>
-                                    <span class="detail-value">${farm.properties.area || 'Not set'} acres/hectares</span>
+                                    <span class="detail-value">${farm.properties.area != null ? farm.properties.area : 'Not set'} acres/hectares</span>
                                 </div>
                                 <div class="detail-item">
                                     <span class="detail-label">Soil Type:</span>
@@ -392,14 +409,13 @@
                         `;
                         farmList.appendChild(farmItem);
 
-                        // Add marker to map
-                        const marker = L.marker(latlng, { icon: statusIcons[farm.properties.status] })
+                        const marker = L.marker(latlng, { icon: statusIcons[farm.properties.status] || statusIcons.green })
                             .addTo(map)
                             .bindPopup(`
                                 <div class="popup-title">${farm.properties.farmer_name}'s Farm</div>
                                 <div class="popup-content">
                                     <div><strong>Status:</strong> <span class="status-indicator status-${farm.properties.status}"></span> ${farm.properties.status.charAt(0).toUpperCase() + farm.properties.status.slice(1)}</div>
-                                    <div><strong>Size:</strong> ${farm.properties.area || 'Not set'} acres/hectares</div>
+                                    <div><strong>Size:</strong> ${farm.properties.area != null ? farm.properties.area : 'Not set'} acres/hectares</div>
                                     <div><strong>Soil Type:</strong> ${farm.properties.soil_type.charAt(0).toUpperCase() + farm.properties.soil_type.slice(1)}</div>
                                     <div><strong>Climate:</strong> ${farm.properties.climate.charAt(0).toUpperCase() + farm.properties.climate.slice(1)}</div>
                                     <div><strong>Preferred Crop:</strong> ${farm.properties.user_crop_preferences || 'None'}</div>
@@ -411,13 +427,11 @@
                         farmMarkers.push(marker);
                     });
 
-                    // Fit map to show all markers
                     if (farmMarkers.length > 0) {
                         const bounds = L.latLngBounds(farmMarkers.map(marker => marker.getLatLng()));
                         map.fitBounds(bounds, { padding: [50, 50] });
                     }
 
-                    // Add delete event listeners
                     document.querySelectorAll('.delete-farm-btn').forEach(btn => {
                         btn.addEventListener('click', async function() {
                             const farmId = this.getAttribute('data-farm-id');
@@ -428,9 +442,14 @@
                     });
                 }
             } catch (error) {
-                showNotification(`Error loading farms: ${error.message}`, "error");
-                farmList.innerHTML = '<div style="text-align: center; padding: 20px;">Failed to load farms.</div>';
-                map.setView([20.5937, 78.9629], 5); // Reset to default view
+                console.error('Error rendering farms:', error);
+                farmList.innerHTML = `
+                    <div style="text-align: center; padding: 20px; background: #fff; border-radius: 8px; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);">
+                        <h3 style="font-size: 18px; color: var(--secondary-color); margin-bottom: 10px;">Error Loading Farms</h3>
+                        <p style="color: var(--text-light); margin-bottom: 15px;">Something went wrong. Please try again later.</p>
+                        <a href="{% url 'maps:farm-map' %}" class="btn"><i class="fas fa-plus"></i> Add a Farm</a>
+                    </div>`;
+                map.setView([20.5937, 78.9629], 5);
             }
         }
 
@@ -450,7 +469,7 @@
                 const data = await response.json();
 
                 showNotification(data.message || "Farm deleted successfully!");
-                loadMyFarms(); // Refresh the list and map
+                window.location.reload(); // Refresh to update farm list
             } catch (error) {
                 showNotification(`Error deleting farm: ${error.message}`, "error");
             } finally {

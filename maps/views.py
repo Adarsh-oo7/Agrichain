@@ -434,10 +434,45 @@ def get_farm_by_coords(request):
             return JsonResponse({"error": f"Invalid data: {str(e)}"}, status=400)
     return JsonResponse({"error": "Invalid request method"}, status=405)
 
+
 @login_required
 def my_farms(request):
-    """Render the user's farms template."""
-    return render(request, "maps/my_farms.html")
+    """
+    Render the user's farms template with their registered farms.
+    Fetches all farms for the logged-in farmer and passes them as GeoJSON-like data.
+    """
+    try:
+        farms = Farm.objects.filter(farmer=request.user)
+        farm_data = {
+            "type": "FeatureCollection",
+            "features": [
+                {
+                    "type": "Feature",
+                    "geometry": {
+                        "type": "Point",
+                        "coordinates": [float(farm.longitude), float(farm.latitude)]
+                    },
+                    "properties": {
+                        "id": farm.id,
+                        "farmer_name": farm.farmer.username,
+                        "status": farm.status or "green",
+                        "area": float(farm.area) if farm.area else None,
+                        "soil_type": farm.soil_type or "unknown",
+                        "climate": farm.climate or "unknown",
+                        "user_crop_preferences": farm.user_crop_preferences or "",
+                        "recommended_crop": farm.recommended_crop or "",
+                        "oversupply_risk": bool(farm.oversupply_risk)  # Ensure JS-compatible boolean
+                    }
+                } for farm in farms
+            ]
+        }
+    except Exception as e:
+        farm_data = {"type": "FeatureCollection", "features": []}
+        print(f"Error fetching farms: {e}")  # For debugging; use logging in production
+    return render(request, "maps/my_farms.html", {
+        "farm_data_json": json.dumps(farm_data, allow_nan=False),  # Safe JSON string
+        "has_farms": len(farm_data["features"]) > 0
+    })
 
 @csrf_exempt
 @login_required

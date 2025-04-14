@@ -267,7 +267,7 @@
         /* Main Content */
         main {
             flex: 1;
-            max-width: 1300px;
+            max-width: 100%;
             margin: 3rem auto;
             padding: 0 2rem;
         }
@@ -477,6 +477,12 @@
             font-size: 1.2rem;
         }
         
+        /* Chatbot Custom Styling */
+        #JotformAgent-0196354ca31e70d98a10da07b48921d1fa1a {
+            z-index: 9999 !important; /* Ensure chatbot is above other elements */
+            font-family: var(--font-main);
+        }
+        
         /* Responsive Design */
         @media (max-width: 992px) {
             .navbar {
@@ -551,6 +557,10 @@
             .footer-section {
                 flex: 100%;
                 margin-bottom: 2.5rem;
+            }
+            /* Adjust chatbot for mobile */
+            #JotformAgent-0196354ca31e70d98a10da07b48921d1fa1a {
+                bottom: 20px !important; /* Prevent overlap with footer */
             }
         }
     </style>
@@ -631,7 +641,7 @@
         <section class="content-section">
             <h1>Welcome to AgiChain</h1>
             <p>Empowering farmers with smart tools for sustainable agriculture. Explore farm mapping, crop recommendations, and more.</p>
-            <a href="{% url 'farm-map' %}" class="btn btn-lg">Explore Now <i class="fas fa-arrow-right"></i></a>
+            <a href="{% url 'maps:farm-map' %}" class="btn btn-lg">Explore Now <i class="fas fa-arrow-right"></i></a>
         </section>
         {% endblock %}
     </main>
@@ -675,6 +685,37 @@
             <p>© 2025 AgiChain. All rights reserved. | Grown with <i class="fas fa-seedling" style="color: var(--success-color);"></i> by the AgiChain Team</p>
         </div>
     </footer>
+    
+    <!-- Jotform Chatbot Script -->
+    <script src='https://cdn.jotfor.ms/s/umd/latest/for-embedded-agent.js'></script>
+    <script>
+        window.addEventListener("DOMContentLoaded", function() {
+            window.AgentInitializer.init({
+                agentRenderURL: "https://agent.jotform.com/0196354ca31e70d98a10da07b48921d1fa1a",
+                rootId: "JotformAgent-0196354ca31e70d98a10da07b48921d1fa1a",
+                formID: "0196354ca31e70d98a10da07b48921d1fa1a",
+                queryParams: ["skipWelcome=1", "maximizable=1"],
+                domain: "https://www.jotform.com",
+                isDraggable: false,
+                background: "linear-gradient(180deg, #4CAF50 0%, #2E7D32 100%)", /* AgriChain green gradient */
+                buttonBackgroundColor: "#FF9800", /* AgriChain orange */
+                buttonIconColor: "#FFFFFF",
+                variant: false,
+                customizations: {
+                    "greeting": "Yes",
+                    "greetingMessage": "Hello, farmer! Need help with AgriChain’s tools or farm mapping?",
+                    "openByDefault": "No",
+                    "pulse": "Yes",
+                    "position": "right",
+                    "autoOpenChatIn": "0"
+                },
+                isVoice: false,
+                accessibility: {
+                    "aria-label": "Open AgriChain Assistant chatbot"
+                }
+            });
+        });
+    </script>
     
     <script>
         document.getElementById('hamburger').addEventListener('click', function() {
