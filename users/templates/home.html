@@ -6,11 +6,40 @@
 
 {% block extra_css %}
 <style>
+    /* Root Variables */
+    :root {
+        --primary-color: #2E7D32; /* Vibrant green */
+        --secondary-color: #1A3C34; /* Deep teal */
+        --accent-color: #F9A825; /* Warm yellow */
+        --light-color: #F5F7FA; /* Light gray-blue */
+        --success-color: #4CAF50; /* Kept for badges */
+        --danger-color: #D32F2F; /* Kept for badges */
+        --dark-color: #212121; /* Dark gray */
+        --text-light: #757575; /* Light gray */
+    }
+
+    /* Global Styles */
+    body {
+        font-family: 'Inter', sans-serif;
+        color: var(--dark-color);
+        line-height: 1.6;
+        font-size: clamp(1rem, 2.5vw, 1.1rem);
+    }
+
+    h1, h2, h3, h4, h5, h6 {
+        font-family: 'Poppins', sans-serif;
+        color: var(--secondary-color);
+        line-height: 1.4;
+    }
+
+    .container {
+        max-width: 1200px;
+    }
+
     /* General Section Styling */
     .section-title {
-        font-size: 2.5rem;
-        font-weight: 700;
-        color: var(--secondary-color);
+        font-size: 2.8rem;
+        font-weight: 600;
         text-align: center;
         margin-bottom: 3rem;
         position: relative;
@@ -29,15 +58,16 @@
     /* Card Hover Effects */
     .feature-box, .program-card, .testimonial-card {
         transition: transform 0.3s ease, box-shadow 0.3s ease;
-        border-radius: 15px;
+        border-radius: 12px;
         overflow: hidden;
-        background: white;
-        box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        background: #FFFFFF;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+        border: 1px solid #E0E0E0;
     }
     
     .feature-box:hover, .program-card:hover, .testimonial-card:hover {
         transform: translateY(-8px);
-        box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+        box-shadow: 0 8px 24px rgba(0,0,0,0.08);
     }
     
     /* Animation */
@@ -63,11 +93,11 @@
 
     /* Hero Section */
     .hero-section {
-        background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url('{% static "img/farm_landscape.jpg" %}');
+        background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.3)), url('{% static "img/farm_landscape.jpg" %}');
         background-size: cover;
         background-position: center;
-        color: white;
-        padding: 160px 0;
+        color: #FFFFFF;
+        padding: 140px 0;
         position: relative;
         overflow: hidden;
     }
@@ -83,10 +113,9 @@
     }
     
     .hero-title {
-        font-size: 3.8rem;
+        font-size: 4rem;
         font-weight: 700;
         margin-bottom: 1.5rem;
-        text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.5);
     }
     
     .hero-subtitle {
@@ -95,57 +124,61 @@
         max-width: 800px;
         margin-left: auto;
         margin-right: auto;
-        text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.4);
     }
     
     .btn-hero {
-        padding: 0.9rem 2rem;
+        padding: 0.8rem 2rem;
         font-size: 1.1rem;
+        font-family: 'Poppins', sans-serif;
         font-weight: 600;
         text-transform: uppercase;
         border-radius: 30px;
         margin: 0 10px 15px;
         transition: all 0.3s;
+        display: inline-block;
     }
     
     .btn-hero-primary {
         background: var(--primary-color);
+        color: #FFFFFF;
         border: none;
-        box-shadow: 0 4px 12px rgba(76, 175, 80, 0.3);
+        box-shadow: 0 4px 12px rgba(0,0,0,0.2);
     }
     
     .btn-hero-primary:hover {
-        background: var(--dark-color);
-        box-shadow: 0 6px 18px rgba(76, 175, 80, 0.5);
+        background: var(--accent-color);
+        box-shadow: 0 6px 18px rgba(0,0,0,0.3);
     }
     
     .btn-hero-outline {
-        border: 2px solid white;
-        color: white;
+        border: 2px solid #FFFFFF;
+        color: #FFFFFF;
     }
     
     .btn-hero-outline:hover {
-        background: white;
-        color: var(--primary-color);
-        border-color: white;
+        background: var(--primary-color);
+        color: #FFFFFF;
+        border-color: var(--primary-color);
     }
 
     /* Features Section */
     .features-section {
-        padding: 100px 0;
-        background: #F9FBF8; /* Light green-gray */
+        padding: 120px 0;
+        background: var(--light-color);
     }
     
     .feature-box {
         text-align: center;
-        padding: 2rem;
-        margin-bottom: 2rem;
+        padding: 2.5rem;
+        margin-bottom: 1.5rem;
         height: 100%;
     }
     
     .feature-icon {
-        font-size: 3.5rem;
-        color: var(--primary-color);
+        font-size: 3rem;
+        background: linear-gradient(var(--primary-color), var(--accent-color));
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
         margin-bottom: 1.5rem;
         transition: transform 0.3s;
     }
@@ -155,32 +188,32 @@
     }
     
     .feature-title {
-        font-size: 1.4rem;
+        font-size: 1.5rem;
         font-weight: 600;
-        color: var(--secondary-color);
         margin-bottom: 1rem;
     }
     
     .feature-box p {
         color: var(--text-light);
-        font-size: 1rem;
+        font-size: 1.1rem;
     }
 
     /* Programs Section */
     .programs-section {
-        padding: 100px 0;
-        background: white;
+        padding: 120px 0;
+        background: #FFFFFF;
     }
     
     .program-card {
         position: relative;
-        margin-bottom: 2rem;
+        margin-bottom: 1.5rem;
         height: 100%;
     }
     
     .program-card-img-top {
         height: 220px;
         object-fit: cover;
+        aspect-ratio: 16/9;
         border-bottom: 3px solid var(--accent-color);
     }
     
@@ -188,9 +221,9 @@
         position: absolute;
         top: 15px;
         right: 15px;
-        padding: 6px 12px;
+        padding: 8px 16px;
         border-radius: 20px;
-        font-size: 0.8rem;
+        font-size: 0.9rem;
         font-weight: 600;
         text-transform: uppercase;
         box-shadow: 0 2px 5px rgba(0,0,0,0.2);
@@ -198,47 +231,49 @@
     
     .badge-government {
         background: var(--danger-color);
-        color: white;
+        color: #FFFFFF;
     }
     
     .badge-nonprofit {
         background: #0288D1;
-        color: white;
+        color: #FFFFFF;
     }
     
     .badge-farmer {
         background: var(--success-color);
-        color: white;
+        color: #FFFFFF;
     }
     
     .program-card .card-body {
-        padding: 1.5rem;
+        padding: 2rem;
     }
     
     .program-card .card-title {
-        font-size: 1.3rem;
+        font-size: 1.4rem;
         font-weight: 600;
-        color: var(--secondary-color);
     }
     
     .program-card .card-text {
         color: var(--text-light);
+        font-size: 1.1rem;
     }
     
     .program-card .btn {
         font-size: 0.9rem;
-        padding: 0.6rem 1.2rem;
+        padding: 0.8rem 1.5rem;
+        font-family: 'Poppins', sans-serif;
+        font-weight: 600;
     }
 
     /* Testimonials Section */
     .testimonials-section {
-        padding: 100px 0;
-        background: #F9FBF8;
+        padding: 120px 0;
+        background: var(--light-color);
     }
     
     .testimonial-card {
-        padding: 2rem;
-        margin-bottom: 2rem;
+        padding: 2.5rem;
+        margin-bottom: 1.5rem;
         position: relative;
         height: 100%;
     }
@@ -249,23 +284,26 @@
         margin-bottom: 1.5rem;
         padding: 0 1.5rem;
         position: relative;
+        font-size: 1.1rem;
     }
     
     .testimonial-text::before, .testimonial-text::after {
         content: '"';
-        font-size: 2.5rem;
+        font-size: 2rem;
         color: var(--primary-color);
         font-family: Georgia, serif;
         position: absolute;
     }
     
+   ィ
+
     .testimonial-text::before {
-        top: -15px;
+        top: -10px;
         left: 0;
     }
     
     .testimonial-text::after {
-        bottom: -25px;
+        bottom: -20px;
         right: 0;
     }
     
@@ -285,7 +323,6 @@
     
     .testimonial-name {
         font-weight: 600;
-        color: var(--secondary-color);
         margin-bottom: 0.2rem;
     }
     
@@ -296,9 +333,9 @@
 
     /* Call to Action */
     .cta-section {
-        background: linear-gradient(135deg, var(--primary-color), var(--dark-color));
-        color: white;
-        padding: 100px 0;
+        background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+        color: #FFFFFF;
+        padding: 120px 0;
         text-align: center;
         position: relative;
     }
@@ -315,7 +352,7 @@
     }
     
     .cta-title {
-        font-size: 2.8rem;
+        font-size: 3rem;
         font-weight: 700;
         margin-bottom: 1.5rem;
         position: relative;
@@ -333,12 +370,13 @@
     }
     
     .btn-cta {
-        padding: 1rem 2.5rem;
+        padding: 0.8rem 2.5rem;
         font-size: 1.2rem;
+        font-family: 'Poppins', sans-serif;
         font-weight: 600;
         text-transform: uppercase;
         border-radius: 30px;
-        background: white;
+        background: #FFFFFF;
         color: var(--primary-color);
         transition: all 0.3s;
         box-shadow: 0 4px 12px rgba(0,0,0,0.2);
@@ -346,11 +384,57 @@
     
     .btn-cta:hover {
         background: var(--accent-color);
-        color: white;
+        color: #FFFFFF;
         transform: translateY(-5px);
         box-shadow: 0 6px 18px rgba(0,0,0,0.3);
     }
+
+    /* Accessibility */
+    a:focus, button:focus {
+        outline: 2px solid var(--accent-color);
+        outline-offset: 2px;
+    }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+        .hero-section {
+            padding: 120px 0;
+        }
+        .hero-title {
+            font-size: 2.5rem;
+        }
+        .hero-subtitle {
+            font-size: 1.3rem;
+        }
+        .features-section, .programs-section, .testimonials-section, .cta-section {
+            padding: 80px 0;
+        }
+        .feature-icon {
+            font-size: 2.5rem;
+        }
+        .section-title {
+            font-size: 2.2rem;
+        }
+        .btn-hero {
+            display: block;
+            margin: 10px auto;
+            max-width: 200px;
+        }
+    }
+
+    @media (max-width: 576px) {
+        .program-card-img-top {
+            height: 180px;
+        }
+        .hero-title {
+            font-size: 2rem;
+        }
+        .cta-title {
+            font-size: 2.2rem;
+        }
+    }
 </style>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Poppins:wght@600;700&display=swap" rel="stylesheet">
 {% endblock %}
 
 {% block content %}
