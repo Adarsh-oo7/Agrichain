@@ -24,12 +24,11 @@
             border-radius: 0 0 15px 15px;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
             margin-bottom: 20px;
+            text-align: center;
         }
         h2 {
             margin: 0;
-            padding: 0;
             font-size: 28px;
-            letter-spacing: 0.5px;
         }
         .subtitle {
             font-size: 16px;
@@ -43,10 +42,9 @@
             margin-bottom: 20px;
             flex-wrap: wrap;
         }
-        button, .btn {
+        .btn {
             padding: 12px 16px;
             border: none;
-            cursor: pointer;
             border-radius: 8px;
             background-color: var(--primary-color);
             color: white;
@@ -58,23 +56,9 @@
             align-items: center;
             gap: 8px;
         }
-        button:hover, .btn:hover {
+        .btn:hover {
             background-color: #2980b9;
             transform: translateY(-2px);
-        }
-        button:active, .btn:active {
-            transform: translateY(0);
-        }
-        button:disabled {
-            background-color: #95a5a6;
-            cursor: not-allowed;
-            transform: none;
-        }
-        button.danger {
-            background-color: var(--danger-color);
-        }
-        button.danger:hover {
-            background-color: #c0392b;
         }
         #farmsMap {
             height: 400px;
@@ -127,18 +111,20 @@
             border-radius: 50%;
             margin-right: 5px;
         }
-        .status-green {
-            background-color: #2ecc71;
-        }
-        .status-orange {
-            background-color: #f39c12;
-        }
-        .status-red {
-            background-color: #e74c3c;
-        }
+        .status-green { background-color: #2ecc71; }
+        .status-orange { background-color: #f39c12; }
+        .status-red { background-color: #e74c3c; }
         .delete-farm-btn {
             padding: 8px 12px;
             font-size: 14px;
+            background-color: var(--danger-color);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .delete-farm-btn:hover {
+            background-color: #c0392b;
         }
         .notification {
             position: fixed;
@@ -159,15 +145,8 @@
         .notification.show {
             opacity: 1;
         }
-        .notification.success {
-            background-color: var(--primary-color);
-        }
-        .notification.error {
-            background-color: var(--danger-color);
-        }
-        .notification.warning {
-            background-color: var(--warning-color);
-        }
+        .notification.success { background-color: var(--primary-color); }
+        .notification.error { background-color: var(--danger-color); }
         .loading-spinner {
             position: fixed;
             top: 50%;
@@ -178,8 +157,6 @@
             padding: 25px;
             background: rgba(0, 0, 0, 0.85);
             border-radius: 15px;
-            box-shadow: 0 0 20px rgba(0, 255, 255, 0.5), inset 0 0 10px rgba(0, 255, 255, 0.3);
-            border: 1px solid rgba(0, 255, 255, 0.7);
         }
         .loading-spinner.active {
             display: flex;
@@ -194,29 +171,41 @@
             border-top: 4px solid #00ffff;
             border-right: 4px solid #00ccff;
             border-radius: 50%;
-            animation: spin 1s linear infinite, glow 1.5s ease-in-out infinite;
+            animation: spin 1s linear infinite;
         }
         .spinner-text {
             color: #00ffff;
-            font-family: 'Courier New', Courier, monospace;
             font-size: 16px;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            text-shadow: 0 0 5px #00ffff, 0 0 10px #00ccff;
-            animation: flicker 2s infinite;
         }
         @keyframes spin {
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
         }
-        @keyframes glow {
-            0% { box-shadow: 0 0 5px #00ffff; }
-            50% { box-shadow: 0 0 15px #00ffff, 0 0 25px #00ccff; }
-            100% { box-shadow: 0 0 5px #00ffff; }
+        .pagination {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 20px;
         }
-        @keyframes flicker {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.7; }
+        .page-link {
+            padding: 8px 12px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            color: var(--primary-color);
+            text-decoration: none;
+        }
+        .page-link:hover {
+            background-color: #f0f0f0;
+        }
+        .page-link.disabled {
+            color: #aaa;
+            pointer-events: none;
+        }
+        .farm-count {
+            text-align: center;
+            margin-bottom: 15px;
+            font-size: 16px;
+            color: #555;
         }
         @media (max-width: 768px) {
             #farmsMap {
@@ -234,25 +223,6 @@
                 width: 100%;
             }
         }
-        @media (max-width: 600px) {
-            .header {
-                padding: 15px 0;
-            }
-            h2 {
-                font-size: 22px;
-            }
-            .subtitle {
-                font-size: 14px;
-            }
-            .button-container {
-                flex-direction: column;
-                gap: 8px;
-            }
-            button, .btn {
-                width: 100%;
-                justify-content: center;
-            }
-        }
     </style>
 {% endblock %}
 
@@ -260,26 +230,53 @@
     <main>
         <div class="header">
             <div class="container">
-                <h2>My Farms</h2>
-                <div class="subtitle">View and manage your registered farms</div>
+                <h2>{% trans "My Farms" %}</h2>
+                <div class="subtitle">{% trans "View and manage your registered farms" %}</div>
             </div>
         </div>
 
         <div class="container">
             <div class="button-container">
-                <a href="{% url 'maps:farm-map' %}" class="btn"><i class="fas fa-plus"></i> Add a Farm</a>
+                <a href="{% url 'maps:farm-map' %}" class="btn"><i class="fas fa-plus"></i> {% trans "Add a Farm" %}</a>
             </div>
 
             <div id="farmsMap"></div>
 
             <div class="farm-list" id="farmList">
-                <div class="spinner-ring" style="margin: 20px auto; display: none;"></div>
-                <span class="spinner-text" style="display: block; text-align: center; display: none;">Loading Farms...</span>
+                {% if has_farms %}
+                    <div class="farm-count" id="farmCount"></div>
+                {% else %}
+                    <div style="text-align: center; padding: 20px; background: #fff; border-radius: 8px; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);">
+                        <h3 style="font-size: 18px; color: var(--secondary-color); margin-bottom: 10px;">{% trans "No Farms Registered" %}</h3>
+                        <p style="color: var(--text-light); margin-bottom: 15px;">{% trans "You haven't added any farms yet." %}</p>
+                        <a href="{% url 'maps:farm-map' %}" class="btn"><i class="fas fa-plus"></i> {% trans "Add Your First Farm" %}</a>
+                    </div>
+                {% endif %}
             </div>
+
+            {% if page_obj %}
+                <div class="pagination">
+                    {% if page_obj.has_previous %}
+                        <a class="page-link" href="?page={{ page_obj.previous_page_number }}">« {% trans "Previous" %}</a>
+                    {% else %}
+                        <span class="page-link disabled">« {% trans "Previous" %}</span>
+                    {% endif %}
+                    <span class="page-link">
+                        {% blocktrans with current=page_obj.number total=page_obj.paginator.num_pages %}
+                            Page {{ current }} of {{ total }}
+                        {% endblocktrans %}
+                    </span>
+                    {% if page_obj.has_next %}
+                        <a class="page-link" href="?page={{ page_obj.next_page_number }}">{% trans "Next" %} »</a>
+                    {% else %}
+                        <span class="page-link disabled">{% trans "Next" %} »</span>
+                    {% endif %}
+                </div>
+            {% endif %}
 
             <div class="loading-spinner" id="loadingSpinner">
                 <div class="spinner-ring"></div>
-                <span class="spinner-text">Processing...</span>
+                <span class="spinner-text">{% trans "Processing..." %}</span>
             </div>
         </div>
     </main>
@@ -288,7 +285,6 @@
 {% block extra_js %}
     <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
     <script>
-        // Parse farm data from Django context
         let farmData;
         try {
             farmData = JSON.parse('{{ farm_data_json|safe }}');
@@ -328,7 +324,7 @@
         function showNotification(message, type = "success") {
             const notification = document.createElement('div');
             notification.className = `notification ${type}`;
-            notification.innerHTML = `<i class="fas ${type === 'success' ? 'fa-check-circle' : type === 'error' ? 'fa-exclamation-circle' : 'fa-exclamation-triangle'}"></i> ${message}`;
+            notification.innerHTML = `<i class="fas ${type === 'success' ? 'fa-check-circle' : 'fa-exclamation-circle'}"></i> ${message}`;
             document.body.appendChild(notification);
             setTimeout(() => notification.classList.add('show'), 10);
             setTimeout(() => {
@@ -339,13 +335,16 @@
 
         function loadMyFarms() {
             const farmList = document.getElementById('farmList');
-            const spinner = farmList.querySelector('.spinner-ring');
-            const spinnerText = farmList.querySelector('.spinner-text');
+            const farmCount = document.getElementById('farmCount');
+            const spinner = document.querySelector('.spinner-ring');
+            const spinnerText = document.querySelector('.spinner-text');
             let userFarms = farmData.features || [];
 
-            // Hide spinner immediately
-            spinner.style.display = 'none';
-            spinnerText.style.display = 'none';
+            // Clear initial spinner
+            if (spinner && spinnerText) {
+                spinner.style.display = 'none';
+                spinnerText.style.display = 'none';
+            }
 
             // Clear existing markers
             farmMarkers.forEach(marker => map.removeLayer(marker));
@@ -355,100 +354,121 @@
                 if (userFarms.length === 0) {
                     farmList.innerHTML = `
                         <div style="text-align: center; padding: 20px; background: #fff; border-radius: 8px; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);">
-                            <h3 style="font-size: 18px; color: var(--secondary-color); margin-bottom: 10px;">No Farms Registered</h3>
-                            <p style="color: var(--text-light); margin-bottom: 15px;">You haven't added any farms yet.</p>
-                            <a href="{% url 'maps:farm-map' %}" class="btn"><i class="fas fa-plus"></i> Add Your First Farm</a>
+                            <h3 style="font-size: 18px; color: var(--secondary-color); margin-bottom: 10px;">{% trans "No Farms Registered" %}</h3>
+                            <p style="color: var(--text-light); margin-bottom: 15px;">{% trans "You haven't added any farms yet." %}</p>
+                            <a href="{% url 'maps:farm-map' %}" class="btn"><i class="fas fa-plus"></i> {% trans "Add Your First Farm" %}</a>
                         </div>`;
-                    map.setView([20.5937, 78.9629], 5);
-                } else {
-                    farmList.innerHTML = '';
-
-                    userFarms.forEach(farm => {
-                        const latlng = [farm.geometry.coordinates[1], farm.geometry.coordinates[0]];
-                        const farmItem = document.createElement('div');
-                        farmItem.className = 'farm-item';
-                        farmItem.innerHTML = `
-                            <div class="farm-header">
-                                <span class="farm-title">${farm.properties.farmer_name}'s Farm</span>
-                                <button class="delete-farm-btn danger" data-farm-id="${farm.properties.id}"><i class="fas fa-trash"></i> Delete</button>
-                            </div>
-                            <div class="farm-details">
-                                <div class="detail-item">
-                                    <span class="detail-label">Status:</span>
-                                    <span class="detail-value"><span class="status-indicator status-${farm.properties.status}"></span> ${farm.properties.status.charAt(0).toUpperCase() + farm.properties.status.slice(1)}</span>
-                                </div>
-                                <div class="detail-item">
-                                    <span class="detail-label">Size:</span>
-                                    <span class="detail-value">${farm.properties.area != null ? farm.properties.area : 'Not set'} acres/hectares</span>
-                                </div>
-                                <div class="detail-item">
-                                    <span class="detail-label">Soil Type:</span>
-                                    <span class="detail-value">${farm.properties.soil_type.charAt(0).toUpperCase() + farm.properties.soil_type.slice(1)}</span>
-                                </div>
-                                <div class="detail-item">
-                                    <span class="detail-label">Climate:</span>
-                                    <span class="detail-value">${farm.properties.climate.charAt(0).toUpperCase() + farm.properties.climate.slice(1)}</span>
-                                </div>
-                                <div class="detail-item">
-                                    <span class="detail-label">Preferred Crop:</span>
-                                    <span class="detail-value">${farm.properties.user_crop_preferences || 'None'}</span>
-                                </div>
-                                <div class="detail-item">
-                                    <span class="detail-label">Recommended Crop:</span>
-                                    <span class="detail-value">${farm.properties.recommended_crop ? farm.properties.recommended_crop.charAt(0).toUpperCase() + farm.properties.recommended_crop.slice(1) : 'Not Set'}</span>
-                                </div>
-                                <div class="detail-item">
-                                    <span class="detail-label">Oversupply Risk:</span>
-                                    <span class="detail-value">${farm.properties.oversupply_risk ? 'Yes' : 'No'}</span>
-                                </div>
-                                <div class="detail-item">
-                                    <span class="detail-label">Coordinates:</span>
-                                    <span class="detail-value">Lat: ${latlng[0].toFixed(6)}, Lon: ${latlng[1].toFixed(6)}</span>
-                                </div>
-                            </div>
-                        `;
-                        farmList.appendChild(farmItem);
-
-                        const marker = L.marker(latlng, { icon: statusIcons[farm.properties.status] || statusIcons.green })
-                            .addTo(map)
-                            .bindPopup(`
-                                <div class="popup-title">${farm.properties.farmer_name}'s Farm</div>
-                                <div class="popup-content">
-                                    <div><strong>Status:</strong> <span class="status-indicator status-${farm.properties.status}"></span> ${farm.properties.status.charAt(0).toUpperCase() + farm.properties.status.slice(1)}</div>
-                                    <div><strong>Size:</strong> ${farm.properties.area != null ? farm.properties.area : 'Not set'} acres/hectares</div>
-                                    <div><strong>Soil Type:</strong> ${farm.properties.soil_type.charAt(0).toUpperCase() + farm.properties.soil_type.slice(1)}</div>
-                                    <div><strong>Climate:</strong> ${farm.properties.climate.charAt(0).toUpperCase() + farm.properties.climate.slice(1)}</div>
-                                    <div><strong>Preferred Crop:</strong> ${farm.properties.user_crop_preferences || 'None'}</div>
-                                    <div><strong>Recommended Crop:</strong> ${farm.properties.recommended_crop ? farm.properties.recommended_crop.charAt(0).toUpperCase() + farm.properties.recommended_crop.slice(1) : 'Not Set'}</div>
-                                    <div><strong>Oversupply Risk:</strong> ${farm.properties.oversupply_risk ? 'Yes' : 'No'}</div>
-                                    <div><strong>Coordinates:</strong> Lat: ${latlng[0].toFixed(6)}, Lon: ${latlng[1].toFixed(6)}</div>
-                                </div>
-                            `);
-                        farmMarkers.push(marker);
-                    });
-
-                    if (farmMarkers.length > 0) {
-                        const bounds = L.latLngBounds(farmMarkers.map(marker => marker.getLatLng()));
-                        map.fitBounds(bounds, { padding: [50, 50] });
-                    }
-
-                    document.querySelectorAll('.delete-farm-btn').forEach(btn => {
-                        btn.addEventListener('click', async function() {
-                            const farmId = this.getAttribute('data-farm-id');
-                            if (confirm('Are you sure you want to delete this farm?')) {
-                                await deleteFarm(farmId);
-                            }
-                        });
-                    });
+                    if (farmCount) farmCount.textContent = '';
+                    return;
                 }
+
+                // Update farm count
+                if (farmCount) {
+                    farmCount.textContent = `Showing ${userFarms.length} farm${userFarms.length !== 1 ? 's' : ''}`;
+                }
+
+                // Clear farm list
+                farmList.innerHTML = '';
+
+                userFarms.forEach(farm => {
+                    const latlng = [farm.geometry.coordinates[1], farm.geometry.coordinates[0]];
+                    const farmItem = document.createElement('div');
+                    farmItem.className = 'farm-item';
+                    farmItem.innerHTML = `
+                        <div class="farm-header">
+                            <span class="farm-title">${farm.properties.farmer_name}'s Farm</span>
+                            <button class="delete-farm-btn" data-farm-id="${farm.properties.id}"><i class="fas fa-trash"></i> {% trans "Delete" %}</button>
+                        </div>
+                        <div class="farm-details">
+                            <div class="detail-item">
+                                <span class="detail-label">{% trans "Status" %}:</span>
+                                <span class="detail-value"><span class="status-indicator status-${farm.properties.status}"></span> ${farm.properties.status.charAt(0).toUpperCase() + farm.properties.status.slice(1)}</span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="detail-label">{% trans "Size" %}:</span>
+                                <span class="detail-value">${farm.properties.area != null ? farm.properties.area.toFixed(2) : 'Not set'} acres/hectares</span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="detail-label">{% trans "Soil Type" %}:</span>
+                                <span class="detail-value">${farm.properties.soil_type.charAt(0).toUpperCase() + farm.properties.soil_type.slice(1)}</span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="detail-label">{% trans "Climate" %}:</span>
+                                <span class="detail-value">${farm.properties.climate.charAt(0).toUpperCase() + farm.properties.climate.slice(1)}</span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="detail-label">{% trans "Planted Crop" %}:</span>
+                                <span class="detail-value">${farm.properties.user_crop_preferences || 'None'}</span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="detail-label">{% trans "Recommended Crop" %}:</span>
+                                <span class="detail-value">${farm.properties.recommended_crop ? farm.properties.recommended_crop.charAt(0).toUpperCase() + farm.properties.recommended_crop.slice(1) : 'Not Set'}</span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="detail-label">{% trans "Oversupply Risk" %}:</span>
+                                <span class="detail-value">${farm.properties.oversupply_risk ? 'Yes' : 'No'}</span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="detail-label">{% trans "Coordinates" %}:</span>
+                                <span class="detail-value">Lat: ${latlng[0].toFixed(6)}, Lon: ${latlng[1].toFixed(6)}</span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="detail-label">{% trans "Planting Date" %}:</span>
+                                <span class="detail-value">${farm.properties.planting_date || 'Not set'}</span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="detail-label">{% trans "Yield per Acre" %}:</span>
+                                <span class="detail-value">${farm.properties.yield_per_acre != null ? farm.properties.yield_per_acre.toFixed(2) : 'Not set'}</span>
+                            </div>
+                        </div>
+                    `;
+                    farmList.appendChild(farmItem);
+
+                    const marker = L.marker(latlng, { icon: statusIcons[farm.properties.status] || statusIcons.green })
+                        .addTo(map)
+                        .bindPopup(`
+                            <div class="popup-title">${farm.properties.farmer_name}'s Farm</div>
+                            <div class="popup-content">
+                                <div><strong>{% trans "Status" %}:</strong> <span class="status-indicator status-${farm.properties.status}"></span> ${farm.properties.status.charAt(0).toUpperCase() + farm.properties.status.slice(1)}</div>
+                                <div><strong>{% trans "Size" %}:</strong> ${farm.properties.area != null ? farm.properties.area.toFixed(2) : 'Not set'} acres/hectares</div>
+                                <div><strong>{% trans "Soil Type" %}:</strong> ${farm.properties.soil_type.charAt(0).toUpperCase() + farm.properties.soil_type.slice(1)}</div>
+                                <div><strong>{% trans "Climate" %}:</strong> ${farm.properties.climate.charAt(0).toUpperCase() + farm.properties.climate.slice(1)}</div>
+                                <div><strong>{% trans "Planted Crop" %}:</strong> ${farm.properties.user_crop_preferences || 'None'}</div>
+                                <div><strong>{% trans "Recommended Crop" %}:</strong> ${farm.properties.recommended_crop ? farm.properties.recommended_crop.charAt(0).toUpperCase() + farm.properties.recommended_crop.slice(1) : 'Not Set'}</div>
+                                <div><strong>{% trans "Oversupply Risk" %}:</strong> ${farm.properties.oversupply_risk ? 'Yes' : 'No'}</div>
+                                <div><strong>{% trans "Coordinates" %}:</strong> Lat: ${latlng[0].toFixed(6)}, Lon: ${latlng[1].toFixed(6)}</div>
+                                <div><strong>{% trans "Planting Date" %}:</strong> ${farm.properties.planting_date || 'Not set'}</div>
+                                <div><strong>{% trans "Yield per Acre" %}:</strong> ${farm.properties.yield_per_acre != null ? farm.properties.yield_per_acre.toFixed(2) : 'Not set'}</div>
+                            </div>
+                        `);
+                    farmMarkers.push(marker);
+                });
+
+                if (farmMarkers.length > 0) {
+                    const bounds = L.latLngBounds(farmMarkers.map(marker => marker.getLatLng()));
+                    map.fitBounds(bounds, { padding: [50, 50] });
+                }
+
+                // Attach delete button events
+                document.querySelectorAll('.delete-farm-btn').forEach(btn => {
+                    btn.addEventListener('click', async () => {
+                        const farmId = btn.getAttribute('data-farm-id');
+                        if (confirm('{% trans "Are you sure you want to delete this farm?" %}')) {
+                            await deleteFarm(farmId);
+                        }
+                    });
+                });
+
+                console.log(`Showing ${userFarms.length} farms`);
             } catch (error) {
                 console.error('Error rendering farms:', error);
                 farmList.innerHTML = `
                     <div style="text-align: center; padding: 20px; background: #fff; border-radius: 8px; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);">
-                        <h3 style="font-size: 18px; color: var(--secondary-color); margin-bottom: 10px;">Error Loading Farms</h3>
-                        <p style="color: var(--text-light); margin-bottom: 15px;">Something went wrong. Please try again later.</p>
-                        <a href="{% url 'maps:farm-map' %}" class="btn"><i class="fas fa-plus"></i> Add a Farm</a>
+                        <h3 style="font-size: 18px; color: var(--secondary-color); margin-bottom: 10px;">{% trans "Error Loading Farms" %}</h3>
+                        <p style="color: var(--text-light); margin-bottom: 15px;">{% trans "Something went wrong. Please try again later." %}</p>
+                        <a href="{% url 'maps:farm-map' %}" class="btn"><i class="fas fa-plus"></i> {% trans "Add a Farm" %}</a>
                     </div>`;
+                if (farmCount) farmCount.textContent = '';
                 map.setView([20.5937, 78.9629], 5);
             }
         }
@@ -468,17 +488,16 @@
                 if (!response.ok) throw new Error(`Delete error: ${response.status}`);
                 const data = await response.json();
 
-                showNotification(data.message || "Farm deleted successfully!");
-                window.location.reload(); // Refresh to update farm list
+                showNotification(data.message || "{% trans 'Farm deleted successfully!' %}");
+                window.location.reload();
             } catch (error) {
-                showNotification(`Error deleting farm: ${error.message}`, "error");
+                showNotification(`{% trans 'Error deleting farm: ' %}${error.message}`, "error");
             } finally {
                 spinner.classList.remove('active');
             }
         }
 
-        document.addEventListener('DOMContentLoaded', function() {
-            loadMyFarms();
-        });
+        // Single event listener
+        document.addEventListener('DOMContentLoaded', loadMyFarms);
     </script>
 {% endblock %}

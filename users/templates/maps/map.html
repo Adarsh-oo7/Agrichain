@@ -6,6 +6,10 @@
 {% block extra_css %}
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    {% if user.user_type == 'GOVERNMENT' %}
+    <link rel="stylesheet" href="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.css" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet.fullscreen@2.0.0/Control.FullScreen.css" />
+    {% endif %}
     <style>
         main { padding: 0; margin: 0; }
         .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
@@ -13,8 +17,8 @@
         h2 { margin: 0; font-size: 28px; letter-spacing: 0.5px; }
         .subtitle { font-size: 16px; opacity: 0.9; margin-top: 5px; }
         #map { height: 500px; width: 100%; border-radius: 15px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); margin-bottom: 20px; }
-        .crop-selector-container { margin-bottom: 20px; display: flex; justify-content: center; }
-        #cropPreference { padding: 10px; border-radius: 5px; font-size: 16px; width: 200px; border: 1px solid #ddd; }
+        .crop-selector-container { margin-bottom: 20px; display: flex; justify-content: center; gap: 10px; }
+        #cropPreference, #filterCrop, #filterStatus { padding: 10px; border-radius: 5px; font-size: 16px; width: 200px; border: 1px solid #ddd; }
         .button-container { display: flex; justify-content: center; gap: 12px; margin-bottom: 20px; flex-wrap: wrap; }
         button { padding: 12px 16px; border: none; cursor: pointer; border-radius: 8px; background-color: #3498db; color: white; font-size: 15px; transition: all 0.3s ease; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); display: flex; align-items: center; gap: 8px; }
         button:hover { background-color: #2980b9; transform: translateY(-2px); }
@@ -65,8 +69,35 @@
         .more-details-btn:hover { background-color: #1f6391; }
         .more-details-section { display: none; margin-top: 10px; padding-top: 10px; border-top: 1px solid #ddd; }
         .more-details-section.active { display: block; }
-        @media (max-width: 768px) { #map { height: 400px; } .button-container { justify-content: center; } button { padding: 10px 14px; font-size: 14px; } .modal-content { width: 90%; margin: 20% auto; } }
-        @media (max-width: 600px) { .header { padding: 15px 0; } h2 { font-size: 22px; } .subtitle { font-size: 14px; } #map { height: 350px; } .button-container { flex-direction: column; gap: 8px; } button { width: 100%; justify-content: center; } .legend { bottom: 15px; right: 15px; padding: 8px 12px; font-size: 12px; } }
+        .search-container { margin-bottom: 20px; display: flex; justify-content: center; gap: 10px; }
+        #searchInput { padding: 10px; border-radius: 5px; font-size: 16px; width: 300px; border: 1px solid #ddd; }
+        #searchButton { padding: 10px 20px; }
+        .coord-input-container { margin-bottom: 20px; display: flex; justify-content: center; gap: 10px; }
+        .coord-input { width: 120px; padding: 10px; border-radius: 5px; font-size: 16px; border: 1px solid #ddd; }
+        #goToCoords { padding: 10px 20px; }
+        .leaflet-control-layers { border-radius: 5px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); }
+        .leaflet-control-fullscreen { border-radius: 5px; }
+        .leaflet-control-scale { margin-bottom: 10px; }
+        @media (max-width: 768px) {
+            #map { height: 400px; }
+            .button-container { justify-content: center; }
+            button { padding: 10px 14px; font-size: 14px; }
+            .modal-content { width: 90%; margin: 20% auto; }
+            #searchInput { width: 200px; }
+            .coord-input { width: 100px; }
+        }
+        @media (max-width: 600px) {
+            .header { padding: 15px 0; }
+            h2 { font-size: 22px; }
+            .subtitle { font-size: 14px; }
+            #map { height: 350px; }
+            .button-container { flex-direction: column; gap: 8px; }
+            button { width: 100%; justify-content: center; }
+            .legend { bottom: 15px; right: 15px; padding: 8px 12px; font-size: 12px; }
+            .search-container, .coord-input-container, .crop-selector-container { flex-direction: column; align-items: center; }
+            #searchInput, #cropPreference, #filterCrop, #filterStatus { width: 100%; }
+            .coord-input { width: 100%; }
+        }
     </style>
 {% endblock %}
 
@@ -80,6 +111,39 @@
         </div>
 
         <div class="container">
+            {% if user.user_type == 'GOVERNMENT' %}
+            <div class="search-container">
+                <input type="text" id="searchInput" placeholder="{% trans 'Search for a location (e.g., Kochi, Kerala)' %}" />
+                <button id="searchButton"><i class="fas fa-search"></i> {% trans "Search" %}</button>
+            </div>
+
+            <div class="coord-input-container">
+                <input type="number" id="latInput" class="coord-input" placeholder="{% trans 'Latitude' %}" step="any" />
+                <input type="number" id="lonInput" class="coord-input" placeholder="{% trans 'Longitude' %}" step="any" />
+                <button id="goToCoords"><i class="fas fa-map-pin"></i> {% trans "Go" %}</button>
+            </div>
+
+            <div class="crop-selector-container">
+                <select id="cropPreference">
+                    <option value="">{% trans "Select Crop" %}</option>
+                    {% for value, label in crop_choices %}
+                        <option value="{{ value }}">{{ label }}</option>
+                    {% endfor %}
+                </select>
+                <select id="filterCrop">
+                    <option value="">{% trans "Filter by Crop" %}</option>
+                    {% for value, label in crop_choices %}
+                        <option value="{{ value }}">{{ label }}</option>
+                    {% endfor %}
+                </select>
+                <select id="filterStatus">
+                    <option value="">{% trans "Filter by Status" %}</option>
+                    <option value="green">{% trans "Good Condition" %}</option>
+                    <option value="orange">{% trans "Moderate Risk" %}</option>
+                    <option value="red">{% trans "High Risk" %}</option>
+                </select>
+            </div>
+            {% elif user.user_type == 'FARMER' %}
             <div class="crop-selector-container">
                 <select id="cropPreference">
                     <option value="">{% trans "Select Crop" %}</option>
@@ -88,21 +152,37 @@
                     {% endfor %}
                 </select>
             </div>
+            {% else %}
+            <!-- Non-Profit: Simplified version -->
+            <div class="crop-selector-container">
+                <select id="cropPreference">
+                    <option value="">{% trans "Select Crop" %}</option>
+                    {% for value, label in crop_choices %}
+                        <option value="{{ value }}">{{ label }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            {% endif %}
 
             <div id="coordinates-panel">
                 <div class="coordinates-info">{% trans "Selected Location" %}: <span id="selected-location-text">{% trans "No location selected" %}</span></div>
                 <div class="coordinates-value" id="coordinates-display"></div>
             </div>
-            
+
             <div class="button-container">
                 <button id="saveLocation"><i class="fas fa-save"></i> {% trans "Save Location" %}</button>
                 <button id="currentLocation"><i class="fas fa-location-arrow"></i> {% trans "Use My Location" %}</button>
                 <button id="resetMap" class="warning"><i class="fas fa-sync-alt"></i> {% trans "Reset Map" %}</button>
                 <button id="addFarm"><i class="fas fa-plus"></i> {% trans "Add Farm" %}</button>
+                {% if user.user_type == 'GOVERNMENT' %}
                 <button id="viewAllFarms"><i class="fas fa-eye"></i> {% trans "View All Farms" %}</button>
-                <a href="{% url 'maps:my_farms' %}" class="btn btn-primary"><i class="fas fa-tractor"></i> {% trans "My Farms" %}</a>
+                <button id="exportFarms"><i class="fas fa-download"></i> {% trans "Export Farms" %}</button>
+                {% elif user.user_type == 'FARMER' %}
+                <button id="viewAllFarms"><i class="fas fa-eye"></i> {% trans "View All Farms" %}</button>
+                {% endif %}
+                <a href="{% url 'maps:my-farms' %}" class="btn btn-primary"><i class="fas fa-tractor"></i> {% trans "My Farms" %}</a>
             </div>
-            
+
             <div class="map-container">
                 <div id="map"></div>
                 <div class="loading-spinner" id="loadingSpinner">
@@ -123,6 +203,11 @@
                         <span class="close-button" id="closeFarmModal">×</span>
                     </div>
                     <form id="farmForm">
+                        {% if user.user_type == 'FARMER' %}
+                        <!-- Farmer: No farmName field per provided template -->
+                        {% else %}
+                        <!-- Non-Profit/Government: No farmName field -->
+                        {% endif %}
                         <div class="form-group">
                             <label for="farmSize">{% trans "Farm Size (acres)" %}</label>
                             <input type="number" id="farmSize" name="farmSize" min="0" step="0.1" value="1.0" required>
@@ -188,22 +273,50 @@
 
 {% block extra_js %}
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    {% if user.user_type == 'GOVERNMENT' %}
+    <script src="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.js"></script>
+    <script src="https://unpkg.com/leaflet.fullscreen@2.0.0/Control.FullScreen.js"></script>
+    {% endif %}
     <script>
         const mapConfig = {
             defaultView: [10.8505, 76.2711], // Kerala-centric
             defaultZoom: 7,
             maxZoom: 18
         };
-        const map = L.map('map').setView(mapConfig.defaultView, mapConfig.defaultZoom);
+        const map = L.map('map', {
+            zoomControl: true,
+            {% if user.user_type == 'GOVERNMENT' %}
+            fullscreenControl: true
+            {% endif %}
+        }).setView(mapConfig.defaultView, mapConfig.defaultZoom);
         let marker = null;
         let selectedLat = null;
         let selectedLon = null;
         let farmMarkers = [];
         let farmPolygons = [];
 
-        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            attribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+        // Base layers
+        const osmLayer = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
         }).addTo(map);
+        {% if user.user_type == 'GOVERNMENT' %}
+        const esriLayer = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+            attribution: '© Esri'
+        });
+        const weatherLayer = L.tileLayer('https://tile.openweathermap.org/map/precipitation_new/{z}/{x}/{y}.png?appid=YOUR_OPENWEATHERMAP_API_KEY', {
+            attribution: '© OpenWeatherMap',
+            opacity: 0.5
+        });
+        const baseLayers = {
+            "OpenStreetMap": osmLayer,
+            "Satellite Imagery": esriLayer
+        };
+        const overlays = {
+            "Precipitation": weatherLayer
+        };
+        L.control.layers(baseLayers, overlays).addTo(map);
+        L.control.scale({ metric: true, imperial: true }).addTo(map);
+        {% endif %}
 
         const customIcon = L.icon({
             iconUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-icon.png',
@@ -236,48 +349,13 @@
         };
 
         const cropHarvestDays = {
-            'wheat': 120,
-            'rice': 120,
-            'corn': 100,
-            'barley': 120,
-            'oats': 120,
-            'sorghum': 110,
-            'millet': 100,
-            'soybean': 120,
-            'peanut': 120,
-            'bean': 100,
-            'pea': 90,
-            'lentil': 100,
-            'chickpea': 100,
-            'mungbean': 90,
-            'cotton': 180,
-            'sugarcane': 365,
-            'sunflower': 100,
-            'mustard': 120,
-            'sesame': 90,
-            'potato': 100,
-            'tomato': 90,
-            'onion': 100,
-            'carrot': 100,
-            'cabbage': 90,
-            'cauliflower': 90,
-            'brinjal': 90,
-            'okra': 90,
-            'spinach': 60,
-            'chilli': 150,
-            'bittergourd': 90,
-            'ridgegourd': 90,
-            'banana': 270,
-            'banana_robusta': 270,
-            'banana_rasthali': 270,
-            'banana_poovan': 270,
-            'banana_nendran': 270,
-            'mango': 365,
-            'guava': 365,
-            'papaya': 270,
-            'pomegranate': 365,
-            'jackfruit': 365,
-            'coconut': 365
+            'wheat': 120, 'rice': 120, 'corn': 100, 'barley': 120, 'oats': 120, 'sorghum': 110, 'millet': 100,
+            'soybean': 120, 'peanut': 120, 'bean': 100, 'pea': 90, 'lentil': 100, 'chickpea': 100, 'mungbean': 90,
+            'cotton': 180, 'sugarcane': 365, 'sunflower': 100, 'mustard': 120, 'sesame': 90, 'potato': 100,
+            'tomato': 90, 'onion': 100, 'carrot': 100, 'cabbage': 90, 'cauliflower': 90, 'brinjal': 90, 'okra': 90,
+            'spinach': 60, 'chilli': 150, 'bittergourd': 90, 'ridgegourd': 90, 'banana': 270, 'banana_robusta': 270,
+            'banana_rasthali': 270, 'banana_poovan': 270, 'banana_nendran': 270, 'mango': 365, 'guava': 365,
+            'papaya': 270, 'pomegranate': 365, 'jackfruit': 365, 'coconut': 365
         };
 
         function showNotification(message, type = "success") {
@@ -290,6 +368,27 @@
                 notification.classList.remove('show');
                 setTimeout(() => notification.remove(), 300);
             }, 3000);
+        }
+
+        async function checkLocation(lat, lng) {
+            const url = `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}&zoom=10`;
+            try {
+                const response = await fetch(url, {
+                    headers: { 'User-Agent': 'SmartFarmMap/1.0' }
+                });
+                const data = await response.json();
+                const type = data.type || '';
+                const displayName = data.display_name || '';
+                const waterKeywords = ['sea', 'ocean', 'waterbody', 'lake', 'river', 'bay', 'gulf'];
+                const isWater = waterKeywords.some(keyword => 
+                    type.toLowerCase().includes(keyword) || 
+                    displayName.toLowerCase().includes(keyword)
+                );
+                return { isWater, displayName };
+            } catch (error) {
+                console.error('Error fetching location data:', error);
+                return { isWater: false, displayName: 'Unknown' };
+            }
         }
 
         function updateCoordinatesDisplay() {
@@ -313,7 +412,6 @@
 
         async function fetchPricePrediction(crop, plantingDate, farmId = null) {
             if (!crop || !plantingDate) {
-                console.error(`Invalid crop: ${crop}, plantingDate: ${plantingDate}`);
                 showNotification('{% trans "Please select a crop and planting date" %}', 'error');
                 return null;
             }
@@ -324,10 +422,9 @@
                 const planting = new Date(plantingDate);
                 const harvestDate = new Date(planting.getTime() + daysToHarvest * 24 * 60 * 60 * 1000);
                 const harvestDateStr = harvestDate.toISOString().split('T')[0];
-                console.log(`Fetching price for ${crop} on ${harvestDateStr}`);
                 const payload = { crop, harvest_date: harvestDateStr };
                 if (farmId) payload.farm_id = farmId;
-                const response = await fetch('{% url "maps:get_price_prediction" %}', {
+                const response = await fetch('{% url "maps:get-price-prediction" %}', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -338,12 +435,10 @@
                 if (!response.ok) throw new Error(`Price fetch error: ${response.status}`);
                 const priceData = await response.json();
                 if (priceData.warning) {
-                    console.warn(`Price warning: ${priceData.warning}`);
                     showNotification(priceData.warning, 'warning');
                 }
                 return priceData;
             } catch (error) {
-                console.error(`Price fetch failed: ${error.message}`);
                 showNotification(`{% trans "Error fetching price prediction" %}: ${error.message}`, 'error');
                 return null;
             } finally {
@@ -353,7 +448,7 @@
 
         async function fetchMoreDetails(lat, lon) {
             try {
-                const response = await fetch('{% url "maps:get_location_details" %}', {
+                const response = await fetch('{% url "maps:get-location-details" %}', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -396,19 +491,70 @@
             }
         }
 
+        {% if user.user_type == 'GOVERNMENT' %}
+        document.getElementById('searchButton').addEventListener('click', async () => {
+            const query = document.getElementById('searchInput').value.trim();
+            if (!query) {
+                showNotification('{% trans "Please enter a location" %}', 'warning');
+                return;
+            }
+            const spinner = document.getElementById('loadingSpinner');
+            spinner.classList.add('active');
+            try {
+                const response = await fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(query)}`, {
+                    headers: { 'User-Agent': 'SmartFarmMap/1.0' }
+                });
+                const results = await response.json();
+                if (results.length === 0) {
+                    showNotification('{% trans "Location not found" %}', 'error');
+                    return;
+                }
+                const { lat, lon } = results[0];
+                selectedLat = parseFloat(lat);
+                selectedLon = parseFloat(lon);
+                map.setView([selectedLat, selectedLon], 14);
+                map.fire('click', { latlng: { lat: selectedLat, lng: selectedLon } });
+            } catch (error) {
+                showNotification(`{% trans "Error searching location" %}: ${error.message}`, 'error');
+            } finally {
+                spinner.classList.remove('active');
+            }
+        });
+
+        document.getElementById('goToCoords').addEventListener('click', () => {
+            const lat = parseFloat(document.getElementById('latInput').value);
+            const lon = parseFloat(document.getElementById('lonInput').value);
+            if (isNaN(lat) || isNaN(lon) || lat < -90 || lat > 90 || lon < -180 || lon > 180) {
+                showNotification('{% trans "Please enter valid coordinates" %}', 'warning');
+                return;
+            }
+            selectedLat = lat;
+            selectedLon = lon;
+            map.setView([selectedLat, selectedLon], 14);
+            map.fire('click', { latlng: { lat: selectedLat, lng: selectedLon } });
+        });
+        {% endif %}
+
         map.on('click', async function(e) {
             const spinner = document.getElementById('loadingSpinner');
             spinner.classList.add('active');
-
-            if (marker) map.removeLayer(marker);
             selectedLat = e.latlng.lat;
             selectedLon = e.latlng.lng;
-
+            const { isWater, displayName } = await checkLocation(selectedLat, selectedLon);
+            if (isWater) {
+                spinner.classList.remove('active');
+                showNotification('{% trans "There is no land at this water location. Please select a valid location." %}', 'error');
+                selectedLat = null;
+                selectedLon = null;
+                updateCoordinatesDisplay();
+                return;
+            }
+            if (marker) map.removeLayer(marker);
             try {
                 const cropPreference = document.getElementById('cropPreference').value;
                 const today = new Date().toISOString().split('T')[0];
                 const [farmResponse, locationResponse] = await Promise.all([
-                    fetch('{% url "maps:get_farm_by_coords" %}', {
+                    fetch('{% url "maps:get-farm-by-coords" %}', {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json',
@@ -416,7 +562,7 @@
                         },
                         body: JSON.stringify({ latitude: selectedLat, longitude: selectedLon })
                     }),
-                    fetch('{% url "maps:get_location_details" %}', {
+                    fetch('{% url "maps:get-location-details" %}', {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json',
@@ -425,16 +571,16 @@
                         body: JSON.stringify({ latitude: selectedLat, longitude: selectedLon })
                     })
                 ]);
-
                 let farmData = null;
                 if (farmResponse.status !== 404) {
                     farmData = await farmResponse.json();
                     if (!farmResponse.ok) throw new Error(`Farm fetch error: ${farmResponse.status}`);
                 }
-
-                if (!locationResponse.ok) throw new Error(`Location fetch error: ${locationResponse.status}`);
+                if (!locationResponse.ok) {
+                    const errorData = await locationResponse.json();
+                    throw new Error(errorData.error || `Location fetch error: ${locationResponse.status}`);
+                }
                 const locationData = await locationResponse.json();
-
                 if (farmData && farmData.user_crop_preferences) {
                     let priceHtml = '<div class="prediction-error">{% trans "No price prediction available" %}</div>';
                     if (farmData.planting_date) {
@@ -448,10 +594,12 @@
                                 </div>`;
                         }
                     }
+                    const farmName = farmData.farm_name || farmData.farmer;
+                    const popupTitle = {% if user.user_type == 'GOVERNMENT' %} `'${farmName} ({{ user.government_profile.organization_name|default:"Government" }})'` {% else %} `'${farmName}'` {% endif %};
                     marker = L.marker([selectedLat, selectedLon], { icon: statusIcons[farmData.status] })
                         .addTo(map)
                         .bindPopup(`
-                            <div class="popup-title">${farmData.farmer}'s Farm</div>
+                            <div class="popup-title">${popupTitle}</div>
                             <div class="popup-content">
                                 <div><strong>{% trans "Farmer" %}:</strong> ${farmData.farmer}</div>
                                 <div><span class="status-indicator status-${farmData.status}"></span> <strong>{% trans "Status" %}:</strong> ${farmData.status.charAt(0).toUpperCase() + farmData.status.slice(1)}</div>
@@ -465,6 +613,12 @@
                                 <div><strong>{% trans "Oversupply Risk" %}:</strong> ${farmData.oversupply_risk ? '{% trans "Yes" %}' : '{% trans "No" %}'}</div>
                                 <div><strong>{% trans "Coordinates" %}:</strong> Lat: ${selectedLat.toFixed(6)}, Lon: ${selectedLon.toFixed(6)}</div>
                                 ${priceHtml}
+                                {% if user.user_type != 'NON_PROFIT' %}
+                                <button class="more-details-btn" onclick="showMoreDetails(${selectedLat}, ${selectedLon}, this)">{% trans "More Details" %}</button>
+                                <div class="more-details-section" id="more-details-${selectedLat}-${selectedLon}">
+                                    <div>{% trans "Loading additional data..." %}</div>
+                                </div>
+                                {% endif %}
                             </div>
                         `)
                         .openPopup();
@@ -479,11 +633,17 @@
                                 </div>`;
                         }
                     }
+                    const popupTitle = {% if user.user_type == 'GOVERNMENT' %} `'Location Insights ({{ user.government_profile.organization_name|default:"Government" }})'` {% else %} `'Location Insights'` {% endif %};
                     marker = L.marker([selectedLat, selectedLon], { icon: customIcon })
                         .addTo(map)
                         .bindPopup(`
-                            <div class="popup-title">{% trans "Location Insights" %}</div>
+                            <div class="popup-title">${popupTitle}</div>
                             <div class="popup-content">
+                                {% if user.user_type == 'NON_PROFIT' %}
+                                <div><strong>{% trans "Recommended Crop" %}:</strong> ${locationData.recommended_crops[0]?.crop.charAt(0).toUpperCase() + locationData.recommended_crops[0]?.crop.slice(1) || '{% trans "Not Set" %}'}</div>
+                                ${priceHtml}
+                                <div>{% trans "Click 'Add Farm' to register this location." %}</div>
+                                {% else %}
                                 <div><strong>{% trans "Temperature" %}:</strong> ${locationData.weather.temperature.toFixed(1)}°C</div>
                                 <div><strong>{% trans "Humidity" %}:</strong> ${locationData.weather.humidity.toFixed(0)}%</div>
                                 <div><strong>{% trans "Rainfall" %}:</strong> ${locationData.weather.rainfall.toFixed(1)} mm</div>
@@ -500,6 +660,7 @@
                                 <div class="more-details-section" id="more-details-${selectedLat}-${selectedLon}">
                                     <div>{% trans "Loading additional data..." %}</div>
                                 </div>
+                                {% endif %}
                             </div>
                         `)
                         .openPopup();
@@ -535,7 +696,7 @@
             btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> {% trans "Saving..." %}';
             btn.disabled = true;
             try {
-                const response = await fetch('{% url "maps:save_location" %}', {
+                const response = await fetch('{% url "maps:save-location" %}', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -569,6 +730,16 @@
                     });
                     selectedLat = position.coords.latitude;
                     selectedLon = position.coords.longitude;
+                    const { isWater } = await checkLocation(selectedLat, selectedLon);
+                    if (isWater) {
+                        showNotification('{% trans "There is no land at this water location. Please select a valid location." %}', 'error');
+                        selectedLat = null;
+                        selectedLon = null;
+                        updateCoordinatesDisplay();
+                        btn.innerHTML = originalText;
+                        btn.disabled = false;
+                        return;
+                    }
                     if (marker) map.removeLayer(marker);
                     marker = L.marker([selectedLat, selectedLon], { icon: customIcon })
                         .addTo(map)
@@ -602,7 +773,7 @@
                 return;
             }
             try {
-                const response = await fetch('{% url "maps:get_farm_by_coords" %}', {
+                const response = await fetch('{% url "maps:get-farm-by-coords" %}', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -627,112 +798,40 @@
             }
         });
 
-        document.getElementById('viewAllFarms').addEventListener('click', async () => {
-            const spinner = document.getElementById('loadingSpinner');
-            spinner.classList.add('active');
-            try {
-                const response = await fetch('{% url "maps:get_farm_data" %}');
-                if (!response.ok) throw new Error(`Farm data fetch error: ${response.status}`);
-                const data = await response.json();
-                farmMarkers.forEach(m => map.removeLayer(m));
-                farmPolygons.forEach(p => map.removeLayer(p));
-                farmMarkers = [];
-                farmPolygons = [];
-
-                const bounds = [];
-                for (const feature of data.features) {
-                    const { coordinates } = feature.geometry;
-                    const props = feature.properties;
-                    const [lon, lat] = coordinates;
-                    bounds.push([lat, lon]);
-
-                    const farmMarker = L.marker([lat, lon], { icon: statusIcons[props.status] })
-                        .addTo(map)
-                        .bindPopup(`
-                            <div class="popup-title">${props.farmer}'s Farm</div>
-                            <div class="popup-content">
-                                <div><strong>{% trans "Farmer" %}:</strong> ${props.farmer}</div>
-                                <div><span class="status-indicator status-${props.status}"></span> <strong>{% trans "Status" %}:</strong> ${props.status.charAt(0).toUpperCase() + props.status.slice(1)}</div>
-                                <div><strong>{% trans "Size" %}:</strong> ${props.area || '{% trans "Not set" %}'} acres</div>
-                                <div><strong>{% trans "Soil Type" %}:</strong> ${props.soil_type.charAt(0).toUpperCase() + props.soil_type.slice(1)}</div>
-                                <div><strong>{% trans "Climate" %}:</strong> ${props.climate.charAt(0).toUpperCase() + props.climate.slice(1)}</div>
-                                <div><strong>{% trans "Crop Planted" %}:</strong> ${props.user_crop_preferences || '{% trans "None" %}'}</div>
-                                <div><strong>{% trans "Planting Date" %}:</strong> ${props.planting_date || '{% trans "Not set" %}'}</div>
-                                <div><strong>{% trans "Yield/Acre" %}:</strong> ${props.yield_per_acre || '{% trans "Not set" %}'} quintals</div>
-                                <div><strong>{% trans "Recommended Crop" %}:</strong> ${props.recommended_crop || '{% trans "Not Set" %}'}</div>
-                                <div><strong>{% trans "Oversupply Risk" %}:</strong> ${props.oversupply_risk ? '{% trans "Yes" %}' : '{% trans "No" %}'}</div>
-                                <div><strong>{% trans "Coordinates" %}:</strong> Lat: ${lat.toFixed(6)}, Lon: ${lon.toFixed(6)}</div>
-                            </div>
-                        `);
-                    farmMarkers.push(farmMarker);
-
-                    const polygon = L.polygon([
-                        [lat - 0.001, lon - 0.001],
-                        [lat - 0.001, lon + 0.001],
-                        [lat + 0.001, lon + 0.001],
-                        [lat + 0.001, lon - 0.001]
-                    ], {
-                        color: props.status === 'green' ? '#2ecc71' : props.status === 'orange' ? '#f39c12' : '#e74c3c',
-                        weight: 2,
-                        opacity: 0.7,
-                        fillOpacity: 0.3
-                    }).addTo(map);
-                    farmPolygons.push(polygon);
-                }
-
-                if (bounds.length > 0) {
-                    map.fitBounds(bounds, { padding: [50, 50] });
-                }
-                showNotification('{% trans "Displayed all farms" %}', 'success');
-            } catch (error) {
-                showNotification(`{% trans "Error fetching farms" %}: ${error.message}`, 'error');
-            } finally {
-                spinner.classList.remove('active');
-            }
+        document.getElementById('closeFarmModal').addEventListener('click', () => {
+            document.getElementById('farmModal').style.display = 'none';
         });
 
-        const modal = document.getElementById('farmModal');
-        const closeModal = document.getElementById('closeFarmModal');
-        const cancelFarm = document.getElementById('cancelFarm');
-        const farmForm = document.getElementById('farmForm');
-
-        closeModal.addEventListener('click', () => {
-            modal.style.display = 'none';
+        document.getElementById('cancelFarm').addEventListener('click', () => {
+            document.getElementById('farmModal').style.display = 'none';
         });
 
-        cancelFarm.addEventListener('click', () => {
-            modal.style.display = 'none';
-        });
-
-        window.addEventListener('click', (event) => {
-            if (event.target === modal) {
-                modal.style.display = 'none';
-            }
-        });
-
-        farmForm.addEventListener('submit', async (e) => {
+        document.getElementById('farmForm').addEventListener('submit', async (e) => {
             e.preventDefault();
-            const spinner = document.getElementById('loadingSpinner');
-            spinner.classList.add('active');
-            const submitBtn = document.getElementById('submitFarm');
-            const originalText = submitBtn.textContent;
-            submitBtn.textContent = '{% trans "Saving..." %}';
-            submitBtn.disabled = true;
-
+            if (selectedLat === null || selectedLon === null) {
+                showNotification('{% trans "Please select a location first" %}', 'warning');
+                return;
+            }
             const formData = {
                 latitude: selectedLat,
                 longitude: selectedLon,
-                farmSize: parseFloat(document.getElementById('farmSize').value),
-                farmStatus: document.getElementById('farmStatus').value,
-                soilType: document.getElementById('soilType').value,
+                area: parseFloat(document.getElementById('farmSize').value),
+                status: document.getElementById('farmStatus').value,
+                soil_type: document.getElementById('soilType').value,
                 climate: document.getElementById('climate').value,
                 user_crop_preferences: document.getElementById('userCropPreferences').value,
                 planting_date: document.getElementById('plantingDate').value,
                 yield_per_acre: parseFloat(document.getElementById('yieldPerAcre').value)
             };
-
+            {% if user.user_type == 'FARMER' %}
+            formData.farm_name = '{{ user.farmer_profile.farm_name|default:user.username }}';
+            {% endif %}
+            const btn = document.getElementById('submitFarm');
+            const originalText = btn.innerHTML;
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> {% trans "Saving..." %}';
+            btn.disabled = true;
             try {
-                const response = await fetch('{% url "maps:add_farm" %}', {
+                const response = await fetch('{% url "maps:add-farm" %}', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -742,19 +841,32 @@
                 });
                 const data = await response.json();
                 if (response.ok) {
-                    modal.style.display = 'none';
-                    farmForm.reset();
                     showNotification(data.message, 'success');
+                    document.getElementById('farmModal').style.display = 'none';
                     if (marker) map.removeLayer(marker);
-                    marker = L.marker([selectedLat, selectedLon], { icon: statusIcons[formData.farmStatus] })
+                    const farmName = {% if user.user_type == 'FARMER' %} formData.farm_name {% else %} data.farmer {% endif %};
+                    marker = L.marker([selectedLat, selectedLon], { icon: statusIcons[formData.status] })
                         .addTo(map)
                         .bindPopup(`
-                            <div class="popup-title">{% trans "New Farm" %}</div>
+                            <div class="popup-title">${farmName}</div>
                             <div class="popup-content">
-                                <div><strong>{% trans "Size" %}:</strong> ${formData.farmSize} acres</div>
-                                <div><strong>{% trans "Status" %}:</strong> ${formData.farmStatus.charAt(0).toUpperCase() + formData.farmStatus.slice(1)}</div>
-                                <div><strong>{% trans "Crop" %}:</strong> ${formData.user_crop_preferences}</div>
+                                <div><strong>{% trans "Farmer" %}:</strong> ${data.farmer}</div>
+                                <div><span class="status-indicator status-${formData.status}"></span> <strong>{% trans "Status" %}:</strong> ${formData.status.charAt(0).toUpperCase() + formData.status.slice(1)}</div>
+                                <div><strong>{% trans "Size" %}:</strong> ${formData.area} acres</div>
+                                <div><strong>{% trans "Soil Type" %}:</strong> ${formData.soil_type.charAt(0).toUpperCase() + formData.soil_type.slice(1)}</div>
+                                <div><strong>{% trans "Climate" %}:</strong> ${formData.climate.charAt(0).toUpperCase() + formData.climate.slice(1)}</div>
+                                <div><strong>{% trans "Crop Planted" %}:</strong> ${formData.user_crop_preferences}</div>
+                                <div><strong>{% trans "Planting Date" %}:</strong> ${formData.planting_date}</div>
+                                <div><strong>{% trans "Yield/Acre" %}:</strong> ${formData.yield_per_acre} quintals</div>
+                                <div><strong>{% trans "Recommended Crop" %}:</strong> ${data.recommended_crop || '{% trans "Not Set" %}'}</div>
+                                <div><strong>{% trans "Oversupply Risk" %}:</strong> ${data.oversupply_risk ? '{% trans "Yes" %}' : '{% trans "No" %}'}</div>
                                 <div><strong>{% trans "Coordinates" %}:</strong> Lat: ${selectedLat.toFixed(6)}, Lon: ${selectedLon.toFixed(6)}</div>
+                                {% if user.user_type != 'NON_PROFIT' %}
+                                <button class="more-details-btn" onclick="showMoreDetails(${selectedLat}, ${selectedLon}, this)">{% trans "More Details" %}</button>
+                                <div class="more-details-section" id="more-details-${selectedLat}-${selectedLon}">
+                                    <div>{% trans "Loading additional data..." %}</div>
+                                </div>
+                                {% endif %}
                             </div>
                         `)
                         .openPopup();
@@ -764,25 +876,38 @@
             } catch (error) {
                 showNotification(`{% trans "Error adding farm" %}: ${error.message}`, 'error');
             } finally {
-                spinner.classList.remove('active');
-                submitBtn.textContent = originalText;
-                submitBtn.disabled = false;
+                btn.innerHTML = originalText;
+                btn.disabled = false;
             }
         });
 
-        async function loadInitialFarms() {
+        async function displayFarms(filterCrop = '', filterStatus = '') {
+            const spinner = document.getElementById('loadingSpinner');
+            spinner.classList.add('active');
             try {
-                const response = await fetch('{% url "maps:get_farm_data" %}');
-                if (!response.ok) throw new Error(`Initial farm fetch error: ${response.status}`);
+                const response = await fetch('{% url "maps:get-farm-data" %}');
+                if (!response.ok) throw new Error(`Farm data fetch error: ${response.status}`);
                 const data = await response.json();
+                farmMarkers.forEach(m => map.removeLayer(m));
+                farmPolygons.forEach(p => map.removeLayer(p));
+                farmMarkers = [];
+                farmPolygons = [];
+                const bounds = [];
                 for (const feature of data.features) {
                     const { coordinates } = feature.geometry;
                     const props = feature.properties;
                     const [lon, lat] = coordinates;
+                    {% if user.user_type == 'GOVERNMENT' %}
+                    if (filterCrop && props.user_crop_preferences !== filterCrop) continue;
+                    if (filterStatus && props.status !== filterStatus) continue;
+                    {% endif %}
+                    bounds.push([lat, lon]);
+                    const farmName = props.farm_name || props.farmer;
+                    const popupTitle = {% if user.user_type == 'GOVERNMENT' %} `'${farmName} ({{ user.government_profile.organization_name|default:"Government" }})'` {% else %} `'${farmName}'` {% endif %};
                     const farmMarker = L.marker([lat, lon], { icon: statusIcons[props.status] })
                         .addTo(map)
                         .bindPopup(`
-                            <div class="popup-title">${props.farmer}'s Farm</div>
+                            <div class="popup-title">${popupTitle}</div>
                             <div class="popup-content">
                                 <div><strong>{% trans "Farmer" %}:</strong> ${props.farmer}</div>
                                 <div><span class="status-indicator status-${props.status}"></span> <strong>{% trans "Status" %}:</strong> ${props.status.charAt(0).toUpperCase() + props.status.slice(1)}</div>
@@ -795,21 +920,165 @@
                                 <div><strong>{% trans "Recommended Crop" %}:</strong> ${props.recommended_crop || '{% trans "Not Set" %}'}</div>
                                 <div><strong>{% trans "Oversupply Risk" %}:</strong> ${props.oversupply_risk ? '{% trans "Yes" %}' : '{% trans "No" %}'}</div>
                                 <div><strong>{% trans "Coordinates" %}:</strong> Lat: ${lat.toFixed(6)}, Lon: ${lon.toFixed(6)}</div>
+                                {% if user.user_type != 'NON_PROFIT' %}
+                                <button class="more-details-btn" onclick="showMoreDetails(${lat}, ${lon}, this)">{% trans "More Details" %}</button>
+                                <div class="more-details-section" id="more-details-${lat}-${lon}">
+                                    <div>{% trans "Loading additional data..." %}</div>
+                                </div>
+                                {% endif %}
                             </div>
                         `);
                     farmMarkers.push(farmMarker);
-                    const polygon = L.polygon([
-                        [lat - 0.001, lon - 0.001],
-                        [lat - 0.001, lon + 0.001],
-                        [lat + 0.001, lon + 0.001],
-                        [lat + 0.001, lon - 0.001]
-                    ], {
-                        color: props.status === 'green' ? '#2ecc71' : props.status === 'orange' ? '#f39c12' : '#e74c3c',
-                        weight: 2,
-                        opacity: 0.7,
-                        fillOpacity: 0.3
-                    }).addTo(map);
-                    farmPolygons.push(polygon);
+                    if (props.area) {
+                        const side = Math.sqrt(props.area) * 0.1;
+                        const polygon = L.rectangle([
+                            [lat - side / 2, lon - side / 2],
+                            [lat + side / 2, lon + side / 2]
+                        ], {
+                            color: props.status === 'green' ? '#2ecc71' : props.status === 'orange' ? '#f39c12' : '#e74c3c',
+                            weight: 2,
+                            opacity: 0.7,
+                            fillOpacity: 0.2
+                        }).addTo(map);
+                        farmPolygons.push(polygon);
+                    }
+                }
+                if (bounds.length > 0) {
+                    map.fitBounds(bounds, { padding: [50, 50] });
+                } else {
+                    map.setView(mapConfig.defaultView, mapConfig.defaultZoom);
+                }
+                showNotification('{% trans "Farms displayed" %}', 'success');
+            } catch (error) {
+                showNotification(`{% trans "Error fetching farm data" %}: ${error.message}`, 'error');
+            } finally {
+                spinner.classList.remove('active');
+            }
+        }
+
+        {% if user.user_type == 'GOVERNMENT' %}
+        document.getElementById('viewAllFarms').addEventListener('click', () => {
+            const filterCrop = document.getElementById('filterCrop').value;
+            const filterStatus = document.getElementById('filterStatus').value;
+            displayFarms(filterCrop, filterStatus);
+        });
+
+        document.getElementById('filterCrop').addEventListener('change', () => {
+            const filterCrop = document.getElementById('filterCrop').value;
+            const filterStatus = document.getElementById('filterStatus').value;
+            displayFarms(filterCrop, filterStatus);
+        });
+
+        document.getElementById('filterStatus').addEventListener('change', () => {
+            const filterCrop = document.getElementById('filterCrop').value;
+            const filterStatus = document.getElementById('filterStatus').value;
+            displayFarms(filterCrop, filterStatus);
+        });
+
+        document.getElementById('exportFarms').addEventListener('click', async () => {
+            const spinner = document.getElementById('loadingSpinner');
+            spinner.classList.add('active');
+            try {
+                const response = await fetch('{% url "maps:get-farm-data" %}');
+                if (!response.ok) throw new Error(`Farm data fetch error: ${response.status}`);
+                const data = await response.json();
+                const headers = ['Farmer', 'Farm Name', 'Latitude', 'Longitude', 'Area (acres)', 'Status', 'Soil Type', 'Climate', 'Crop Planted', 'Planting Date', 'Yield/Acre (quintals)', 'Recommended Crop', 'Oversupply Risk'];
+                const rows = data.features.map(feature => {
+                    const props = feature.properties;
+                    const [lon, lat] = feature.geometry.coordinates;
+                    return [
+                        props.farmer || 'N/A',
+                        props.farm_name || 'N/A',
+                        lat.toFixed(6),
+                        lon.toFixed(6),
+                        props.area || 'N/A',
+                        props.status.charAt(0).toUpperCase() + props.status.slice(1),
+                        props.soil_type.charAt(0).toUpperCase() + props.soil_type.slice(1),
+                        props.climate.charAt(0).toUpperCase() + props.climate.slice(1),
+                        props.user_crop_preferences || 'None',
+                        props.planting_date || 'N/A',
+                        props.yield_per_acre || 'N/A',
+                        props.recommended_crop || 'N/A',
+                        props.oversupply_risk ? 'Yes' : 'No'
+                    ].map(field => `"${field.toString().replace(/"/g, '""')}"`).join(',');
+                });
+                const csvContent = [headers.join(','), ...rows].join('\n');
+                const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+                const url = URL.createObjectURL(blob);
+                const link = document.createElement('a');
+                link.setAttribute('href', url);
+                link.setAttribute('download', 'farms_export.csv');
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+                URL.revokeObjectURL(url);
+                showNotification('{% trans "Farms exported successfully" %}', 'success');
+            } catch (error) {
+                showNotification(`{% trans "Error exporting farms" %}: ${error.message}`, 'error');
+            } finally {
+                spinner.classList.remove('active');
+            }
+        });
+        {% elif user.user_type == 'FARMER' %}
+        document.getElementById('viewAllFarms').addEventListener('click', () => {
+            displayFarms();
+        });
+
+        async function loadInitialFarms() {
+            try {
+                const response = await fetch('{% url "maps:get-farm-data" %}');
+                if (!response.ok) throw new Error(`Initial farm fetch error: ${response.status}`);
+                const data = await response.json();
+                farmMarkers.forEach(m => map.removeLayer(m));
+                farmPolygons.forEach(p => map.removeLayer(p));
+                farmMarkers = [];
+                farmPolygons = [];
+                const bounds = [];
+                for (const feature of data.features) {
+                    const { coordinates } = feature.geometry;
+                    const props = feature.properties;
+                    const [lon, lat] = coordinates;
+                    bounds.push([lat, lon]);
+                    const farmName = props.farm_name || props.farmer;
+                    const farmMarker = L.marker([lat, lon], { icon: statusIcons[props.status] })
+                        .addTo(map)
+                        .bindPopup(`
+                            <div class="popup-title">${farmName}</div>
+                            <div class="popup-content">
+                                <div><strong>{% trans "Farmer" %}:</strong> ${props.farmer}</div>
+                                <div><span class="status-indicator status-${props.status}"></span> <strong>{% trans "Status" %}:</strong> ${props.status.charAt(0).toUpperCase() + props.status.slice(1)}</div>
+                                <div><strong>{% trans "Size" %}:</strong> ${props.area || '{% trans "Not set" %}'} acres</div>
+                                <div><strong>{% trans "Soil Type" %}:</strong> ${props.soil_type.charAt(0).toUpperCase() + props.soil_type.slice(1)}</div>
+                                <div><strong>{% trans "Climate" %}:</strong> ${props.climate.charAt(0).toUpperCase() + props.climate.slice(1)}</div>
+                                <div><strong>{% trans "Crop Planted" %}:</strong> ${props.user_crop_preferences || '{% trans "None" %}'}</div>
+                                <div><strong>{% trans "Planting Date" %}:</strong> ${props.planting_date || '{% trans "Not set" %}'}</div>
+                                <div><strong>{% trans "Yield/Acre" %}:</strong> ${props.yield_per_acre || '{% trans "Not set" %}'} quintals</div>
+                                <div><strong>{% trans "Recommended Crop" %}:</strong> ${props.recommended_crop || '{% trans "Not Set" %}'}</div>
+                                <div><strong>{% trans "Oversupply Risk" %}:</strong> ${props.oversupply_risk ? '{% trans "Yes" %}' : '{% trans "No" %}'}</div>
+                                <div><strong>{% trans "Coordinates" %}:</strong> Lat: ${lat.toFixed(6)}, Lon: ${lon.toFixed(6)}</div>
+                                <button class="more-details-btn" onclick="showMoreDetails(${lat}, ${lon}, this)">{% trans "More Details" %}</button>
+                                <div class="more-details-section" id="more-details-${lat}-${lon}">
+                                    <div>{% trans "Loading additional data..." %}</div>
+                                </div>
+                            </div>
+                        `);
+                    farmMarkers.push(farmMarker);
+                    if (props.area) {
+                        const side = Math.sqrt(props.area) * 0.1;
+                        const polygon = L.rectangle([
+                            [lat - side / 2, lon - side / 2],
+                            [lat + side / 2, lon + side / 2]
+                        ], {
+                            color: props.status === 'green' ? '#2ecc71' : props.status === 'orange' ? '#f39c12' : '#e74c3c',
+                            weight: 2,
+                            opacity: 0.7,
+                            fillOpacity: 0.2
+                        }).addTo(map);
+                        farmPolygons.push(polygon);
+                    }
+                }
+                if (bounds.length > 0) {
+                    map.fitBounds(bounds, { padding: [50, 50] });
                 }
             } catch (error) {
                 console.error(`Error loading initial farms: ${error.message}`);
@@ -817,5 +1086,6 @@
         }
 
         loadInitialFarms();
+        {% endif %}
     </script>
 {% endblock %}

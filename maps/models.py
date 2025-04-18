@@ -61,11 +61,12 @@ class Farm(models.Model):
     status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='green')
     soil_type = models.CharField(max_length=100)
     climate = models.CharField(max_length=100)
-    recommended_crop = models.CharField(max_length=100, choices=CROP_CHOICES, blank=True)
+    recommended_crop = models.CharField(max_length=100, choices=CROP_CHOICES, blank=True,default="Rice")
     user_crop_preferences = models.CharField(max_length=100, choices=CROP_CHOICES, null=True, blank=True)
     planting_date = models.DateField(null=True, blank=True)
     yield_per_acre = models.FloatField(null=True, blank=True)
     oversupply_risk = models.BooleanField(default=False)
+    oversupply_status = models.CharField(max_length=20, default="Low")
 
     def __str__(self):
         return f"{self.farmer.username}'s farm at ({self.latitude}, {self.longitude})"
