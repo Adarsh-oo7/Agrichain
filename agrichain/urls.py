@@ -3,19 +3,18 @@ from django.urls import path, include
 from users.views import home
 from django.conf.urls.i18n import i18n_patterns
 
-# URL patterns without language prefix
+# Non-prefixed URLs
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path("maps/",include('maps.urls')),
+    path('maps/', include('maps.urls')),
     path('crop-ai/', include('crop_ai.urls')),
-
-
-    path('i18n/', include('django.conf.urls.i18n')),  # Built-in language switching
+    path('blog/', include('add_on.urls')),
+    path('i18n/', include('django.conf.urls.i18n')),
 ]
 
-# URL patterns with language prefix
+# Prefixed URLs with language support
 urlpatterns += i18n_patterns(
-    path('', home, name="home"),  # Home page with language prefix
-    path('users/', include('users.urls')),  # Include users URLs with language prefix
-    prefix_default_language=False,  # No prefix for the default language
+    path('', home, name='home'),
+    path('users/', include('users.urls')),
+    prefix_default_language=False,
 )

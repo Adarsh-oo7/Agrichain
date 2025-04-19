@@ -35,10 +35,21 @@ INSTALLED_APPS = [
     'maps',
     'crop_ai',
     'crispy_forms',
+    'add_on'
 ]
 
 # Custom user model
 AUTH_USER_MODEL = 'users.CustomUser'
+
+
+
+BASE_DIR = Path(__file__).resolve().parent.parent
+
+STATIC_URL = '/static/'
+STATICFILES_DIRS = [BASE_DIR / 'static']
+STATIC_ROOT = BASE_DIR / 'staticfiles'
+
+
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",

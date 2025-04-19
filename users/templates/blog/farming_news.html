@@ -1,0 +1,203 @@
+{% extends 'base.html' %}
+{% load i18n static %}
+
+{% block title %}{% trans "Farming News & Updates" %}{% endblock %}
+
+{% block extra_css %}
+<style>
+    /* Article card styles */
+    .article-card {
+        background: white;
+        border-radius: 10px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        transition: transform 0.3s, box-shadow 0.3s;
+        overflow: hidden;
+    }
+    .article-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+    }
+    .article-card img {
+        width: 100%;
+        height: 200px;
+        object-fit: cover;
+    }
+    .article-card .card-body {
+        padding: 1.5rem;
+    }
+    .article-card .card-title {
+        color: var(--secondary-color);
+        font-size: 1.25rem;
+        font-weight: 600;
+        margin-bottom: 0.75rem;
+    }
+    .article-card .card-text {
+        color: var(--text-light);
+        font-size: 0.95rem;
+        line-height: 1.6;
+    }
+    .article-card .card-footer {
+        background: none;
+        border-top: none;
+        padding: 0 1.5rem 1.5rem;
+    }
+    .article-card .read-more {
+        color: var(--primary-color);
+        font-weight: 600;
+        text-decoration: none;
+    }
+    .article-card .read-more:hover {
+        color: var(--accent-color);
+        text-decoration: underline;
+    }
+    /* Filter buttons */
+    .filter-btn {
+        background: var(--light-color);
+        color: var(--text-color);
+        border: 1px solid var(--text-light);
+        border-radius: 20px;
+        padding: 0.5rem 1.2rem;
+        font-weight: 600;
+        transition: all 0.3s;
+    }
+    .filter-btn.active,
+    .filter-btn:hover {
+        background: var(--primary-color);
+        color: white;
+        border-color: var(--primary-color);
+    }
+    /* Responsive adjustments */
+    @media (max-width: 768px) {
+        .article-card img {
+            height: 150px;
+        }
+        .article-card .card-title {
+            font-size: 1.1rem;
+        }
+        .article-card .card-text {
+            font-size: 0.9rem;
+        }
+        .filter-btn {
+            padding: 0.4rem 1rem;
+            font-size: 0.9rem;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<section class="content-section">
+    <h1>{% trans "Farming News & Updates" %}</h1>
+    <p>{% trans "Stay informed with the latest innovations and support for farmers in Kochi and beyond." %}</p>
+
+    <!-- Filters -->
+    <div class="d-flex flex-wrap gap-2 mb-4">
+        <button class="filter-btn active" data-category="all">{% trans "All" %}</button>
+        <button class="filter-btn" data-category="technology">{% trans "Technology" %}</button>
+        <button class="filter-btn" data-category="sustainability">{% trans "Sustainability" %}</button>
+        <button class="filter-btn" data-category="subsidies">{% trans "Subsidies" %}</button>
+    </div>
+
+    <!-- Articles -->
+    <div id="articles" class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+        <!-- Articles populated by JavaScript -->
+    </div>
+</section>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    // Sample article data (replace with API call in production)
+    const articles = [
+        {
+            id: 1,
+            title: "{% trans 'AI-Driven Farming Revolution in Baramati' %}",
+            description: "{% trans 'In Baramati, Maharashtra, AI is reducing costs by 30% and boosting sugarcane yields by 40% through soil sensors and satellite imagery.' %}",
+            category: "technology",
+            date: "2025-03-12",
+            source: "Frontline",
+            url: "https://frontline.thehindu.com",
+            image: "{% static 'images/ai-farming.jpg' %}"
+        },
+        {
+            id: 2,
+            title: "{% trans 'Regenerative Farming Boosts Food Security in Australia' %}",
+            description: "{% trans 'Regenerative practices like stock rotation and soil fertilization are making farms more resilient to climate change.' %}",
+            category: "sustainability",
+            date: "2025-03-13",
+            source: "ABC News",
+            url: "https://www.abc.net.au",
+            image: "{% static 'images/regenerative-farming.jpg' %}"
+        },
+        {
+            id: 3,
+            title: "{% trans 'Subsidies for Livestock Farming in India' %}",
+            description: "{% trans 'The National Livestock Mission offers up to ₹50 lakh for poultry, sheep, goat, and pig farming to support farmers.' %}",
+            category: "subsidies",
+            date: "2025-04-02",
+            source: "The Hindu",
+            url: "https://www.thehindu.com",
+            image: "{% static 'images/livestock-subsidies.jpg' %}"
+        },
+        {
+            id: 4,
+            title: "{% trans 'Tech-Intensive Farming for Profitability' %}",
+            description: "{% trans 'Farmers are urged to adopt technology-intensive methods, like medicinal plant cultivation, to increase income.' %}",
+            category: "technology",
+            date: "2025-01-28",
+            source: "The Hindu",
+            url: "https://www.thehindu.com",
+            image: "{% static 'images/tech-farming.jpg' %}"
+        },
+        {
+            id: 5,
+            title: "{% trans 'Paan Farming Gains Traction in Chhatarpur' %}",
+            description: "{% trans 'Young farmers in Chhatarpur are turning to Bangla paan farming for high profits, diversifying from traditional crops.' %}",
+            category: "sustainability",
+            date: "2025-01-31",
+            source: "News18 Hindi",
+            url: "https://hindi.news18.com",
+            image: "{% static 'images/paan-farming.jpg' %}"
+        }
+    ];
+
+    // Populate articles
+    function displayArticles(category = 'all') {
+        const articlesContainer = document.getElementById('articles');
+        articlesContainer.innerHTML = '';
+        const filteredArticles = category === 'all' ? articles : articles.filter(article => article.category === category);
+
+        filteredArticles.forEach(article => {
+            const articleCard = document.createElement('div');
+            articleCard.className = 'col';
+            articleCard.innerHTML = `
+                <div class="article-card h-100">
+                    <img src="${article.image}" alt="${article.title}" class="card-img-top">
+                    <div class="card-body">
+                        <small class="text-muted">${article.date} | ${article.source}</small>
+                        <h5 class="card-title">${article.title}</h5>
+                        <p class="card-text">${article.description}</p>
+                    </div>
+                    <div class="card-footer">
+                        <a href="${article.url}" target="_blank" class="read-more">{% trans "Read More" %}</a>
+                    </div>
+                </div>
+            `;
+            articlesContainer.appendChild(articleCard);
+        });
+    }
+
+    // Filter button event listeners
+    document.querySelectorAll('.filter-btn').forEach(button => {
+        button.addEventListener('click', () => {
+            document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
+            button.classList.add('active');
+            displayArticles(button.dataset.category);
+        });
+    });
+
+    // Initial load
+    displayArticles();
+    document.querySelector('.filter-btn[data-category="all"]').classList.add('active');
+</script>
+{% endblock %}

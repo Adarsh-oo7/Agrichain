@@ -76,7 +76,7 @@ def get_soil_data(lat, lon):
     """Fetch soil data from SoilGrids API."""
     url = f"https://rest.isric.org/soilgrids/v2.0/properties/query?lat={lat}&lon={lon}&property=nitrogen&property=phh2o&property=clay&property=sand&property=silt&property=cec&depth=0-5cm&value=mean"
     try:
-        response = requests.get(url, timeout=5)
+        response = requests.get(url, timeout=14)
         response.raise_for_status()
         data = response.json()["properties"]["layers"]
         soil_properties = {}
@@ -102,7 +102,7 @@ def get_soil_data(lat, lon):
         return {"N": N, "P": P, "K": K, "ph": ph, "soil_type": soil_type, "elevation": get_elevation(lat, lon)}
     except (requests.RequestException, KeyError) as e:
         logger.error(f"Error fetching soil data at ({lat}, {lon}): {e}")
-        return {"N": 0.8, "P": 40, "K": 50, "ph": 6.5, "soil_type": "loamy", "elevation": 10}
+        return {"N": 0.8, "P": 40, "K": 50, "ph": 6.5, "soil_type": "loamy", "elevation": 28}
 
 def get_climate_data(lat, lon):
     """Fetch climate data from Open-Meteo API."""

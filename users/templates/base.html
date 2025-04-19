@@ -1,6 +1,6 @@
-<!DOCTYPE html>
 {% load i18n %}
-<html lang="en">
+<!DOCTYPE html>
+<html lang="{% get_current_language as LANGUAGE_CODE %}{{ LANGUAGE_CODE|default:'en' }}">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -26,8 +26,8 @@
             --success-color: #66BB6A;    /* Lighter green for growth */
             --warning-color: #FFB300;    /* Amber for caution */
             --danger-color: #D32F2F;     /* Red for alerts */
-            --text-color: #424242;       /* Dark gray for readability */
-            --text-light: #757575;       /* Lighter gray for secondary text */
+            --text-color: #333333;       /* Darker gray for readability */
+            --text-light: #555555;       /* Slightly darker for secondary text */
             --font-main: 'Poppins', sans-serif;
         }
         
@@ -64,7 +64,8 @@
             align-items: center;
             max-width: 1300px;
             margin: 0 auto;
-            padding: 0 2rem;
+            padding: 0 1.5rem;
+            flex-wrap: nowrap;
         }
         
         .logo {
@@ -74,7 +75,8 @@
             color: white;
             display: flex;
             align-items: center;
-            transition: transform 0.3s;
+            transition: transform 0.3s ease;
+            flex-shrink: 0;
         }
         
         .logo:hover {
@@ -93,26 +95,34 @@
             align-items: center;
             margin: 0;
             padding: 0;
+            gap: 1.5rem;
+            flex-grow: 1;
+            justify-content: center;
         }
         
         .nav-links li {
-            margin-left: 2rem;
+            display: flex;
+            align-items: center;
         }
         
         .nav-links a {
             color: white;
             text-decoration: none;
             font-weight: 600;
-            transition: color 0.3s, transform 0.2s;
-            padding: 0.4rem 0.8rem;
-            position: relative;
+            padding: 0.5rem 0.8rem;
             border-radius: 20px;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.3s ease;
+            position: relative;
+            font-size: 0.95rem;
         }
         
         .nav-links a:hover {
             color: var(--accent-color);
-            transform: translateY(-2px);
             background: rgba(255, 255, 255, 0.1);
+            transform: translateY(-2px);
         }
         
         .nav-links a::after {
@@ -124,46 +134,48 @@
             left: 50%;
             transform: translateX(-50%);
             background-color: var(--accent-color);
-            transition: width 0.3s;
+            transition: width 0.3s ease;
         }
         
         .nav-links a:hover::after {
             width: 60%;
         }
         
+        .nav-links i {
+            color: var(--success-color);
+            font-size: 1.1rem;
+        }
+        
         .nav-actions {
             display: flex;
             align-items: center;
-            gap: 1.2rem;
+            gap: 0.8rem;
+            flex-shrink: 0;
         }
         
         .login-btn, .signup-btn {
-            background-color: var(--secondary-color);
-            padding: 0.6rem 1.2rem;
+            background: linear-gradient(135deg, var(--secondary-color), var(--dark-color));
+            padding: 0.5rem 1rem;
             border-radius: 25px;
             display: flex;
             align-items: center;
             gap: 0.5rem;
-            transition: all 0.3s;
             text-decoration: none;
             color: white;
             font-weight: 600;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+            box-shadow: 0 3px 8px rgba(0,0,0,0.2);
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
         }
         
         .login-btn:hover, .signup-btn:hover {
-            background-color: var(--accent-color);
+            background: var(--accent-color);
             transform: translateY(-3px);
-            box-shadow: 0 4px 12px rgba(0,0,0,0.25);
-            color: white;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.25);
         }
         
         .signup-btn {
-            background-color: var(--accent-color);
-        }
-        
-        .signup-btn:hover {
-            background-color: #F57C00;
+            background: linear-gradient(135deg, var(--accent-color), #F57C00);
         }
         
         .hamburger {
@@ -173,7 +185,8 @@
             color: white;
             border: none;
             background: transparent;
-            transition: transform 0.3s;
+            transition: transform 0.3s ease;
+            flex-shrink: 0;
         }
         
         .hamburger:hover {
@@ -183,15 +196,15 @@
         /* Language Selector */
         .language-selector {
             position: relative;
-            margin-left: 1.5rem;
+            margin-left: 0.5rem;
         }
         
         .language-btn {
-            background-color: rgba(255, 255, 255, 0.15);
+            background: rgba(255, 255, 255, 0.15);
             color: white;
             border: 1px solid rgba(255, 255, 255, 0.3);
             border-radius: 20px;
-            padding: 0.5rem 1rem;
+            padding: 0.5rem 0.8rem;
             display: flex;
             align-items: center;
             gap: 0.5rem;
@@ -201,12 +214,13 @@
         }
         
         .language-btn:hover {
-            background-color: rgba(255, 255, 255, 0.25);
+            background: rgba(255, 255, 255, 0.25);
             border-color: var(--accent-color);
         }
         
         .language-btn i {
             font-size: 1rem;
+            color: var(--success-color);
         }
         
         .language-dropdown {
@@ -216,20 +230,15 @@
             background: white;
             border-radius: 12px;
             box-shadow: 0 6px 20px rgba(0,0,0,0.15);
-            min-width: 200px;
+            min-width: 180px;
             z-index: 1000;
             overflow: hidden;
-            opacity: 0;
-            visibility: hidden;
-            transform: translateY(10px);
-            transition: all 0.3s ease;
+            display: none;
             margin-top: 0.5rem;
         }
         
-        .language-selector:hover .language-dropdown {
-            opacity: 1;
-            visibility: visible;
-            transform: translateY(0);
+        .language-dropdown.active {
+            display: block;
         }
         
         .language-dropdown button {
@@ -241,25 +250,26 @@
             color: var(--text-color);
             font-size: 0.9rem;
             cursor: pointer;
-            transition: background-color 0.2s;
+            transition: background-color 0.2s ease;
             display: flex;
             align-items: center;
+            gap: 0.5rem;
         }
         
         .language-dropdown button:hover {
-            background-color: var(--light-color);
+            background: var(--light-color);
         }
         
         .language-dropdown button.active {
-            font-weight: bold;
-            background-color: var(--success-color);
+            font-weight: 600;
+            background: var(--success-color);
             color: white;
         }
         
         .language-flag {
             width: 24px;
             height: 16px;
-            margin-right: 10px;
+            margin-right: 8px;
             border-radius: 3px;
             box-shadow: 0 1px 3px rgba(0,0,0,0.1);
         }
@@ -269,18 +279,18 @@
             flex: 1;
             max-width: 100%;
             margin: 3rem auto;
-            padding: 0 2rem;
+            padding: 0 1.5rem;
         }
         
         .content-section {
             background: white;
             border-radius: 15px;
             box-shadow: 0 6px 25px rgba(0,0,0,0.08);
-            padding: 3rem;
+            padding: 2.5rem;
             margin-bottom: 2.5rem;
             position: relative;
             overflow: hidden;
-            transition: transform 0.3s, box-shadow 0.3s;
+            transition: all 0.3s ease;
         }
         
         .content-section::before {
@@ -294,8 +304,8 @@
         }
         
         .content-section:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 12px 35px rgba(0,0,0,0.12);
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.12);
         }
         
         h1, h2, h3 {
@@ -309,30 +319,30 @@
             position: absolute;
             width: 60px;
             height: 3px;
-            background: var(--accent-color);
             bottom: -5px;
             left: 0;
+            background: var(--accent-color);
             border-radius: 2px;
         }
         
         h1 {
-            font-size: 2.8rem;
+            font-size: 2.5rem;
             font-weight: 700;
         }
         
         h2 {
-            font-size: 2.2rem;
+            font-size: 2rem;
             font-weight: 600;
         }
         
         h3 {
-            font-size: 1.6rem;
+            font-size: 1.5rem;
             font-weight: 600;
         }
         
         p {
             margin-bottom: 1.5rem;
-            line-height: 1.9;
+            line-height: 1.8;
             color: var(--text-light);
         }
         
@@ -340,30 +350,29 @@
         footer {
             background: linear-gradient(to top, var(--secondary-color), var(--dark-color));
             color: white;
-            padding: 4rem 0 2rem;
+            padding: 3rem 0 1.5rem;
             margin-top: auto;
-            position: relative;
         }
         
         .footer-content {
             max-width: 1300px;
             margin: 0 auto;
-            padding: 0 2rem;
+            padding: 0 1.5rem;
             display: flex;
             justify-content: space-between;
             flex-wrap: wrap;
-            gap: 2.5rem;
+            gap: 2rem;
         }
         
         .footer-section {
             flex: 1;
-            min-width: 280px;
+            min-width: 250px;
         }
         
         .footer-section h3 {
             color: white;
-            margin-bottom: 1.5rem;
-            font-size: 1.4rem;
+            margin-bottom: 1.2rem;
+            font-size: 1.3rem;
             font-weight: 600;
         }
         
@@ -373,21 +382,22 @@
         }
         
         .footer-links li {
-            margin-bottom: 1rem;
-            transition: transform 0.2s;
+            margin-bottom: 0.8rem;
+            transition: transform 0.3s ease;
         }
         
         .footer-links li:hover {
-            transform: translateX(8px);
+            transform: translateX(5px);
         }
         
         .footer-links a {
             color: var(--light-color);
             text-decoration: none;
-            transition: color 0.3s;
-            display: inline-flex;
+            display: flex;
             align-items: center;
-            font-size: 1rem;
+            gap: 0.5rem;
+            font-size: 0.95rem;
+            transition: color 0.3s ease;
         }
         
         .footer-links a:hover {
@@ -395,104 +405,122 @@
         }
         
         .footer-links i {
-            margin-right: 10px;
             color: var(--success-color);
-            font-size: 1.1rem;
+            font-size: 1rem;
         }
         
         .social-icons {
             display: flex;
-            gap: 1.2rem;
-            margin-top: 2rem;
+            gap: 1rem;
+            margin-top: 1.5rem;
         }
         
         .social-icons a {
-            width: 45px;
-            height: 45px;
+            width: 40px;
+            height: 40px;
             border-radius: 50%;
             background: rgba(255,255,255,0.15);
             color: white;
-            font-size: 1.4rem;
-            transition: all 0.3s;
+            font-size: 1.2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
         }
         
         .social-icons a:hover {
             background: var(--accent-color);
-            transform: translateY(-6px);
-            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+            transform: translateY(-4px);
+            box-shadow: 0 3px 8px rgba(0,0,0,0.3);
         }
         
         .footer-bottom {
             max-width: 1300px;
-            margin: 2.5rem auto 0;
-            padding: 1.5rem 2rem 0;
+            margin: 2rem auto 0;
+            padding: 1rem 1.5rem;
             text-align: center;
             border-top: 1px solid rgba(255,255,255,0.15);
-            font-size: 0.95rem;
+            font-size: 0.9rem;
             color: var(--light-color);
         }
         
         /* Buttons */
         .btn {
-            padding: 0.9rem 1.8rem;
+            padding: 0.8rem 1.6rem;
             font-weight: 600;
             background: var(--primary-color);
             color: white;
             border: none;
-            border-radius: 30px;
+            border-radius: 25px;
             text-decoration: none;
-            transition: all 0.3s;
-            box-shadow: 0 4px 12px rgba(76, 175, 80, 0.3);
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 3px 8px rgba(76, 175, 80, 0.3);
         }
         
         .btn:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 6px 18px rgba(76, 175, 80, 0.5);
+            transform: translateY(-3px);
             background: var(--dark-color);
-            color: white;
+            box-shadow: 0 5px 12px rgba(76, 175, 80, 0.5);
         }
         
         .btn-secondary {
             background: var(--secondary-color);
-            box-shadow: 0 4px 12px rgba(62, 39, 35, 0.3);
+            box-shadow: 0 3px 8px rgba(62, 39, 35, 0.3);
         }
         
         .btn-secondary:hover {
             background: var(--accent-color);
-            box-shadow: 0 6px 18px rgba(255, 152, 0, 0.5);
+            box-shadow: 0 5px 12px rgba(255, 152, 0, 0.5);
         }
         
         .btn-accent {
             background: var(--accent-color);
-            box-shadow: 0 4px 12px rgba(255, 152, 0, 0.3);
+            box-shadow: 0 3px 8px rgba(255, 152, 0, 0.3);
         }
         
         .btn-accent:hover {
             background: #F57C00;
-            box-shadow: 0 6px 18px rgba(245, 124, 0, 0.5);
+            box-shadow: 0 5px 12px rgba(245, 124, 0, 0.5);
         }
         
         .btn-lg {
-            padding: 1.2rem 2.5rem;
-            font-size: 1.2rem;
+            padding: 1rem 2rem;
+            font-size: 1.1rem;
         }
         
-        /* Chatbot Custom Styling */
+        /* Chatbot Styling */
         #JotformAgent-0196354ca31e70d98a10da07b48921d1fa1a {
-            z-index: 9999 !important; /* Ensure chatbot is above other elements */
+            z-index: 9999 !important;
             font-family: var(--font-main);
         }
         
         /* Responsive Design */
         @media (max-width: 992px) {
             .navbar {
-                padding: 0 1.5rem;
+                padding: 0 1rem;
             }
-            .nav-links li {
-                margin-left: 1.5rem;
+            .nav-links {
+                gap: 0.8rem;
+            }
+            .nav-links a {
+                padding: 0.4rem 0.6rem;
+                font-size: 0.9rem;
+            }
+            .nav-actions {
+                gap: 0.5rem;
+            }
+            .login-btn, .signup-btn, .language-btn {
+                padding: 0.4rem 0.8rem;
+                font-size: 0.85rem;
             }
             main {
-                padding: 0 1.5rem;
+                padding: 0 1rem;
+            }
+            .content-section {
+                padding: 2rem;
             }
         }
         
@@ -503,64 +531,65 @@
             .nav-links {
                 position: fixed;
                 top: 80px;
-                left: -100%;
+                left: 0;
                 width: 100%;
                 height: calc(100vh - 80px);
                 background: var(--primary-color);
                 flex-direction: column;
-                padding: 2.5rem 0;
-                transition: left 0.3s ease;
+                padding: 2rem;
+                transform: translateX(-100%);
+                transition: transform 0.3s ease;
                 z-index: 100;
                 overflow-y: auto;
             }
             .nav-links.active {
-                left: 0;
+                transform: translateX(0);
             }
             .nav-links li {
-                margin: 1.5rem 0;
-                text-align: center;
+                margin: 1rem 0;
                 width: 100%;
+                text-align: center;
             }
             .nav-links a {
-                padding: 1rem;
-                font-size: 1.2rem;
+                padding: 0.8rem;
+                font-size: 1.1rem;
             }
             .nav-actions {
                 flex-direction: column;
                 width: 100%;
-                gap: 1.5rem;
-                margin-top: 2rem;
+                gap: 1rem;
+                margin-top: 1.5rem;
+                align-items: center;
             }
             .login-btn, .signup-btn, .language-btn {
-                width: 85%;
-                margin: 0 auto;
+                width: 100%;
+                max-width: 300px;
+                margin: 0;
+                justify-content: center;
+                padding: 0.6rem 1rem;
+                font-size: 1rem;
             }
             .language-selector {
                 width: 100%;
                 display: flex;
                 justify-content: center;
-                margin-left: 0;
-                margin-top: 1.5rem;
+                margin: 1rem 0 0;
             }
             .language-dropdown {
                 left: 50%;
-                transform: translateX(-50%) translateY(10px);
-                width: 85%;
-                max-width: 320px;
+                transform: translateX(-50%);
+                width: 90%;
+                max-width: 300px;
             }
-            .language-selector:hover .language-dropdown {
-                transform: translateX(-50%) translateY(5px);
-            }
-            .content-section {
-                padding: 2rem;
+            .language-dropdown.active {
+                transform: translateX(-50%);
             }
             .footer-section {
                 flex: 100%;
-                margin-bottom: 2.5rem;
+                margin-bottom: 2rem;
             }
-            /* Adjust chatbot for mobile */
             #JotformAgent-0196354ca31e70d98a10da07b48921d1fa1a {
-                bottom: 20px !important; /* Prevent overlap with footer */
+                bottom: 15px !important;
             }
         }
     </style>
@@ -570,78 +599,71 @@
 <body>
     <header class="header1">
         <nav class="navbar">
-            <a href="/" class="logo">
-                <i class="fas fa-tractor"></i>
-                AgriChain
+            <a href="{% url 'home' %}" class="logo">
+                <i class="fas fa-tractor"></i> AgriChain
             </a>
             <button class="hamburger" id="hamburger" aria-label="Toggle menu">
                 <i class="fas fa-bars"></i>
             </button>
             <ul class="nav-links" id="nav-links">
-                <li><a href="/"><i class="fas fa-home"></i> Home</a></li>
-                <li><a href="{% url 'maps:farm-map' %}"><i class="fas fa-map-marked-alt"></i> Farm Map</a></li>
-                <li><a href="{% url 'maps:my-farms' %}"><i class="fas fa-tractor"></i> My Farms</a></li>
-                <li><a href="/blog"><i class="fas fa-leaf"></i> Blog</a></li>
-                
-                <div class="nav-actions">
-                    {% if user.is_authenticated %}
-                        <a href="{% url 'logout' %}" class="login-btn">
-                            <i class="fas fa-sign-out-alt"></i> Logout
-                        </a>
-                    {% else %}
-                        <a href="{% url 'login' %}" class="login-btn">
-                            <i class="fas fa-sign-in-alt"></i> Login
-                        </a>
-                        {% comment %} <a href="{% url 'signup' %}" class="signup-btn">
-                            <i class="fas fa-user-plus"></i> Sign Up
-                        </a> {% endcomment %}
-                    {% endif %}
-                    
-                    <div class="language-selector">
-                        <button type="button" class="language-btn">
-                            <i class="fas fa-globe"></i>
-                            {% get_current_language as CURRENT_LANGUAGE %}
-                            {% for language in languages %}
-                                {% if language.code == CURRENT_LANGUAGE %}
-                                    {{ language.code|upper }}
-                                {% endif %}
-                            {% endfor %}
-                            <i class="fas fa-chevron-down" style="font-size: 0.8rem;"></i>
-                        </button>
-                        <div class="language-dropdown">
-                            {% get_current_language as CURRENT_LANGUAGE %}
-                            {% get_available_languages as AVAILABLE_LANGUAGES %}
-                            {% get_language_info_list for AVAILABLE_LANGUAGES as languages %}
-                            {% for language in languages %}
-                                <form action="{% url 'set_language' %}" method="post">
-                                    {% csrf_token %}
-                                    <input name="next" type="hidden" value="{{ request.get_full_path }}">
-                                    <input name="language" type="hidden" value="{{ language.code }}">
-                                    <button type="submit" class="{% if language.code == CURRENT_LANGUAGE %}active{% endif %}">
-                                        {% if language.code == 'en' %}
-                                            <span class="language-flag" style="background: linear-gradient(to right, #012169, #FFFFFF, #C8102E);"></span>
-                                        {% elif language.code == 'ml' %}
-                                            <span class="language-flag" style="background: linear-gradient(to bottom, #FF9933, #FFFFFF, #138808);"></span>
-                                        {% else %}
-                                            <span class="language-flag" style="background-color: #ddd;"></span>
-                                        {% endif %}
-                                        {{ language.name_local }}
-                                    </button>
-                                </form>
-                            {% endfor %}
-                        </div>
+                <li><a href="{% url 'home' %}"><i class="fas fa-home"></i> {% trans "Home" %}</a></li>
+                <li><a href="{% url 'maps:farm-map' %}"><i class="fas fa-map-marked-alt"></i> {% trans "Farm Map" %}</a></li>
+                <li><a href="{% url 'maps:my-farms' %}"><i class="fas fa-tractor"></i> {% trans "My Farms" %}</a></li>
+                <li><a href="{% url 'farming_news' %}"><i class="fas fa-leaf"></i> {% trans "Blog" %}</a></li>
+                <li><a href="/"><i class="fas fa-chart-line"></i> {% trans "Agriculture Analysis" %}</a></li>
+            </ul>
+            <div class="nav-actions">
+                {% if user.is_authenticated %}
+                    <a href="{% url 'logout' %}" class="login-btn">
+                        <i class="fas fa-sign-out-alt"></i> {% trans "Logout" %}
+                    </a>
+                {% else %}
+                    <a href="{% url 'login' %}" class="login-btn">
+                        <i class="fas fa-sign-in-alt"></i> {% trans "Login" %}
+                    </a>
+           
+                {% endif %}
+                <div class="language-selector">
+                    <button type="button" class="language-btn" id="language-toggle">
+                        <i class="fas fa-globe"></i>
+                        {% get_current_language as CURRENT_LANGUAGE %}
+                        {{ CURRENT_LANGUAGE|upper }}
+                        <i class="fas fa-chevron-down"></i>
+                    </button>
+                    <div class="language-dropdown" id="language-dropdown">
+                        {% get_available_languages as AVAILABLE_LANGUAGES %}
+                        {% get_language_info_list for AVAILABLE_LANGUAGES as languages %}
+                        {% for language in languages %}
+                            <form action="{% url 'set_language' %}" method="post">
+                                {% csrf_token %}
+                                <input name="next" type="hidden" value="{{ request.get_full_path }}">
+                                <input name="language" type="hidden" value="{{ language.code }}">
+                                <button type="submit" class="{% if language.code == CURRENT_LANGUAGE %}active{% endif %}">
+                                    {% if language.code == 'en' %}
+                                        <span class="language-flag" style="background: linear-gradient(to right, #012169, #FFFFFF, #C8102E);"></span>
+                                    {% elif language.code == 'ml' %}
+                                        <span class="language-flag" style="background: linear-gradient(to bottom, #FF9933, #FFFFFF, #138808);"></span>
+                                    {% else %}
+                                        <span class="language-flag" style="background: #ddd;"></span>
+                                    {% endif %}
+                                    {{ language.name_local }}
+                                </button>
+                            </form>
+                        {% endfor %}
                     </div>
                 </div>
-            </ul>
+            </div>
         </nav>
     </header>
     
     <main>
         {% block content %}
         <section class="content-section">
-            <h1>Welcome to AgriChain</h1>
-            <p>Empowering farmers with smart tools for sustainable agriculture. Explore farm mapping, crop recommendations, and more.</p>
-            <a href="{% url 'maps:farm-map' %}" class="btn btn-lg">Explore Now <i class="fas fa-arrow-right"></i></a>
+            <h1>{% trans "Welcome to AgriChain" %}</h1>
+            <p>{% trans "Empowering farmers with smart tools for sustainable agriculture. Explore farm mapping, crop recommendations, and more." %}</p>
+            <a href="{% url 'maps:farm-map' %}" class="btn btn-lg">
+                {% trans "Explore Now" %} <i class="fas fa-arrow-right"></i>
+            </a>
         </section>
         {% endblock %}
     </main>
@@ -649,8 +671,8 @@
     <footer>
         <div class="footer-content">
             <div class="footer-section">
-                <h3>About AgriChain</h3>
-                <p>AgriChain connects farmers with technology to optimize yields, manage resources, and build a sustainable future.</p>
+                <h3>{% trans "About AgriChain" %}</h3>
+                <p>{% trans "AgriChain connects farmers with technology to optimize yields, manage resources, and build a sustainable future." %}</p>
                 <div class="social-icons">
                     <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
                     <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
@@ -658,36 +680,34 @@
                     <a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
                 </div>
             </div>
-            
             <div class="footer-section">
-                <h3>Quick Links</h3>
+                <h3>{% trans "Quick Links" %}</h3>
                 <ul class="footer-links">
-                    <li><a href="/"><i class="fas fa-chevron-right"></i> Home</a></li>
-                    <li><a href="{% url 'maps:farm-map' %}"><i class="fas fa-chevron-right"></i> Farm Map</a></li>
-                    <li><a href="{% url 'maps:my-farms' %}"><i class="fas fa-chevron-right"></i> My Farms</a></li>
-                    <li><a href="/blog"><i class="fas fa-chevron-right"></i> Blog</a></li>
-                    <li><a href="/contact"><i class="fas fa-chevron-right"></i> Contact</a></li>
+                    <li><a href="{% url 'home' %}"><i class="fas fa-chevron-right"></i> {% trans "Home" %}</a></li>
+                    <li><a href="{% url 'maps:farm-map' %}"><i class="fas fa-chevron-right"></i> {% trans "Farm Map" %}</a></li>
+                    <li><a href="{% url 'maps:my-farms' %}"><i class="fas fa-chevron-right"></i> {% trans "My Farms" %}</a></li>
+                    <li><a href="{% url 'farming_news' %}"><i class="fas fa-chevron-right"></i> {% trans "Blog" %}</a></li>
+                    <li><a href=""><i class="fas fa-chevron-right"></i> {% trans "Agriculture Analysis" %}</a></li>
+                    <li><a href="/contact"><i class="fas fa-chevron-right"></i> {% trans "Contact" %}</a></li>
                 </ul>
             </div>
-            
             <div class="footer-section">
-                <h3>Contact Us</h3>
+                <h3>{% trans "Contact Us" %}</h3>
                 <ul class="footer-links">
-                    <li><a href="#"><i class="fas fa-map-marker-alt"></i> AgriChain HQ, Green Valley</a></li>
+                    <li><a href="#"><i class="fas fa-map-marker-alt"></i> {% trans "AgriChain HQ, Green Valley" %}</a></li>
                     <li><a href="tel:+919876543210"><i class="fas fa-phone"></i> +91 98765 43210</a></li>
-                    <li><a href="mailto:support@agichain.com"><i class="fas fa-envelope"></i> support@agrichain.com</a></li>
-                    <li><a href="#"><i class="fas fa-clock"></i> Mon-Sat: 8AM-5PM</a></li>
+                    <li><a href="mailto:support@agrichain.com"><i class="fas fa-envelope"></i> support@agrichain.com</a></li>
+                    <li><a href="#"><i class="fas fa-clock"></i> {% trans "Mon-Sat: 8AM-5PM" %}</a></li>
                 </ul>
             </div>
         </div>
-        
         <div class="footer-bottom">
-            <p>© 2025 AgriChain. All rights reserved. | Grown with <i class="fas fa-seedling" style="color: var(--success-color);"></i> by the AgriChain Team</p>
+            <p>© 2025 AgriChain. {% trans "All rights reserved." %} | {% trans "Grown with" %} <i class="fas fa-seedling" style="color: var(--success-color);"></i> {% trans "by the AgriChain Team" %}</p>
         </div>
     </footer>
     
     <!-- Jotform Chatbot Script -->
-    <script src='https://cdn.jotfor.ms/s/umd/latest/for-embedded-agent.js'></script>
+    <script src="https://cdn.jotfor.ms/s/umd/latest/for-embedded-agent.js"></script>
     <script>
         window.addEventListener("DOMContentLoaded", function() {
             window.AgentInitializer.init({
@@ -697,13 +717,13 @@
                 queryParams: ["skipWelcome=1", "maximizable=1"],
                 domain: "https://www.jotform.com",
                 isDraggable: false,
-                background: "linear-gradient(180deg, #4CAF50 0%, #2E7D32 100%)", /* AgriChain green gradient */
-                buttonBackgroundColor: "#FF9800", /* AgriChain orange */
+                background: "linear-gradient(180deg, #4CAF50 0%, #2E7D32 100%)",
+                buttonBackgroundColor: "#FF9800",
                 buttonIconColor: "#FFFFFF",
                 variant: false,
                 customizations: {
                     "greeting": "Yes",
-                    "greetingMessage": "Hello, farmer! Need help with AgriChain’s tools or farm mapping?",
+                    "greetingMessage": "{% trans 'Hello, farmer! Need help with AgriChain’s tools or farm mapping?' %}",
                     "openByDefault": "No",
                     "pulse": "Yes",
                     "position": "right",
@@ -711,28 +731,54 @@
                 },
                 isVoice: false,
                 accessibility: {
-                    "aria-label": "Open AgriChain Assistant chatbot"
+                    "aria-label": "{% trans 'Open AgriChain Assistant chatbot' %}"
                 }
             });
         });
     </script>
     
     <script>
-        document.getElementById('hamburger').addEventListener('click', function() {
-            document.getElementById('nav-links').classList.toggle('active');
-            this.querySelector('i').classList.toggle('fa-bars');
-            this.querySelector('i').classList.toggle('fa-times');
-        });
-        
-        document.addEventListener('click', function(event) {
-            const navLinks = document.getElementById('nav-links');
+        (function() {
             const hamburger = document.getElementById('hamburger');
-            if (!navLinks.contains(event.target) && !hamburger.contains(event.target) && navLinks.classList.contains('active')) {
-                navLinks.classList.remove('active');
-                hamburger.querySelector('i').classList.add('fa-bars');
-                hamburger.querySelector('i').classList.remove('fa-times');
-            }
-        });
+            const navLinks = document.getElementById('nav-links');
+            const languageToggle = document.getElementById('language-toggle');
+            const languageDropdown = document.getElementById('language-dropdown');
+            const languageSelector = document.querySelector('.language-selector');
+            let isToggling = false;
+
+            // Hamburger menu toggle
+            hamburger.addEventListener('click', function() {
+                if (isToggling) return;
+                isToggling = true;
+                navLinks.classList.toggle('active');
+                const icon = this.querySelector('i');
+                icon.classList.toggle('fa-bars');
+                icon.classList.toggle('fa-times');
+                setTimeout(() => isToggling = false, 300);
+            });
+
+            // Close hamburger menu when clicking outside
+            document.addEventListener('click', function(event) {
+                if (!navLinks.contains(event.target) && !hamburger.contains(event.target) && navLinks.classList.contains('active')) {
+                    navLinks.classList.remove('active');
+                    const icon = hamburger.querySelector('i');
+                    icon.classList.add('fa-bars');
+                    icon.classList.remove('fa-times');
+                }
+            });
+
+            // Language dropdown toggle
+            languageToggle.addEventListener('click', function() {
+                languageDropdown.classList.toggle('active');
+            });
+
+            // Close language dropdown when clicking outside
+            document.addEventListener('click', function(event) {
+                if (!languageSelector.contains(event.target)) {
+                    languageDropdown.classList.remove('active');
+                }
+            });
+        })();
     </script>
     
     {% block extra_js %}{% endblock %}
